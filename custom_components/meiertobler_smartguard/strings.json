@@ -1,0 +1,115 @@
+{
+  "title": "Meier Tobler SmartGuard",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to SmartGuard",
+        "description": "The verified local REST API uses unencrypted HTTP without authentication. Use it only on a segmented local network and restrict access to the Home Assistant host.",
+        "data": {
+          "host": "Host or IP address"
+        },
+        "data_description": {
+          "host": "Enter only the hostname or IP address, without http://, path, port, or credentials."
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure SmartGuard",
+        "description": "Update the local gateway address. The same physical SmartGuard device must answer at the new address.",
+        "data": {
+          "host": "Host or IP address"
+        },
+        "data_description": {
+          "host": "Enter only the hostname or IP address, without http://, path, port, or credentials."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to SmartGuard.",
+      "invalid_host": "Enter a valid hostname or IP address without scheme, path, or port.",
+      "invalid_response": "SmartGuard returned an unexpected response.",
+      "unsupported_device": "The device is not a supported SmartGuard 2.0 gateway.",
+      "unknown": "Unexpected error. Check the Home Assistant log."
+    },
+    "abort": {
+      "already_configured": "This SmartGuard device is already configured.",
+      "wrong_device": "The new address belongs to a different SmartGuard device.",
+      "reconfigure_successful": "SmartGuard was reconfigured successfully."
+    }
+  },
+  "exceptions": {
+    "invalid_mode": {
+      "message": "The operating mode {option} is not supported."
+    },
+    "write_failed": {
+      "message": "SmartGuard could not change the operating mode."
+    },
+    "write_not_confirmed": {
+      "message": "SmartGuard did not confirm the requested operating mode."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "source_inlet_temperature": {
+        "name": "Source inlet temperature"
+      },
+      "condenser_inlet_temperature": {
+        "name": "Condenser inlet temperature"
+      },
+      "condenser_outlet_temperature": {
+        "name": "Condenser outlet temperature"
+      },
+      "hk60_flow_temperature": {
+        "name": "HK60 flow temperature"
+      },
+      "hk60_operating_status": {
+        "name": "HK60 operating status",
+        "state": {
+          "standby": "Standby",
+          "heating": "Heating",
+          "cooling": "Cooling"
+        }
+      },
+      "hk60_selected_mode": {
+        "name": "HK60 selected operating mode",
+        "state": {
+          "auto": "Auto",
+          "normal": "Normal",
+          "reduced": "Reduced",
+          "frost_protection": "Frost protection",
+          "heating": "Heating",
+          "cooling": "Cooling"
+        }
+      },
+      "hk60_effective_mode": {
+        "name": "HK60 effective operating mode",
+        "state": {
+          "normal": "Normal",
+          "reduced": "Reduced",
+          "away": "Away",
+          "frost_protection": "Frost protection"
+        }
+      },
+      "hk60_season_status": {
+        "name": "HK60 season status",
+        "state": {
+          "transition": "Transition season",
+          "heating_season": "Heating season",
+          "cooling_season": "Cooling season"
+        }
+      }
+    },
+    "select": {
+      "hk60_selected_mode": {
+        "name": "HK60 operating mode control",
+        "state": {
+          "auto": "Auto",
+          "normal": "Normal",
+          "reduced": "Reduced",
+          "frost_protection": "Frost protection",
+          "heating": "Heating",
+          "cooling": "Cooling"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "domain": "meiertobler_smartguard",
+  "name": "Meier Tobler SmartGuard",
+  "codeowners": ["@martins-netizen"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/martins-netizen/ha-meiertobler-smartguard",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/martins-netizen/ha-meiertobler-smartguard/issues",
+  "requirements": [],
+  "version": "0.2.0"
+}

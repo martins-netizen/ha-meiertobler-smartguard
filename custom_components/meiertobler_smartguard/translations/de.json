@@ -1,0 +1,115 @@
+{
+  "title": "Meier Tobler SmartGuard",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mit SmartGuard verbinden",
+        "description": "Die verifizierte lokale REST-API verwendet unverschlüsseltes HTTP ohne Authentifizierung. Nur in einem segmentierten lokalen Netzwerk verwenden und den Zugriff auf Home Assistant beschränken.",
+        "data": {
+          "host": "Hostname oder IP-Adresse"
+        },
+        "data_description": {
+          "host": "Nur Hostname oder IP-Adresse eingeben, ohne http://, Pfad, Port oder Zugangsdaten."
+        }
+      },
+      "reconfigure": {
+        "title": "SmartGuard neu konfigurieren",
+        "description": "Lokale Gateway-Adresse ändern. Unter der neuen Adresse muss dasselbe physische SmartGuard-Gerät antworten.",
+        "data": {
+          "host": "Hostname oder IP-Adresse"
+        },
+        "data_description": {
+          "host": "Nur Hostname oder IP-Adresse eingeben, ohne http://, Pfad, Port oder Zugangsdaten."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zu SmartGuard nicht möglich.",
+      "invalid_host": "Gültigen Hostnamen oder gültige IP-Adresse ohne Schema, Pfad oder Port eingeben.",
+      "invalid_response": "SmartGuard hat eine unerwartete Antwort geliefert.",
+      "unsupported_device": "Das Gerät ist kein unterstütztes SmartGuard-2.0-Gateway.",
+      "unknown": "Unerwarteter Fehler. Home-Assistant-Protokoll prüfen."
+    },
+    "abort": {
+      "already_configured": "Dieses SmartGuard-Gerät ist bereits konfiguriert.",
+      "wrong_device": "Die neue Adresse gehört zu einem anderen SmartGuard-Gerät.",
+      "reconfigure_successful": "SmartGuard wurde erfolgreich neu konfiguriert."
+    }
+  },
+  "exceptions": {
+    "invalid_mode": {
+      "message": "Der Betriebsmodus {option} wird nicht unterstützt."
+    },
+    "write_failed": {
+      "message": "SmartGuard konnte den Betriebsmodus nicht ändern."
+    },
+    "write_not_confirmed": {
+      "message": "SmartGuard hat den angeforderten Betriebsmodus nicht bestätigt."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "source_inlet_temperature": {
+        "name": "Wärmequelle Eintritt"
+      },
+      "condenser_inlet_temperature": {
+        "name": "Kondensator Eintritt"
+      },
+      "condenser_outlet_temperature": {
+        "name": "Kondensator Austritt"
+      },
+      "hk60_flow_temperature": {
+        "name": "HK60 Vorlauf IST"
+      },
+      "hk60_operating_status": {
+        "name": "HK60 Betriebsstatus",
+        "state": {
+          "standby": "Standby",
+          "heating": "Heizen",
+          "cooling": "Kühlen"
+        }
+      },
+      "hk60_selected_mode": {
+        "name": "HK60 Betriebsmoduswahl",
+        "state": {
+          "auto": "Auto",
+          "normal": "Normal",
+          "reduced": "Reduziert",
+          "frost_protection": "Frostschutz",
+          "heating": "Heizen",
+          "cooling": "Kühlen"
+        }
+      },
+      "hk60_effective_mode": {
+        "name": "HK60 Betriebsmodus effektiv",
+        "state": {
+          "normal": "Normal",
+          "reduced": "Reduziert",
+          "away": "Abwesend",
+          "frost_protection": "Frostschutz"
+        }
+      },
+      "hk60_season_status": {
+        "name": "HK60 Saisonstatus",
+        "state": {
+          "transition": "Zwischensaison",
+          "heating_season": "Heizsaison",
+          "cooling_season": "Kühlsaison"
+        }
+      }
+    },
+    "select": {
+      "hk60_selected_mode": {
+        "name": "HK60 Betriebsmodus einstellen",
+        "state": {
+          "auto": "Auto",
+          "normal": "Normal",
+          "reduced": "Reduziert",
+          "frost_protection": "Frostschutz",
+          "heating": "Heizen",
+          "cooling": "Kühlen"
+        }
+      }
+    }
+  }
+}

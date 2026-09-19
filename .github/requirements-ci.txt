@@ -1,0 +1,54 @@
+aiohappyeyeballs==2.7.1
+    # via aiohttp
+aiohttp==3.14.3
+    # via -r .github/requirements-ci.in
+aiosignal==1.4.0
+    # via aiohttp
+ast-serialize==0.11.2
+    # via mypy
+attrs==26.1.0
+    # via aiohttp
+frozenlist==1.8.0
+    # via
+    #   aiohttp
+    #   aiosignal
+idna==3.20
+    # via yarl
+iniconfig==2.3.0
+    # via pytest
+librt==0.15.0
+    # via mypy
+multidict==6.9.0
+    # via
+    #   aiohttp
+    #   yarl
+mypy==2.3.1
+    # via -r .github/requirements-ci.in
+mypy-extensions==1.1.0
+    # via mypy
+packaging==26.3
+    # via pytest
+pathspec==1.1.1
+    # via mypy
+pluggy==1.6.0
+    # via pytest
+propcache==0.5.4
+    # via
+    #   aiohttp
+    #   yarl
+pygments==2.21.0
+    # via pytest
+pytest==9.1.1
+    # via
+    #   -r .github/requirements-ci.in
+    #   pytest-asyncio
+pytest-asyncio==1.4.0
+    # via -r .github/requirements-ci.in
+ruff==0.16.8
+    # via -r .github/requirements-ci.in
+typing-extensions==4.16.0
+    # via mypy
+yarl==1.25.1
+    # via
+    #   -r .github/requirements-ci.in
+    #   aiohttp

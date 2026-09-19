@@ -29,6 +29,7 @@ REQUIRED_FILES = (
     INTEGRATION / "config_flow.py",
     INTEGRATION / "const.py",
     INTEGRATION / "coordinator.py",
+    INTEGRATION / "diagnostics.py",
     INTEGRATION / "entity.py",
     INTEGRATION / "select.py",
     INTEGRATION / "sensor.py",

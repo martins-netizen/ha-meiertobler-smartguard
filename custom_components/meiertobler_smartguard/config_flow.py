@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-import probatio
+import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import TextSelector
@@ -22,7 +22,7 @@ from .api import (
 from .const import CONF_HOST, DOMAIN, MODEL
 
 _LOGGER = logging.getLogger(__name__)
-_HOST_SCHEMA = probatio.Schema({probatio.Required(CONF_HOST): TextSelector()})
+_HOST_SCHEMA = vol.Schema({vol.Required(CONF_HOST): TextSelector()})
 
 
 class SmartGuardConfigFlow(ConfigFlow, domain=DOMAIN):

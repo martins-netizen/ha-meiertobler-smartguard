@@ -78,6 +78,14 @@ stable internal values for display. Every changed option is written to datapoint
 This is an independent community project and is not affiliated with or endorsed
 by Meier Tobler AG.
 
+## Diagnostics
+
+Home Assistant can download diagnostics for each SmartGuard config entry. The
+diagnostic data includes the current coordinator status and the latest values
+already held in memory; it does not trigger additional gateway requests. The
+configured host, global device identifier, and serial number are always
+redacted. The integration does not store or expose a SmartGuard password.
+
 ## Development and HACS status
 
 The repository is prepared for private development and automated validation.
@@ -109,10 +117,7 @@ Run the deterministic repository checks with:
 ```bash
 python3 scripts/validate.py
 python3 -m ruff check .
-python3 -m mypy \
-  custom_components/meiertobler_smartguard/api.py \
-  custom_components/meiertobler_smartguard/const.py \
-  tests/test_api.py
+python3 -m mypy custom_components/meiertobler_smartguard
 python3 -m pytest -q \
   --cov=custom_components/meiertobler_smartguard \
   --cov-report=term-missing \
@@ -120,7 +125,8 @@ python3 -m pytest -q \
 ```
 
 The test suite covers the API and write-verification layer as well as the
-config flow, coordinator, entity formatting, select error handling, setup,
-unload, and reload behavior. CI enforces at least 95 percent statement and
-branch coverage for the full integration. Diagnostics and recovery behavior
-will be covered together with those features in later development releases.
+config flow, coordinator, entity formatting, select error handling, redacted
+diagnostics, setup, unload, and reload behavior. CI enforces at least 95 percent
+statement and branch coverage and strict MyPy checks for the full integration.
+Recovery behavior will be covered together with that feature in a later
+development release.

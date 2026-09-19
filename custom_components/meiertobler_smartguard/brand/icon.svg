@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="SmartGuard community integration">
+  <defs>
+    <linearGradient id="shield" x1="48" y1="32" x2="208" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#18A7C8"/>
+      <stop offset="1" stop-color="#075B91"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#shield)" d="M128 14 222 50v65c0 61-39 105-94 127-55-22-94-66-94-127V50l94-36Z"/>
+  <path fill="none" stroke="#fff" stroke-linecap="round" stroke-width="17" d="M82 99c0-15 12-27 27-27h38c15 0 27 12 27 27s-12 27-27 27h-38c-15 0-27 12-27 27s12 27 27 27h45"/>
+  <circle cx="177" cy="180" r="12" fill="#F7A51A"/>
+</svg>

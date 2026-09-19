@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
@@ -68,8 +68,3 @@ async def _async_update_listener(
 ) -> None:
     """Reload after config-entry data changes."""
     await hass.config_entries.async_reload(entry.entry_id)
-
-
-async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
-    """Allow Home Assistant to load the integration package."""
-    return True

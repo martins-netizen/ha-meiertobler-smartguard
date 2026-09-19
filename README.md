@@ -82,7 +82,9 @@ by Meier Tobler AG.
 
 The repository is prepared for private development and automated validation.
 While it remains private, HACS cannot access or install it. During this stage,
-the HACS and hassfest workflows validate the repository structure only.
+the Quality and hassfest jobs run normally, while the HACS job performs a local
+metadata and brand-asset precheck. The official HACS action is enabled
+automatically only after the repository is made public.
 
 After the pre-publication security gate has passed, the repository can be made
 public and added to HACS as a custom integration repository. A published GitHub

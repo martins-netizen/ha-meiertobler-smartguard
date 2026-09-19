@@ -32,6 +32,7 @@ REQUIRED_FILES = (
     INTEGRATION / "entity.py",
     INTEGRATION / "select.py",
     INTEGRATION / "sensor.py",
+    INTEGRATION / "brand" / "icon.png",
     INTEGRATION / "manifest.json",
     INTEGRATION / "quality_scale.yaml",
     INTEGRATION / "strings.json",
@@ -69,6 +70,33 @@ def main() -> int:
         raise RuntimeError("Config flow is not enabled")
     if manifest.get("requirements") != []:
         raise RuntimeError("Unexpected runtime dependency")
+
+    hacs_manifest = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
+    if not isinstance(hacs_manifest, dict):
+        raise RuntimeError("hacs.json must contain a JSON object")
+    if hacs_manifest.get("name") != "Meier Tobler SmartGuard":
+        raise RuntimeError("HACS display name mismatch")
+    if hacs_manifest.get("content_in_root") is not False:
+        raise RuntimeError("HACS integration content must remain under custom_components")
+    if hacs_manifest.get("country") != "CH":
+        raise RuntimeError("HACS country must be CH")
+    unsupported_hacs_keys = set(hacs_manifest) - {
+        "content_in_root",
+        "country",
+        "filename",
+        "hacs",
+        "hide_default_branch",
+        "homeassistant",
+        "name",
+        "persistent_directory",
+        "zip_release",
+    }
+    if unsupported_hacs_keys:
+        raise RuntimeError(f"Unsupported hacs.json keys: {sorted(unsupported_hacs_keys)}")
+
+    icon = (INTEGRATION / "brand" / "icon.png").read_bytes()
+    if not icon.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise RuntimeError("Brand icon is not a PNG file")
 
     workflow = (ROOT / ".github" / "workflows" / "validate.yml").read_text(
         encoding="utf-8"

@@ -1,6 +1,6 @@
 {
   "name": "Meier Tobler SmartGuard",
   "content_in_root": false,
-  "render_readme": true,
+  "country": "CH",
   "homeassistant": "2026.9.0"
 }

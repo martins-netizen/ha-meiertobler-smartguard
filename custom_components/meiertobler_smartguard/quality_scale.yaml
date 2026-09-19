@@ -4,9 +4,7 @@ rules:
     status: exempt
     comment: The integration does not register custom service actions.
   appropriate-polling: done
-  brands:
-    status: todo
-    comment: Brand assets are required before the first public release.
+  brands: done
   common-modules: done
   config-flow-test-coverage:
     status: todo

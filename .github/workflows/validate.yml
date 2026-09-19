@@ -29,7 +29,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           cache: pip
           cache-dependency-path: .github/requirements-ci.txt
 
@@ -50,7 +50,11 @@ jobs:
           tests/test_api.py
 
       - name: Run tests
-        run: python -m pytest -q
+        run: >-
+          python -m pytest -q
+          --cov=custom_components/meiertobler_smartguard
+          --cov-report=term-missing
+          --cov-fail-under=95
 
   hassfest:
     name: Hassfest

@@ -4,13 +4,16 @@ from __future__ import annotations
 
 import logging
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import SmartGuardApiClient, SmartGuardError, SmartGuardSnapshot
 from .const import DEFAULT_UPDATE_INTERVAL_SECONDS, DOMAIN
+
+if TYPE_CHECKING:
+    from .data import SmartGuardConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,7 +24,7 @@ class SmartGuardCoordinator(DataUpdateCoordinator[SmartGuardSnapshot]):
     def __init__(
         self,
         hass: HomeAssistant,
-        config_entry: ConfigEntry,
+        config_entry: SmartGuardConfigEntry,
         client: SmartGuardApiClient,
         serial_number: str,
     ) -> None:

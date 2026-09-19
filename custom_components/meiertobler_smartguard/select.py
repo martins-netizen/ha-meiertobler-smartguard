@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
-
 from homeassistant.components.select import SelectEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
@@ -36,11 +34,11 @@ async def async_setup_entry(
 class SmartGuardModeSelect(SmartGuardEntity, SelectEntity):
     """Select the requested HK60 operating mode with readback verification."""
 
-    _attr_options: ClassVar[list[str]] = list(HK60_SELECTED_MODE_OPTIONS)
     _attr_translation_key = "hk60_selected_mode"
 
     def __init__(self, entry: SmartGuardConfigEntry) -> None:
         super().__init__(entry, "hk60_selected_mode_select")
+        self._attr_options = list(HK60_SELECTED_MODE_OPTIONS)
         self._client = entry.runtime_data.client
         self._serial_number = entry.runtime_data.identity.serial_number
 

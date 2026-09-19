@@ -2,5 +2,7 @@ aiohttp
 mypy
 pytest
 pytest-asyncio
+pytest-cov
+pytest-homeassistant-custom-component==0.13.366
 ruff
 yarl

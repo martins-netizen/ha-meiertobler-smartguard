@@ -113,10 +113,14 @@ python3 -m mypy \
   custom_components/meiertobler_smartguard/api.py \
   custom_components/meiertobler_smartguard/const.py \
   tests/test_api.py
-python3 -m pytest -q
+python3 -m pytest -q \
+  --cov=custom_components/meiertobler_smartguard \
+  --cov-report=term-missing \
+  --cov-fail-under=95
 ```
 
-The current test suite covers the Home-Assistant-independent API and write
-verification layer. Full config-flow, coordinator, entity, unload/reload,
-diagnostics, and recovery coverage remains a gate for later development
-releases before `1.0.0`.
+The test suite covers the API and write-verification layer as well as the
+config flow, coordinator, entity formatting, select error handling, setup,
+unload, and reload behavior. CI enforces at least 95 percent statement and
+branch coverage for the full integration. Diagnostics and recovery behavior
+will be covered together with those features in later development releases.

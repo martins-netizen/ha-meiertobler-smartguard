@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import cast
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -118,9 +117,7 @@ class SmartGuardSensor(SmartGuardEntity, SensorEntity):
         raw_value = self.coordinator.data.get(self.entity_description.key)
         if raw_value is None:
             return None
-        return self.entity_description.value_formatter(
-            cast("SmartGuardValue", raw_value)
-        )
+        return self.entity_description.value_formatter(raw_value)
 
     @property
     def available(self) -> bool:

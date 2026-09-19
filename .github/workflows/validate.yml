@@ -73,7 +73,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run HACS validation
+      - name: Validate HACS metadata available in the private repository
+        run: python scripts/validate.py
+
+      - name: Run official HACS validation after publication
+        if: ${{ github.event.repository.private == false }}
         uses: hacs/action@d556e736723344f83838d08488c983a15381059a # 22.5.0
         with:
           category: integration

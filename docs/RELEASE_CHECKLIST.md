@@ -9,7 +9,10 @@ makes an explicit publication decision.
 - [ ] Choose one stable version in `MAJOR.MINOR.PATCH` form.
 - [ ] Update the version in
       `custom_components/meiertobler_smartguard/manifest.json` and
-      `pyproject.toml` in the same pull request.
+      `pyproject.toml`, and the root package entry in `uv.lock` in the same pull
+      request.
+- [ ] Add the version to `CHANGELOG.md` and prepare version-specific release
+      notes without claiming that the candidate has already been published.
 - [ ] Update version-specific documentation and compatibility statements.
 - [ ] Confirm that no credentials, internal addresses, serial numbers, device
       identifiers, or unreviewed diagnostics are present.

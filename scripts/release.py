@@ -25,21 +25,38 @@ class ReleaseGateError(ValueError):
 
 
 def read_version(root: Path = ROOT) -> str:
-    """Return the shared manifest and project version."""
+    """Return the shared manifest, project, and lock-file version."""
     manifest_path = root / INTEGRATION_RELATIVE / "manifest.json"
     project_path = root / "pyproject.toml"
+    lock_path = root / "uv.lock"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     with project_path.open("rb") as project_file:
         project = tomllib.load(project_file)
+    with lock_path.open("rb") as lock_file:
+        lock = tomllib.load(lock_file)
 
     manifest_version = manifest.get("version")
     project_version = project.get("project", {}).get("version")
-    if not isinstance(manifest_version, str) or not isinstance(project_version, str):
-        raise ReleaseGateError("Manifest and project versions must be strings")
-    if manifest_version != project_version:
+    lock_versions = [
+        package.get("version")
+        for package in lock.get("package", [])
+        if isinstance(package, dict)
+        and package.get("name") == "ha-meiertobler-smartguard"
+    ]
+    if (
+        not isinstance(manifest_version, str)
+        or not isinstance(project_version, str)
+        or len(lock_versions) != 1
+        or not isinstance(lock_versions[0], str)
+    ):
         raise ReleaseGateError(
-            "Manifest and project versions differ: "
-            f"{manifest_version!r} != {project_version!r}"
+            "Manifest, project, and lock versions must be unique strings"
+        )
+    lock_version = lock_versions[0]
+    if manifest_version != project_version or manifest_version != lock_version:
+        raise ReleaseGateError(
+            "Manifest, project, and lock versions differ: "
+            f"{manifest_version!r}, {project_version!r}, {lock_version!r}"
         )
     if TAG_PATTERN.fullmatch(f"v{manifest_version}") is None:
         raise ReleaseGateError(f"Unsupported release version: {manifest_version!r}")

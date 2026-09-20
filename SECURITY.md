@@ -15,7 +15,7 @@ affected version, impact, and a minimal reproduction using synthetic data.
 
 ## Known transport limitation
 
-Version `0.2.0` uses the gateway's unauthenticated local HTTP REST API. Network
+Version `0.3.0` uses the gateway's unauthenticated local HTTP REST API. Network
 segmentation and a restrictive firewall rule from Home Assistant to the gateway
 are required compensating controls. The API must never be exposed to the
 internet.

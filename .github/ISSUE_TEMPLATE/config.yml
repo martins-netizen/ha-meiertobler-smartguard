@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Troubleshooting guide
+    url: https://github.com/martins-netizen/ha-meiertobler-smartguard/blob/main/docs/TROUBLESHOOTING.md
+    about: Review common symptoms and resolutions before opening an issue.
+  - name: Private security report
+    url: https://github.com/martins-netizen/ha-meiertobler-smartguard/security/advisories/new
+    about: Report vulnerabilities without disclosing them in a public issue.

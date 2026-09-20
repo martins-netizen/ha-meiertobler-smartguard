@@ -15,8 +15,10 @@ def test_documentation_is_linked_and_local_links_resolve() -> None:
     """Every maintained guide is discoverable and has valid local links."""
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     required_guides = {
+        "CHANGELOG.md",
         "docs/AUTOMATION_EXAMPLES.md",
         "docs/RELEASE_CHECKLIST.md",
+        "docs/RELEASE_NOTES_0.3.0.md",
         "docs/TROUBLESHOOTING.md",
     }
     assert required_guides <= set(re.findall(r"\]\(([^)#]+\.md)(?:#[^)]+)?\)", readme))

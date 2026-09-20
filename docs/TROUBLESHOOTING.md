@@ -38,7 +38,7 @@ Setup reaches the gateway but reports an unsupported device.
 
 ### Description
 
-Version `0.2.0` accepts only the locally verified SmartGuard 2.0 device type
+Version `0.3.0` accepts only the locally verified SmartGuard 2.0 device type
 `1001`. Refusing another type prevents the integration from guessing API paths
 or writing to an unverified controller.
 
@@ -111,7 +111,7 @@ uses nor stores it.
 
 ### Resolution
 
-This is expected for version `0.2.0`. Keep the gateway on a segmented local
+This is expected for version `0.3.0`. Keep the gateway on a segmented local
 network, restrict TCP port 80 to the Home Assistant host, and never forward the
 gateway API to the internet.
 

@@ -7,6 +7,7 @@ import ast
 import json
 import re
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,6 +31,7 @@ REQUIRED_FILES = (
     ROOT / ".github" / "workflows" / "release.yml",
     ROOT / ".gitignore",
     BLUEPRINT,
+    ROOT / "CHANGELOG.md",
     ROOT / "CONTRIBUTING.md",
     ROOT / "docs" / "AUTOMATION_EXAMPLES.md",
     ROOT / "docs" / "RELEASE_CHECKLIST.md",
@@ -96,16 +98,35 @@ def _validate_local_markdown_links() -> None:
                 )
 
 
-def _validate_documentation() -> None:
+def _validate_documentation(version: str) -> None:
     """Validate user documentation and privacy-sensitive support surfaces."""
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for target in (
+        "CHANGELOG.md",
         "docs/AUTOMATION_EXAMPLES.md",
         "docs/RELEASE_CHECKLIST.md",
+        f"docs/RELEASE_NOTES_{version}.md",
         "docs/TROUBLESHOOTING.md",
     ):
         if target not in readme:
             raise RuntimeError(f"README does not link to {target}")
+
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    if f"## [{version}] - " not in changelog:
+        raise RuntimeError("Changelog does not contain the current version")
+
+    release_notes_path = ROOT / "docs" / f"RELEASE_NOTES_{version}.md"
+    if not release_notes_path.is_file():
+        raise RuntimeError(f"Release notes are missing: {release_notes_path.name}")
+    release_notes = release_notes_path.read_text(encoding="utf-8")
+    for fragment in (
+        f"# Release notes: {version}",
+        "Status: unpublished release candidate",
+        "No tag or GitHub release has been created",
+        f"annotated `v{version}` tag",
+    ):
+        if fragment not in release_notes:
+            raise RuntimeError(f"Release notes are missing required text: {fragment}")
 
     troubleshooting = (ROOT / "docs" / "TROUBLESHOOTING.md").read_text(encoding="utf-8")
     for heading in ("### Symptom", "### Description", "### Resolution"):
@@ -186,8 +207,25 @@ def main() -> int:
     manifest = json.loads((INTEGRATION / "manifest.json").read_text(encoding="utf-8"))
     if manifest["domain"] != "meiertobler_smartguard":
         raise RuntimeError("Manifest domain mismatch")
-    if manifest["version"] != "0.2.0":
-        raise RuntimeError("Manifest version mismatch")
+    version = manifest.get("version")
+    if not isinstance(version, str) or re.fullmatch(
+        r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)",
+        version,
+    ) is None:
+        raise RuntimeError("Manifest version is not stable semantic versioning")
+    with (ROOT / "pyproject.toml").open("rb") as project_file:
+        project = tomllib.load(project_file)
+    with (ROOT / "uv.lock").open("rb") as lock_file:
+        lock = tomllib.load(lock_file)
+    project_version = project.get("project", {}).get("version")
+    lock_versions = [
+        package.get("version")
+        for package in lock.get("package", [])
+        if isinstance(package, dict)
+        and package.get("name") == "ha-meiertobler-smartguard"
+    ]
+    if project_version != version or lock_versions != [version]:
+        raise RuntimeError("Manifest, project, and lock versions differ")
     if manifest.get("config_flow") is not True:
         raise RuntimeError("Config flow is not enabled")
     if manifest.get("requirements") != []:
@@ -224,7 +262,7 @@ def main() -> int:
     if not icon.startswith(b"\x89PNG\r\n\x1a\n"):
         raise RuntimeError("Brand icon is not a PNG file")
 
-    _validate_documentation()
+    _validate_documentation(version)
 
     for workflow_path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
         workflow = workflow_path.read_text(encoding="utf-8")

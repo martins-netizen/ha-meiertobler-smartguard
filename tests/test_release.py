@@ -20,7 +20,12 @@ from scripts.release import (
 )
 
 
-def _write_versions(root: Path, manifest_version: object, project_version: str) -> None:
+def _write_versions(
+    root: Path,
+    manifest_version: object,
+    project_version: str,
+    lock_version: str | None = None,
+) -> None:
     integration = root / INTEGRATION_RELATIVE
     integration.mkdir(parents=True)
     (integration / "manifest.json").write_text(
@@ -31,17 +36,23 @@ def _write_versions(root: Path, manifest_version: object, project_version: str) 
         f'[project]\nversion = "{project_version}"\n',
         encoding="utf-8",
     )
+    (root / "uv.lock").write_text(
+        "version = 1\n\n[[package]]\n"
+        'name = "ha-meiertobler-smartguard"\n'
+        f'version = "{lock_version or project_version}"\n',
+        encoding="utf-8",
+    )
 
 
 def test_current_release_version_and_tag() -> None:
     """The repository version is stable and matches its prospective tag."""
-    assert read_version() == "0.2.0"
-    assert verify_tag("v0.2.0") == "0.2.0"
+    assert read_version() == "0.3.0"
+    assert verify_tag("v0.3.0") == "0.3.0"
 
 
 @pytest.mark.parametrize(
     "tag",
-    ["0.2.0", "v0.2", "v0.2.0-beta.1", "v00.2.0", "release-v0.2.0"],
+    ["0.3.0", "v0.3", "v0.3.0-beta.1", "v00.3.0", "release-v0.3.0"],
 )
 def test_release_tag_rejects_unsupported_forms(tag: str) -> None:
     """Only one exact stable semantic version form is accepted."""
@@ -52,12 +63,12 @@ def test_release_tag_rejects_unsupported_forms(tag: str) -> None:
 def test_release_tag_must_match_source_version() -> None:
     """A valid but different release tag cannot pass the gate."""
     with pytest.raises(ReleaseGateError, match="does not match"):
-        verify_tag("v0.2.1")
+        verify_tag("v0.3.1")
 
 
 def test_release_versions_must_match(tmp_path: Path) -> None:
     """Manifest and project metadata cannot drift apart."""
-    _write_versions(tmp_path, "0.2.0", "0.2.1")
+    _write_versions(tmp_path, "0.3.0", "0.3.1")
 
     with pytest.raises(ReleaseGateError, match="versions differ"):
         read_version(tmp_path)
@@ -65,10 +76,31 @@ def test_release_versions_must_match(tmp_path: Path) -> None:
 
 def test_release_version_must_be_a_string(tmp_path: Path) -> None:
     """Malformed metadata is rejected before a package is built."""
-    _write_versions(tmp_path, 2, "0.2.0")
+    _write_versions(tmp_path, 3, "0.3.0")
 
-    with pytest.raises(ReleaseGateError, match="must be strings"):
+    with pytest.raises(ReleaseGateError, match="must be unique strings"):
         read_version(tmp_path)
+
+
+def test_release_lock_version_must_match(tmp_path: Path) -> None:
+    """The lock-file root package cannot drift from release metadata."""
+    _write_versions(tmp_path, "0.3.0", "0.3.0", "0.3.1")
+
+    with pytest.raises(ReleaseGateError, match="versions differ"):
+        read_version(tmp_path)
+
+
+def test_release_documents_describe_unpublished_candidate() -> None:
+    """The prepared notes match the source version without claiming publication."""
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    release_notes = (ROOT / "docs" / "RELEASE_NOTES_0.3.0.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "## [0.3.0] - 2026-09-20" in changelog
+    assert "# Release notes: 0.3.0" in release_notes
+    assert "Status: unpublished release candidate" in release_notes
+    assert "No tag or GitHub release has been created" in release_notes
 
 
 def test_build_release_is_deterministic(tmp_path: Path) -> None:
@@ -93,7 +125,7 @@ def test_build_release_is_deterministic(tmp_path: Path) -> None:
 
 def test_release_source_rejects_symlinks(tmp_path: Path) -> None:
     """A symlink cannot smuggle an external file into the package."""
-    _write_versions(tmp_path, "0.2.0", "0.2.0")
+    _write_versions(tmp_path, "0.3.0", "0.3.0")
     outside = tmp_path / "outside.txt"
     outside.write_text("private", encoding="utf-8")
     (tmp_path / INTEGRATION_RELATIVE / "linked.txt").symlink_to(outside)

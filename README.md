@@ -86,6 +86,19 @@ already held in memory; it does not trigger additional gateway requests. The
 configured host, global device identifier, and serial number are always
 redacted. The integration does not store or expose a SmartGuard password.
 
+## Documentation
+
+- [Troubleshooting](docs/TROUBLESHOOTING.md) describes recognizable symptoms,
+  their causes, and safe resolution steps.
+- [Automation examples](docs/AUTOMATION_EXAMPLES.md) provides guarded examples
+  that do not silently overwrite a manual operating-mode choice.
+- [Release and publication checklist](docs/RELEASE_CHECKLIST.md) separates the
+  read-only release gate from an explicit publication decision.
+
+Bug reports use a structured issue form and must contain only sanitized,
+synthetic installation data. Security vulnerabilities must be reported
+privately as described in [SECURITY.md](SECURITY.md).
+
 ## Development and HACS status
 
 The repository is prepared for private development and automated validation.
@@ -147,6 +160,7 @@ python3 -m pytest -q \
 The test suite covers the API and write-verification layer as well as the
 config flow, coordinator, entity formatting, select error handling, redacted
 diagnostics, setup, unload, and reload behavior. CI enforces at least 95 percent
-statement and branch coverage and strict MyPy checks for the full integration.
-Recovery behavior will be covered together with that feature in a later
-development release.
+statement and branch coverage, validates documentation and repository security
+invariants, and runs strict MyPy checks for the full integration. Recovery
+behavior will be covered together with that feature in a later development
+release.

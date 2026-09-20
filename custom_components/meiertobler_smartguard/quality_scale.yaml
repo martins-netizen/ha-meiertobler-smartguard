@@ -51,13 +51,11 @@ rules:
   docs-data-update: done
   docs-examples:
     status: todo
-    comment: Automation examples will be added after the YAML migration design.
+    comment: Safe YAML examples exist; publish and link an importable blueprint before claiming this rule.
   docs-known-limitations: done
   docs-supported-devices: done
   docs-supported-functions: done
-  docs-troubleshooting:
-    status: todo
-    comment: Expanded troubleshooting is planned before version 1.0.0.
+  docs-troubleshooting: done
   docs-use-cases: done
   dynamic-devices:
     status: exempt

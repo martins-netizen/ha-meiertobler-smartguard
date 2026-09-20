@@ -98,6 +98,20 @@ After the pre-publication security gate has passed, the repository can be made
 public and added to HACS as a custom integration repository. A published GitHub
 release is required for release-based installation and update testing.
 
+## Release gate
+
+The repository contains a dormant, read-only release workflow. A future
+annotated tag in the stable form `vMAJOR.MINOR.PATCH` must match both
+`manifest.json` and `pyproject.toml`, and its commit must belong to `main`.
+The workflow then repeats repository validation, Ruff, strict MyPy, and the
+complete test suite before building a deterministic integration ZIP and a
+SHA-256 checksum.
+
+The workflow uploads these files only as a temporary GitHub Actions artifact.
+It does not create or publish a GitHub release. After manual inspection, a
+release must still be created explicitly; therefore pushing a tag alone can
+never publish this integration.
+
 ## Removal
 
 Before removing the integration, remove its config entry in Home Assistant under
@@ -116,8 +130,14 @@ Run the deterministic repository checks with:
 
 ```bash
 python3 scripts/validate.py
+python3 scripts/release.py check
+python3 scripts/release.py verify-tag --tag v0.2.0
+python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
-python3 -m mypy custom_components/meiertobler_smartguard
+python3 -m mypy \
+  custom_components/meiertobler_smartguard \
+  scripts/release.py \
+  tests/test_release.py
 python3 -m pytest -q \
   --cov=custom_components/meiertobler_smartguard \
   --cov-report=term-missing \

@@ -18,3 +18,14 @@ documentation ranges such as `192.0.2.0/24`.
 
 Dependency updates are reviewed through normal pull requests. They are never
 merged automatically.
+
+## Release candidates
+
+Release metadata must use the same stable version in `manifest.json` and
+`pyproject.toml`. A release candidate is created only from an annotated
+`vMAJOR.MINOR.PATCH` tag whose commit is part of `main`.
+
+Pushing such a tag runs the read-only Release Gate. It repeats all repository,
+typing, and test checks and uploads a deterministic integration ZIP plus its
+SHA-256 checksum as a temporary workflow artifact. It does not create or
+publish a GitHub release. Publication remains a separate manual review step.

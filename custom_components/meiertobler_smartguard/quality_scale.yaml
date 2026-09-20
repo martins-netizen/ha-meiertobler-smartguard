@@ -36,7 +36,7 @@ rules:
   parallel-updates: done
   reauthentication-flow:
     status: exempt
-    comment: Version 0.2.0 uses the verified unauthenticated local HTTP API.
+    comment: Version 0.3.0 uses the verified unauthenticated local HTTP API.
   test-coverage: done
 
   # Gold
@@ -62,11 +62,11 @@ rules:
     comment: One fixed SmartGuard gateway is represented per config entry.
   entity-category:
     status: exempt
-    comment: Version 0.2.0 exposes only primary measurement and control entities.
+    comment: Version 0.3.0 exposes only primary measurement and control entities.
   entity-device-class: done
   entity-disabled-by-default:
     status: exempt
-    comment: All version 0.2.0 entities are part of the verified functional core.
+    comment: All version 0.3.0 entities are part of the verified functional core.
   entity-translations: done
   exception-translations: done
   icon-translations:

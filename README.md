@@ -5,13 +5,15 @@ SmartGuard 2.0 gateways.
 
 ## Status
 
-Version `0.2.0` is a controlled test release. It provides:
+Version `0.3.0` is an unpublished release candidate. It provides:
 
 - UI configuration and connection validation;
 - stable device identification from the gateway API;
 - one coordinated update every 60 seconds;
 - eight sensor entities for the currently verified controller and HK60 data;
 - one HK60 operating-mode select with an allowlist and immediate readback;
+- redacted diagnostics for support and local troubleshooting;
+- one tested, guarded night-heating blueprint that remains unpublished;
 - reconfiguration when the gateway address changes;
 - no external Python runtime dependency.
 
@@ -24,7 +26,7 @@ value. The displayed state is never changed optimistically.
 
 The locally verified SmartGuard REST data API is available over HTTP without
 authentication. The password configured in the local SmartGuard user interface
-does not protect this HTTP REST endpoint. Version `0.2.0` therefore communicates
+does not protect this HTTP REST endpoint. Version `0.3.0` therefore communicates
 only over local HTTP and never stores SmartGuard credentials.
 
 Use this integration only on a segmented local network. Restrict TCP port 80 on
@@ -44,7 +46,7 @@ Copy `custom_components/meiertobler_smartguard` to the Home Assistant
 Enter only the hostname or IP address. Do not enter `http://`, a path, a port,
 or credentials.
 
-During the `0.2.0` test phase, keep the existing YAML/REST configuration active.
+During the `0.3.0` candidate phase, keep the existing YAML/REST configuration active.
 Both select entities control the same physical datapoint, so do not operate them
 concurrently. Existing automations continue to use the old YAML select until a
 separate migration is completed.
@@ -96,6 +98,9 @@ redacted. The integration does not store or expose a SmartGuard password.
   development.
 - [Release and publication checklist](docs/RELEASE_CHECKLIST.md) separates the
   read-only release gate from an explicit publication decision.
+- [Changelog](CHANGELOG.md) records the development history, and the
+  [0.3.0 release notes](docs/RELEASE_NOTES_0.3.0.md) describe this unpublished
+  candidate and its remaining gates.
 
 Bug reports use a structured issue form and must contain only sanitized,
 synthetic installation data. Security vulnerabilities must be reported
@@ -146,7 +151,7 @@ Run the deterministic repository checks with:
 ```bash
 python3 scripts/validate.py
 python3 scripts/release.py check
-python3 scripts/release.py verify-tag --tag v0.2.0
+python3 scripts/release.py verify-tag --tag v0.3.0
 python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
 python3 -m mypy \

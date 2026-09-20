@@ -1,0 +1,130 @@
+blueprint:
+  name: SmartGuard guarded night heating
+  description: >-
+    Selects heating at the configured night time only when the automation is
+    enabled, the requested SmartGuard mode is auto, the operating status is
+    cooling, and the indoor temperature is at or below the configured limit.
+    At the configured morning time it returns to auto only if the requested
+    mode is still heating, so a later manual selection is never overwritten.
+  domain: automation
+  author: Martin Schafer
+  homeassistant:
+    min_version: 2026.9.0
+  input:
+    smartguard_entities:
+      name: SmartGuard entities
+      icon: mdi:heat-pump
+      input:
+        mode_select:
+          name: HK60 operating-mode select
+          description: Select entity provided by the SmartGuard integration.
+          selector:
+            entity:
+              filter:
+                - integration: meiertobler_smartguard
+                  domain: select
+        operating_status:
+          name: HK60 operating-status sensor
+          description: Sensor whose internal states include cooling and heating.
+          selector:
+            entity:
+              filter:
+                - integration: meiertobler_smartguard
+                  domain: sensor
+    safeguards:
+      name: Safeguards
+      icon: mdi:shield-check
+      input:
+        enable_helper:
+          name: Automatic night-heating enable helper
+          description: The night change runs only while this input boolean is on.
+          selector:
+            entity:
+              filter:
+                - domain: input_boolean
+        indoor_temperature:
+          name: Indoor-temperature sensor
+          description: A representative or maximum indoor-temperature sensor.
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+                  device_class: temperature
+        maximum_indoor_temperature:
+          name: Maximum indoor temperature
+          description: Heating is selected only at or below this value.
+          default: 25.0
+          selector:
+            number:
+              min: 15.0
+              max: 30.0
+              step: 0.1
+              unit_of_measurement: °C
+              mode: box
+    schedule:
+      name: Schedule
+      icon: mdi:clock-outline
+      input:
+        heating_time:
+          name: Select heating at
+          default: "23:00:00"
+          selector:
+            time:
+        auto_time:
+          name: Return to auto at
+          default: "06:00:00"
+          selector:
+            time:
+
+variables:
+  mode_select_entity: !input mode_select
+  operating_status_entity: !input operating_status
+  enable_helper_entity: !input enable_helper
+  indoor_temperature_entity: !input indoor_temperature
+  maximum_temperature: !input maximum_indoor_temperature
+
+triggers:
+  - trigger: time
+    at: !input heating_time
+    id: select_heating
+  - trigger: time
+    at: !input auto_time
+    id: return_auto
+
+conditions: []
+
+actions:
+  - choose:
+      - alias: Select heating only when every safeguard passes
+        conditions:
+          - condition: trigger
+            id: select_heating
+          - condition: template
+            value_template: >-
+              {{ is_state(enable_helper_entity, 'on')
+                 and is_state(mode_select_entity, 'auto')
+                 and is_state(operating_status_entity, 'cooling')
+                 and (states(indoor_temperature_entity) | float(999))
+                     <= (maximum_temperature | float) }}
+        sequence:
+          - action: select.select_option
+            target:
+              entity_id: !input mode_select
+            data:
+              option: heating
+      - alias: Return only the blueprint's heating mode to auto
+        conditions:
+          - condition: trigger
+            id: return_auto
+          - condition: template
+            value_template: >-
+              {{ is_state(mode_select_entity, 'heating') }}
+        sequence:
+          - action: select.select_option
+            target:
+              entity_id: !input mode_select
+            data:
+              option: auto
+
+mode: single
+max_exceeded: silent

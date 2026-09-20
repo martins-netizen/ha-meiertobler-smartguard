@@ -1,0 +1,93 @@
+name: Bug report
+description: Report a reproducible problem with the SmartGuard integration
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve the integration.
+
+        Do not include credentials, internal IP addresses, serial numbers,
+        global device identifiers, MAC addresses, or unreviewed diagnostics.
+        Report security vulnerabilities privately through the Security tab.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I installed the newest available integration version.
+          required: true
+        - label: I reviewed the troubleshooting guide.
+          required: true
+        - label: I removed private installation data from this report and all attachments.
+          required: true
+
+  - type: input
+    id: integration_version
+    attributes:
+      label: Integration version
+      placeholder: "0.2.0"
+    validations:
+      required: true
+
+  - type: input
+    id: home_assistant_version
+    attributes:
+      label: Home Assistant version
+      placeholder: "2026.9.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation_method
+    attributes:
+      label: Installation method
+      options:
+        - Manual copy
+        - HACS custom repository
+        - Development checkout
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the user-visible symptom and when it started.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sanitized diagnostics or logs
+      description: >-
+        Paste only the smallest relevant excerpt after reviewing and replacing
+        every installation-specific value with synthetic data.
+      render: text
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Include relevant automation traces with private data removed.

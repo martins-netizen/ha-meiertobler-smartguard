@@ -14,6 +14,8 @@ INTEGRATION = ROOT / "custom_components" / "meiertobler_smartguard"
 REQUIRED_FILES = (
     ROOT / ".github" / "CODEOWNERS",
     ROOT / ".github" / "dependabot.yml",
+    ROOT / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml",
+    ROOT / ".github" / "ISSUE_TEMPLATE" / "config.yml",
     ROOT / ".github" / "pull_request_template.md",
     ROOT / ".github" / "requirements-ci.in",
     ROOT / ".github" / "requirements-ci.txt",
@@ -21,6 +23,9 @@ REQUIRED_FILES = (
     ROOT / ".github" / "workflows" / "release.yml",
     ROOT / ".gitignore",
     ROOT / "CONTRIBUTING.md",
+    ROOT / "docs" / "AUTOMATION_EXAMPLES.md",
+    ROOT / "docs" / "RELEASE_CHECKLIST.md",
+    ROOT / "docs" / "TROUBLESHOOTING.md",
     ROOT / "README.md",
     ROOT / "LICENSE",
     ROOT / "SECURITY.md",
@@ -57,6 +62,86 @@ SENSITIVE_PATTERNS = (
 )
 ACTION_REFERENCE = re.compile(r"uses:\s*[^\s@]+@([^\s#]+)")
 FULL_GIT_SHA = re.compile(r"[0-9a-f]{40}")
+MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+
+
+def _validate_local_markdown_links() -> None:
+    """Require every relative Markdown link to resolve inside the repository."""
+    for markdown_path in ROOT.rglob("*.md"):
+        content = markdown_path.read_text(encoding="utf-8")
+        for raw_target in MARKDOWN_LINK.findall(content):
+            target = raw_target.strip().split(maxsplit=1)[0]
+            if target.startswith(("#", "mailto:", "http://", "https://")):
+                continue
+            relative_target = target.split("#", 1)[0]
+            resolved = (markdown_path.parent / relative_target).resolve()
+            try:
+                resolved.relative_to(ROOT)
+            except ValueError as err:
+                raise RuntimeError(
+                    f"Markdown link escapes repository: {markdown_path.relative_to(ROOT)}"
+                ) from err
+            if not resolved.is_file():
+                raise RuntimeError(
+                    "Broken local Markdown link in "
+                    f"{markdown_path.relative_to(ROOT)}: {target}"
+                )
+
+
+def _validate_documentation() -> None:
+    """Validate user documentation and privacy-sensitive support surfaces."""
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for target in (
+        "docs/AUTOMATION_EXAMPLES.md",
+        "docs/RELEASE_CHECKLIST.md",
+        "docs/TROUBLESHOOTING.md",
+    ):
+        if target not in readme:
+            raise RuntimeError(f"README does not link to {target}")
+
+    troubleshooting = (ROOT / "docs" / "TROUBLESHOOTING.md").read_text(encoding="utf-8")
+    for heading in ("### Symptom", "### Description", "### Resolution"):
+        if troubleshooting.count(heading) < 5:
+            raise RuntimeError(f"Troubleshooting structure is incomplete: {heading}")
+
+    examples = (ROOT / "docs" / "AUTOMATION_EXAMPLES.md").read_text(encoding="utf-8")
+    required_example_fragments = (
+        "triggers:",
+        "conditions:",
+        "actions:",
+        "action: select.select_option",
+        "select.replace_with_your_smartguard_mode_select",
+        'option: "heating"',
+        'option: "auto"',
+    )
+    if any(fragment not in examples for fragment in required_example_fragments):
+        raise RuntimeError("Automation examples are missing a required safety pattern")
+
+    quality_scale = (INTEGRATION / "quality_scale.yaml").read_text(encoding="utf-8")
+    if "docs-troubleshooting: done" not in quality_scale:
+        raise RuntimeError("Troubleshooting quality rule must be marked done")
+    if not re.search(
+        r"docs-examples:\s*\n\s+status: todo\s*\n"
+        r"\s+comment:.*blueprint",
+        quality_scale,
+    ):
+        raise RuntimeError(
+            "Documentation examples must remain todo until a blueprint is published"
+        )
+
+    issue_form = (ROOT / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml").read_text(
+        encoding="utf-8"
+    )
+    for privacy_term in (
+        "credentials",
+        "internal IP addresses",
+        "serial numbers",
+        "unreviewed diagnostics",
+    ):
+        if privacy_term not in issue_form:
+            raise RuntimeError(f"Issue form privacy warning missing: {privacy_term}")
+
+    _validate_local_markdown_links()
 
 
 def main() -> int:
@@ -83,7 +168,9 @@ def main() -> int:
     if hacs_manifest.get("name") != "Meier Tobler SmartGuard":
         raise RuntimeError("HACS display name mismatch")
     if hacs_manifest.get("content_in_root") is not False:
-        raise RuntimeError("HACS integration content must remain under custom_components")
+        raise RuntimeError(
+            "HACS integration content must remain under custom_components"
+        )
     if hacs_manifest.get("country") != "CH":
         raise RuntimeError("HACS country must be CH")
     unsupported_hacs_keys = set(hacs_manifest) - {
@@ -98,11 +185,15 @@ def main() -> int:
         "zip_release",
     }
     if unsupported_hacs_keys:
-        raise RuntimeError(f"Unsupported hacs.json keys: {sorted(unsupported_hacs_keys)}")
+        raise RuntimeError(
+            f"Unsupported hacs.json keys: {sorted(unsupported_hacs_keys)}"
+        )
 
     icon = (INTEGRATION / "brand" / "icon.png").read_bytes()
     if not icon.startswith(b"\x89PNG\r\n\x1a\n"):
         raise RuntimeError("Brand icon is not a PNG file")
+
+    _validate_documentation()
 
     for workflow_path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
         workflow = workflow_path.read_text(encoding="utf-8")
@@ -120,8 +211,7 @@ def main() -> int:
             )
         action_references = ACTION_REFERENCE.findall(workflow)
         if not action_references or any(
-            FULL_GIT_SHA.fullmatch(reference) is None
-            for reference in action_references
+            FULL_GIT_SHA.fullmatch(reference) is None for reference in action_references
         ):
             raise RuntimeError(
                 "Every external GitHub Action must use a full commit SHA: "

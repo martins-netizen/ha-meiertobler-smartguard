@@ -42,8 +42,12 @@ jobs:
       - name: Run Ruff
         run: python -m ruff check .
 
-      - name: Run strict MyPy checks for the full integration
-        run: python -m mypy custom_components/meiertobler_smartguard
+      - name: Run strict MyPy checks
+        run: >-
+          python -m mypy
+          custom_components/meiertobler_smartguard
+          scripts/release.py
+          tests/test_release.py
 
       - name: Run tests
         run: >-

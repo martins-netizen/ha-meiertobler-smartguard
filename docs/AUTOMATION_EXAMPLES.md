@@ -13,6 +13,26 @@ inspect its trace before relying on a schedule.
 During migration, do not operate the old YAML/REST select and the integration
 select concurrently. Both control SmartGuard datapoint `5004`.
 
+## Prepared guarded-night-heating blueprint
+
+The repository contains a tested
+[guarded night-heating blueprint](../blueprints/automation/martins_netizen/smartguard_guarded_night_heating.yaml).
+It combines the two scheduled mode changes with the following safeguards:
+
+- night heating runs only while a selected input boolean is on;
+- the requested mode must still be `auto`;
+- the operating status must be `cooling`;
+- the selected indoor-temperature sensor must be at or below the configured
+  limit; and
+- the morning action returns to `auto` only if the requested mode is still
+  `heating`.
+
+The blueprint is source-controlled and validated, but it is not published while
+this repository remains private. Do not replace the existing production
+automations with it yet. After publication, it must be imported into a test Home
+Assistant instance, linked from the public documentation, and tested through a
+complete night/morning cycle before migration.
+
 ## Select heating at night only when cooling is active
 
 This guarded example changes from automatic operation to heating only when the
@@ -98,6 +118,6 @@ mode: single
   use or store one.
 - Keep the gateway REST API on the local network and do not expose it to the
   internet.
-- These examples are copy-and-adapt YAML. A separately published and importable
-  blueprint is still required before claiming the Home Assistant
-  `docs-examples` quality rule.
+- The repository blueprint is not yet publicly importable. Publication, a
+  stable public link, and an end-to-end test are still required before claiming
+  the Home Assistant `docs-examples` quality rule.

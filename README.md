@@ -91,7 +91,9 @@ redacted. The integration does not store or expose a SmartGuard password.
 - [Troubleshooting](docs/TROUBLESHOOTING.md) describes recognizable symptoms,
   their causes, and safe resolution steps.
 - [Automation examples](docs/AUTOMATION_EXAMPLES.md) provides guarded examples
-  that do not silently overwrite a manual operating-mode choice.
+  and a prepared blueprint that do not silently overwrite a manual
+  operating-mode choice. The blueprint remains unpublished during private
+  development.
 - [Release and publication checklist](docs/RELEASE_CHECKLIST.md) separates the
   read-only release gate from an explicit publication decision.
 

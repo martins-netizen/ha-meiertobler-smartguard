@@ -64,6 +64,11 @@ approved. Before making it public:
 - [ ] Make the repository public only as a separate, deliberate action.
 - [ ] Run the official HACS action and Hassfest successfully on the public
       repository.
+- [ ] Publish the tested SmartGuard blueprint at a stable public URL, verify
+      import into a test Home Assistant instance, and add the public link to the
+      automation documentation.
+- [ ] Mark the Home Assistant `docs-examples` quality rule complete only after
+      that public blueprint link and import test exist.
 
 ## 5. Create the full GitHub release manually
 

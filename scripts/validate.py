@@ -11,6 +11,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION = ROOT / "custom_components" / "meiertobler_smartguard"
+BLUEPRINT = (
+    ROOT
+    / "blueprints"
+    / "automation"
+    / "martins_netizen"
+    / "smartguard_guarded_night_heating.yaml"
+)
 REQUIRED_FILES = (
     ROOT / ".github" / "CODEOWNERS",
     ROOT / ".github" / "dependabot.yml",
@@ -22,6 +29,7 @@ REQUIRED_FILES = (
     ROOT / ".github" / "workflows" / "validate.yml",
     ROOT / ".github" / "workflows" / "release.yml",
     ROOT / ".gitignore",
+    BLUEPRINT,
     ROOT / "CONTRIBUTING.md",
     ROOT / "docs" / "AUTOMATION_EXAMPLES.md",
     ROOT / "docs" / "RELEASE_CHECKLIST.md",
@@ -116,6 +124,29 @@ def _validate_documentation() -> None:
     )
     if any(fragment not in examples for fragment in required_example_fragments):
         raise RuntimeError("Automation examples are missing a required safety pattern")
+    if "smartguard_guarded_night_heating.yaml" not in examples:
+        raise RuntimeError("Automation documentation does not link to the blueprint")
+
+    blueprint = BLUEPRINT.read_text(encoding="utf-8")
+    required_blueprint_fragments = (
+        "domain: automation",
+        "min_version: 2026.9.0",
+        "integration: meiertobler_smartguard",
+        "id: select_heating",
+        "id: return_auto",
+        "is_state(enable_helper_entity, 'on')",
+        "is_state(mode_select_entity, 'auto')",
+        "is_state(operating_status_entity, 'cooling')",
+        "<= (maximum_temperature | float)",
+        "is_state(mode_select_entity, 'heating')",
+        "action: select.select_option",
+        "option: heating",
+        "option: auto",
+    )
+    if any(fragment not in blueprint for fragment in required_blueprint_fragments):
+        raise RuntimeError("SmartGuard blueprint is missing a required safeguard")
+    if "source_url:" in blueprint:
+        raise RuntimeError("Private blueprint must not claim a public source URL")
 
     quality_scale = (INTEGRATION / "quality_scale.yaml").read_text(encoding="utf-8")
     if "docs-troubleshooting: done" not in quality_scale:

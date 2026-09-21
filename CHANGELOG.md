@@ -5,7 +5,7 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [0.3.0] - 2026-09-20
 
-Unpublished release candidate.
+First public, field-tested release.
 
 ### Added
 

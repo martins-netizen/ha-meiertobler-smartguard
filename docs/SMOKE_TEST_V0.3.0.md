@@ -22,4 +22,10 @@ No host names, local addresses, credentials, device serial numbers, global devic
 
 ## Release decision
 
-The field smoke test passed. Publishing the repository and creating a GitHub Release remain separate, explicit decisions. This report does not publish a release and does not change the tested `v0.3.0` tag or bundle.
+The field smoke test passed. After the separate public-repository validation,
+release review, and protected publication steps also passed, the tested
+candidate was published as
+[`v0.3.0`](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0)
+on 2026-09-21. Publication did not change the tested tag, commit, bundle, or
+Home Assistant installation. The separate HACS installation result is tracked
+in [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).

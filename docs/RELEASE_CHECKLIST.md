@@ -1,8 +1,23 @@
 # Release and publication checklist
 
-This checklist separates technical release validation from publication. The
-repository remains private and no GitHub release is created until the owner
-makes an explicit publication decision.
+This checklist separates technical release validation from publication and
+post-release distribution tests. Tagging and passing the Release Gate never
+publish automatically; the owner must make a separate publication decision.
+
+## Published 0.3.0 record
+
+- [x] Protected source commit:
+      `94b7305c3fcb61b3647452637fb479735a66e8b7`.
+- [x] Annotated tag: `v0.3.0`.
+- [x] Release Gate run: `35496534407`.
+- [x] Deterministic ZIP SHA-256:
+      `190b3aeb71e43fed8592242416ed5cd702bdbc9c2e82bdb279b4cea4d9209dc5`.
+- [x] Field smoke test passed on 2026-09-20.
+- [x] Public Quality, Hassfest, and official HACS validation passed.
+- [x] Public release reviewed and published on 2026-09-21.
+- [x] `main` remains protected by the active `Protect main` ruleset.
+- [ ] HACS custom-repository download, restart, and reload test. See
+      [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).
 
 ## 1. Prepare a version pull request
 
@@ -55,8 +70,8 @@ artifacts but does not create a GitHub release.
 
 ## 4. Publication decision
 
-Keep the repository private and stop here unless publication is explicitly
-approved. Before making it public:
+For a first public release, stop here unless publication is explicitly
+approved. Before making a private repository public:
 
 - [ ] Confirm the repository description, topics, license, support status, and
       issues configuration.
@@ -101,8 +116,10 @@ testing should succeed before submitting it.
 
 ## 7. Post-release verification and recovery
 
-- [ ] Confirm that HACS resolves the published version and downloads the
-      expected asset.
+- [ ] Confirm that HACS resolves the published version and installs the
+      expected tagged `custom_components` source tree. Do not claim that HACS
+      downloads an attached release ZIP unless `hacs.json` explicitly enables
+      `zip_release` with a matching filename.
 - [ ] Confirm a clean installation and restart on the minimum supported Home
       Assistant version.
 - [ ] Monitor issues without requesting private diagnostics in public.

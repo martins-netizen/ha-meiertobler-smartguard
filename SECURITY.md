@@ -2,16 +2,17 @@
 
 ## Supported versions
 
-Only the most recent development release is supported before version `1.0.0`.
+Only the most recent published release is supported before version `1.0.0`.
 
 ## Reporting a vulnerability
 
 Please do not publish vulnerabilities, credentials, diagnostics, internal IP
 addresses, serial numbers, or other private installation data in a public issue.
-Use GitHub Private Vulnerability Reporting after the repository is published.
-
-Until then, contact the repository owner privately. A report should describe the
-affected version, impact, and a minimal reproduction using synthetic data.
+Use GitHub Private Vulnerability Reporting when the repository offers that
+option. If no private reporting form is available, open only a minimal public
+issue requesting private contact and include no vulnerability details or
+installation data. A private report should describe the affected version,
+impact, and a minimal reproduction using synthetic data.
 
 ## Known transport limitation
 

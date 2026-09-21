@@ -1,11 +1,11 @@
 # Meier Tobler SmartGuard for Home Assistant
 
-Development version of a local Home Assistant integration for Meier Tobler
-SmartGuard 2.0 gateways.
+A local Home Assistant integration for Meier Tobler SmartGuard 2.0 gateways.
 
 ## Status
 
-Version `0.3.0` is an unpublished release candidate. It provides:
+Version [`0.3.0`](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0)
+is the first public, field-tested release. It provides:
 
 - UI configuration and connection validation;
 - stable device identification from the gateway API;
@@ -13,7 +13,7 @@ Version `0.3.0` is an unpublished release candidate. It provides:
 - eight sensor entities for the currently verified controller and HK60 data;
 - one HK60 operating-mode select with an allowlist and immediate readback;
 - redacted diagnostics for support and local troubleshooting;
-- one tested, guarded night-heating blueprint that remains unpublished;
+- one tested, guarded night-heating blueprint with a stable public source;
 - reconfiguration when the gateway address changes;
 - no external Python runtime dependency.
 
@@ -33,10 +33,35 @@ Use this integration only on a segmented local network. Restrict TCP port 80 on
 the gateway to the Home Assistant host, block access from unrelated networks,
 and never publish the gateway API to the internet.
 
-## Installation for development testing
+## Installation
 
-Copy `custom_components/meiertobler_smartguard` to the Home Assistant
-`/config/custom_components/` directory and restart Home Assistant. Then open:
+### HACS custom repository
+
+Until this project is included in the default HACS catalogue, add it as a
+custom integration repository:
+
+1. Open **HACS** in Home Assistant.
+2. Open the three-dot menu and select **Custom repositories**.
+3. Enter `https://github.com/martins-netizen/ha-meiertobler-smartguard`.
+4. Select **Integration** as the category and add the repository.
+5. Open **Meier Tobler SmartGuard**, select **Download**, choose version
+   `v0.3.0`, and restart Home Assistant when HACS requests it.
+6. Open **Settings > Devices & services > Add integration** and select
+   **Meier Tobler SmartGuard**.
+
+Adding a custom repository only registers its metadata in HACS. Integration
+files are changed only after **Download** or **Redownload** is selected. The
+first end-to-end HACS installation test is tracked separately in the
+[HACS 0.3.0 test record](docs/HACS_TEST_V0.3.0.md).
+
+### Manual installation
+
+Download the attached `meiertobler_smartguard-0.3.0.zip` from the
+[0.3.0 release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0),
+verify its published SHA-256 checksum, and extract it into the Home Assistant
+configuration directory so that the integration is located at
+`/config/custom_components/meiertobler_smartguard`. Restart Home Assistant,
+then open:
 
 1. Settings
 2. Devices & services
@@ -46,10 +71,10 @@ Copy `custom_components/meiertobler_smartguard` to the Home Assistant
 Enter only the hostname or IP address. Do not enter `http://`, a path, a port,
 or credentials.
 
-During the `0.3.0` candidate phase, keep the existing YAML/REST configuration active.
-Both select entities control the same physical datapoint, so do not operate them
-concurrently. Existing automations continue to use the old YAML select until a
-separate migration is completed.
+During a controlled migration, keep the existing YAML/REST configuration
+active until its automations and dashboards have been migrated. Both select
+entities control the same physical datapoint, so do not operate them
+concurrently.
 
 ## Sensors
 
@@ -94,13 +119,14 @@ redacted. The integration does not store or expose a SmartGuard password.
   their causes, and safe resolution steps.
 - [Automation examples](docs/AUTOMATION_EXAMPLES.md) provides guarded examples
   and a prepared blueprint that do not silently overwrite a manual
-  operating-mode choice. The blueprint remains unpublished during private
-  development.
+  operating-mode choice.
+- [HACS 0.3.0 test record](docs/HACS_TEST_V0.3.0.md) documents the controlled
+  custom-repository installation procedure and its current result.
 - [Release and publication checklist](docs/RELEASE_CHECKLIST.md) separates the
   read-only release gate from an explicit publication decision.
 - [Changelog](CHANGELOG.md) records the development history, and the
-  [0.3.0 release notes](docs/RELEASE_NOTES_0.3.0.md) describe this unpublished
-  candidate and its remaining gates.
+  [0.3.0 release notes](docs/RELEASE_NOTES_0.3.0.md) describe the published
+  release and its validation evidence.
 
 Bug reports use a structured issue form and must contain only sanitized,
 synthetic installation data. Security vulnerabilities must be reported
@@ -108,20 +134,21 @@ privately as described in [SECURITY.md](SECURITY.md).
 
 ## Development and HACS status
 
-The repository is prepared for private development and automated validation.
-While it remains private, HACS cannot access or install it. During this stage,
-the Quality and hassfest jobs run normally, while the HACS job performs a local
-metadata and brand-asset precheck. The official HACS action is enabled
-automatically only after the repository is made public.
+The repository is public, and the Quality, Hassfest, and official HACS
+validation jobs pass on the protected `main` branch. Version `0.3.0` is a full
+GitHub release and can be selected after adding this project to HACS as a custom
+integration repository. Inclusion in the default HACS catalogue has not been
+requested.
 
-After the pre-publication security gate has passed, the repository can be made
-public and added to HACS as a custom integration repository. A published GitHub
-release is required for release-based installation and update testing.
+The current `hacs.json` uses HACS' standard integration layout. HACS therefore
+installs `custom_components/meiertobler_smartguard` from the selected tagged
+repository source. The separately attached deterministic ZIP is the verified
+manual-installation bundle; it is not declared as a HACS `zip_release` asset.
 
 ## Release gate
 
-The repository contains a dormant, read-only release workflow. A future
-annotated tag in the stable form `vMAJOR.MINOR.PATCH` must match both
+The repository contains a read-only release workflow. An annotated tag in the
+stable form `vMAJOR.MINOR.PATCH` must match both
 `manifest.json` and `pyproject.toml`, and its commit must belong to `main`.
 The workflow then repeats repository validation, Ruff, strict MyPy, and the
 complete test suite before building a deterministic integration ZIP and a
@@ -130,7 +157,8 @@ SHA-256 checksum.
 The workflow uploads these files only as a temporary GitHub Actions artifact.
 It does not create or publish a GitHub release. After manual inspection, a
 release must still be created explicitly; therefore pushing a tag alone can
-never publish this integration.
+never publish this integration. Version `0.3.0` completed this process before
+its public release.
 
 ## Removal
 

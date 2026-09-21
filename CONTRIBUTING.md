@@ -1,9 +1,9 @@
 # Contributing
 
-The project is in controlled private development before its first public
-release. Changes use a feature or fix branch and a pull request into `main`.
-Direct changes to `main` are not the normal workflow after branch protection is
-enabled.
+The project is public and uses controlled development after its first release.
+Changes use a feature, fix, or documentation branch and a pull request into
+`main`. The active repository ruleset blocks direct changes to `main` and
+requires the Quality, Hassfest, and HACS checks.
 
 Before opening a pull request:
 

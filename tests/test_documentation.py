@@ -17,6 +17,7 @@ def test_documentation_is_linked_and_local_links_resolve() -> None:
     required_guides = {
         "CHANGELOG.md",
         "docs/AUTOMATION_EXAMPLES.md",
+        "docs/HACS_TEST_V0.3.0.md",
         "docs/RELEASE_CHECKLIST.md",
         "docs/RELEASE_NOTES_0.3.0.md",
         "docs/TROUBLESHOOTING.md",
@@ -62,6 +63,16 @@ def test_automation_example_yaml_is_valid() -> None:
         assert isinstance(automation.get("triggers"), list)
         assert isinstance(automation.get("conditions"), list)
         assert isinstance(automation.get("actions"), list)
+
+
+def test_hacs_test_record_describes_source_based_installation() -> None:
+    """The pending HACS test does not misidentify the attached manual ZIP."""
+    record = (ROOT / "docs" / "HACS_TEST_V0.3.0.md").read_text(encoding="utf-8")
+
+    assert "Status: **PENDING**" in record
+    assert "does not declare `zip_release`" in record
+    assert "tagged `custom_components/meiertobler_smartguard` source tree" in record
+    assert "meiertobler_smartguard-0.3.0.zip" in record
 
 
 def test_troubleshooting_and_quality_scale_are_consistent() -> None:

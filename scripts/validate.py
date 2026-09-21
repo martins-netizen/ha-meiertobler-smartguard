@@ -104,6 +104,7 @@ def _validate_documentation(version: str) -> None:
     for target in (
         "CHANGELOG.md",
         "docs/AUTOMATION_EXAMPLES.md",
+        "docs/HACS_TEST_V0.3.0.md",
         "docs/RELEASE_CHECKLIST.md",
         f"docs/RELEASE_NOTES_{version}.md",
         "docs/TROUBLESHOOTING.md",
@@ -121,8 +122,9 @@ def _validate_documentation(version: str) -> None:
     release_notes = release_notes_path.read_text(encoding="utf-8")
     for fragment in (
         f"# Release notes: {version}",
-        "Status: unpublished release candidate",
-        "No tag or GitHub release has been created",
+        "Status: published release",
+        "releases/tag/v0.3.0",
+        "190b3aeb71e43fed8592242416ed5cd702bdbc9c2e82bdb279b4cea4d9209dc5",
         f"annotated `v{version}` tag",
     ):
         if fragment not in release_notes:
@@ -167,7 +169,7 @@ def _validate_documentation(version: str) -> None:
     if any(fragment not in blueprint for fragment in required_blueprint_fragments):
         raise RuntimeError("SmartGuard blueprint is missing a required safeguard")
     if "source_url:" in blueprint:
-        raise RuntimeError("Private blueprint must not claim a public source URL")
+        raise RuntimeError("Blueprint source_url remains gated on the import test")
 
     quality_scale = (INTEGRATION / "quality_scale.yaml").read_text(encoding="utf-8")
     if "docs-troubleshooting: done" not in quality_scale:
@@ -178,7 +180,7 @@ def _validate_documentation(version: str) -> None:
         quality_scale,
     ):
         raise RuntimeError(
-            "Documentation examples must remain todo until a blueprint is published"
+            "Documentation examples must remain todo until blueprint import testing"
         )
 
     issue_form = (ROOT / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml").read_text(

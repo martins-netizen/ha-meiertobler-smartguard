@@ -51,7 +51,7 @@ rules:
   docs-data-update: done
   docs-examples:
     status: todo
-    comment: A tested repository blueprint exists; publish and link it before claiming this rule.
+    comment: A stable public blueprint link exists; import and end-to-end migration testing remain.
   docs-known-limitations: done
   docs-supported-devices: done
   docs-supported-functions: done

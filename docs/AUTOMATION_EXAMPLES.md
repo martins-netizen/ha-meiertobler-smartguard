@@ -27,11 +27,11 @@ It combines the two scheduled mode changes with the following safeguards:
 - the morning action returns to `auto` only if the requested mode is still
   `heating`.
 
-The blueprint is source-controlled and validated, but it is not published while
-this repository remains private. Do not replace the existing production
-automations with it yet. After publication, it must be imported into a test Home
-Assistant instance, linked from the public documentation, and tested through a
-complete night/morning cycle before migration.
+The blueprint is source-controlled, validated, and available from the stable
+[`v0.3.0` source](https://raw.githubusercontent.com/martins-netizen/ha-meiertobler-smartguard/v0.3.0/blueprints/automation/martins_netizen/smartguard_guarded_night_heating.yaml).
+Do not replace existing production automations with it until that public URL has
+been imported into a test Home Assistant instance and exercised through a
+complete night/morning cycle.
 
 ## Select heating at night only when cooling is active
 
@@ -118,6 +118,6 @@ mode: single
   use or store one.
 - Keep the gateway REST API on the local network and do not expose it to the
   internet.
-- The repository blueprint is not yet publicly importable. Publication, a
-  stable public link, and an end-to-end test are still required before claiming
-  the Home Assistant `docs-examples` quality rule.
+- The repository blueprint has a stable public link. An import test and a
+  complete night/morning cycle are still required before claiming the Home
+  Assistant `docs-examples` quality rule.

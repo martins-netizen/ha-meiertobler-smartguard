@@ -90,17 +90,20 @@ def test_release_lock_version_must_match(tmp_path: Path) -> None:
         read_version(tmp_path)
 
 
-def test_release_documents_describe_unpublished_candidate() -> None:
-    """The prepared notes match the source version without claiming publication."""
+def test_release_documents_describe_published_release() -> None:
+    """The release notes identify the immutable published version."""
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     release_notes = (ROOT / "docs" / "RELEASE_NOTES_0.3.0.md").read_text(
         encoding="utf-8"
     )
 
     assert "## [0.3.0] - 2026-09-20" in changelog
+    assert "First public, field-tested release." in changelog
     assert "# Release notes: 0.3.0" in release_notes
-    assert "Status: unpublished release candidate" in release_notes
-    assert "No tag or GitHub release has been created" in release_notes
+    assert "Status: published release" in release_notes
+    assert "releases/tag/v0.3.0" in release_notes
+    assert "94b7305c3fcb61b3647452637fb479735a66e8b7" in release_notes
+    assert "190b3aeb71e43fed8592242416ed5cd702bdbc9c2e82bdb279b4cea4d9209dc5" in release_notes
 
 
 def test_build_release_is_deterministic(tmp_path: Path) -> None:

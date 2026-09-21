@@ -8,18 +8,26 @@ updates:
       time: "04:17"
       timezone: Europe/Zurich
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     labels:
       - dependencies
       - github-actions
 
   - package-ecosystem: pip
-    directory: "/"
+    directory: "/.github"
     schedule:
       interval: weekly
       day: monday
       time: "04:47"
       timezone: Europe/Zurich
     open-pull-requests-limit: 5
+    groups:
+      python-ci:
+        patterns:
+          - "*"
     labels:
       - dependencies
       - python

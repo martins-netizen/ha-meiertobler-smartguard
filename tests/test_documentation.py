@@ -66,10 +66,10 @@ def test_automation_example_yaml_is_valid() -> None:
 
 
 def test_hacs_test_record_describes_source_based_installation() -> None:
-    """The pending HACS test does not misidentify the attached manual ZIP."""
+    """The completed HACS test does not misidentify the attached manual ZIP."""
     record = (ROOT / "docs" / "HACS_TEST_V0.3.0.md").read_text(encoding="utf-8")
 
-    assert "Status: **PENDING**" in record
+    assert "Status: **PASS**" in record
     assert "does not declare `zip_release`" in record
     assert "tagged `custom_components/meiertobler_smartguard` source tree" in record
     assert "meiertobler_smartguard-0.3.0.zip" in record

@@ -16,8 +16,8 @@ publish automatically; the owner must make a separate publication decision.
 - [x] Public Quality, Hassfest, and official HACS validation passed.
 - [x] Public release reviewed and published on 2026-09-21.
 - [x] `main` remains protected by the active `Protect main` ruleset.
-- [ ] HACS custom-repository download, restart, and reload test. See
-      [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).
+- [x] HACS custom-repository download, restart, and reload test passed on
+      2026-09-21. See [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).
 
 ## 1. Prepare a version pull request
 
@@ -116,10 +116,9 @@ testing should succeed before submitting it.
 
 ## 7. Post-release verification and recovery
 
-- [ ] Confirm that HACS resolves the published version and installs the
-      expected tagged `custom_components` source tree. Do not claim that HACS
-      downloads an attached release ZIP unless `hacs.json` explicitly enables
-      `zip_release` with a matching filename.
+- [x] Confirmed that HACS resolves the published version and installs the
+      expected tagged `custom_components` source tree. The attached release
+      ZIP was separately verified; `hacs.json` does not enable `zip_release`.
 - [ ] Confirm a clean installation and restart on the minimum supported Home
       Assistant version.
 - [ ] Monitor issues without requesting private diagnostics in public.

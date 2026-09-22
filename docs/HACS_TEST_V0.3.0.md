@@ -1,6 +1,7 @@
 # HACS custom-repository test: 0.3.0
 
-Status: **PENDING**
+Status: **PASS**
+Test date: 2026-09-21 (Europe/Zurich)
 
 ## Purpose
 
@@ -56,11 +57,43 @@ physical controller mode is not required to verify package distribution.
 - No YAML configuration, automation, dashboard, or SmartGuard operating mode is
   changed by the test.
 
+## Result and evidence
+
+- The repository owner confirmed that HACS accepted the custom integration
+  repository, offered v0.3.0, completed the download/redownload, and that
+  Home Assistant restarted successfully when requested.
+- Before the HACS operation, the preparation script verified the public
+  release, annotated tag, release ZIP checksum, and the installed 0.3.0
+  integration tree; it completed a Home Assistant configuration check and
+  created local and Home Assistant backups.
+- After the HACS operation, the verification script confirmed registration
+  without printing HACS storage content. The installed integration tree
+  matched the annotated tag, release ZIP contents, and pre-install baseline
+  byte for byte. Its tree digest was
+  `4431d1ae059d1cd7c96c738c16a536479c3b9a6496045f03cb931d9b693c3ac6`.
+  The Home Assistant configuration check succeeded again.
+- The repository owner confirmed that SmartGuard 2.0 showed eight available
+  sensors and one mode select after restart. The select showed Auto, and a
+  manual integration reload returned all nine entities within 60 seconds.
+- The owner checked the downloaded diagnostics and confirmed
+  `config_entry.data.host`, `identity.serial_number`, and
+  `identity.global_device_id` were each `**REDACTED**`.
+- The public main Validate run for commit
+  `718d992e0ec4ea89f7e1177a65dad186031f4f91` succeeded:
+  https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/35648501547
+
+The preparation script's final summary displayed `HACS-Version: 0.3.0`;
+this label referred to the SmartGuard integration version. The actual HACS
+version recorded before the test was 2.0.5.
+
+The user-interface results above were reported by the repository owner. This
+record contains no raw diagnostics, host address, device serial number, global
+device identifier, or Home Assistant config-entry identifier.
+
 ## Recovery
 
 If downloading or restarting fails, stop the test, preserve the HACS and Home
 Assistant logs, and restore the integration directory from the preparation
 backup. Do not move the release tag or silently replace a published asset.
 
-After all pass criteria are confirmed, update this record to **PASS** in a new
-pull request with the test date and privacy-safe evidence.
+This record documents the completed post-release HACS distribution test.

@@ -376,7 +376,7 @@ requests-mock==1.12.1
     # via pytest-homeassistant-custom-component
 respx==0.23.1
     # via pytest-homeassistant-custom-component
-ruff==0.16.8
+ruff==0.16.9
     # via -r .github/requirements-ci.in
 s3transfer==0.19.2
     # via boto3

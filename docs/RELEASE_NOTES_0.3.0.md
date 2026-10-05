@@ -61,5 +61,6 @@ official HACS validation, release review, and publication verification all
 passed. The release was published manually; the tag workflow itself retained
 read-only permissions and did not publish anything automatically.
 
-Installation through HACS as a custom repository remains a separate
-post-release test and is not claimed as complete in these notes.
+The separate HACS custom-repository installation, restart, and reload test
+passed on 2026-09-21. See [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md) for the
+post-release verification evidence.

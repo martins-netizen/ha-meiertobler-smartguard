@@ -1,5 +1,40 @@
 # Meier Tobler SmartGuard for Home Assistant
 
+## Deutsch: SmartGuard 2.0 in Home Assistant
+
+Diese lokale Integration verbindet **Meier Tobler SmartGuard 2.0** mit
+**Home Assistant**. Sie richtet sich an Wärmepumpenanlagen mit einem
+SmartGuard-Gateway und ermöglicht die Anzeige der verifizierten Anlagenwerte
+sowie die Betriebsmoduswahl für den **HK60-Heizkreis**.
+
+Version **0.3.0** bietet:
+
+- acht Sensoren für Wärmequelle, Kondensator, HK60-Vorlauf sowie Betriebsmodus,
+  Betriebsstatus und Saisonstatus;
+- eine Auswahl für den HK60-Betriebsmodus, einschliesslich Auto, Heizen und
+  Kühlen, mit unmittelbarer Rückleseprüfung nach jeder Änderung;
+- lokale Abfragen alle 60 Sekunden, Einrichtung über die Oberfläche und
+  Diagnosedaten mit maskierten Gerätekennungen.
+
+Geprüft ist SmartGuard 2.0 mit Gerätetyp `1001`; für die HK60-Entitäten muss
+HK60 aktiviert sein. Benötigt wird Home Assistant **2026.9.0 oder neuer**.
+
+**Installation über HACS:** Dieses Repository als benutzerdefiniertes
+Repository der Kategorie **Integration** hinzufügen, **Meier Tobler SmartGuard**
+in Version **0.3.0** herunterladen und Home Assistant neu starten. Anschliessend
+unter **Einstellungen > Geräte & Dienste > Integration hinzufügen** nach
+**Meier Tobler SmartGuard** suchen und den Hostnamen oder die IP-Adresse des
+Gateways eingeben. Die ausführlichen [Installationsschritte](#installation)
+stehen weiter unten.
+
+Die Aufnahme in den HACS-Standardkatalog ist
+[beantragt](https://github.com/hacs/default/pull/11172) und noch nicht bestätigt.
+Die lokale HTTP-API hat keine Authentifizierung; verwende sie nur in einem
+geschützten lokalen Netzwerk. Dies ist ein unabhängiges Community-Projekt
+ohne Verbindung zu oder Unterstützung durch Meier Tobler AG.
+
+## English overview
+
 A local Home Assistant integration for Meier Tobler SmartGuard 2.0 gateways.
 
 ## Status

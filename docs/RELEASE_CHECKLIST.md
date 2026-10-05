@@ -18,6 +18,8 @@ publish automatically; the owner must make a separate publication decision.
 - [x] `main` remains protected by the active `Protect main` ruleset.
 - [x] HACS custom-repository download, restart, and reload test passed on
       2026-09-21. See [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).
+- [x] HACS default-catalogue submission opened on 2026-09-22:
+      [hacs/default#11172](https://github.com/hacs/default/pull/11172).
 
 ## 1. Prepare a version pull request
 
@@ -100,16 +102,21 @@ approved. Before making a private repository public:
       **Publish release**.
 - [ ] Test installation and update through HACS as a custom repository.
 
-## 6. Optional HACS default-repository submission
+## 6. HACS default-repository submission
 
-- [ ] Verify that the repository is public and hosted on GitHub.
-- [ ] Verify that the official HACS action and Hassfest pass without errors or
+Completed on 2026-09-22 for `v0.3.0` in
+[hacs/default#11172](https://github.com/hacs/default/pull/11172). The submission
+is open and awaiting HACS review.
+
+- [x] Verify that the repository is public and hosted on GitHub.
+- [x] Verify that the official HACS action and Hassfest pass without errors or
       ignores.
-- [ ] Verify that at least one full GitHub release exists.
-- [ ] Verify that repository description, topics, issues, brand assets,
+- [x] Verify that at least one full GitHub release exists.
+- [x] Verify that repository description, topics, issues, brand assets,
       `manifest.json`, and `hacs.json` meet current HACS requirements.
-- [ ] Submit the repository only from the owner or a major contributor and
+- [x] Submit the repository only from the owner or a major contributor and
       follow the current HACS submission template.
+- [ ] HACS maintainers approve and merge the default-catalogue submission.
 
 Default HACS inclusion is a later, independent decision. Public custom-repository
 testing should succeed before submitting it.

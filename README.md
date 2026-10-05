@@ -137,8 +137,13 @@ privately as described in [SECURITY.md](SECURITY.md).
 The repository is public, and the Quality, Hassfest, and official HACS
 validation jobs pass on the protected `main` branch. Version `0.3.0` is a full
 GitHub release and can be selected after adding this project to HACS as a custom
-integration repository. Inclusion in the default HACS catalogue has not been
-requested.
+integration repository.
+
+Inclusion in the default HACS catalogue was requested on 2026-09-22 in
+[hacs/default#11172](https://github.com/hacs/default/pull/11172). The submission
+is open and awaiting HACS review; catalogue inclusion has not yet been approved.
+Use the custom-repository installation instructions above while review is
+pending.
 
 The current `hacs.json` uses HACS' standard integration layout. HACS therefore
 installs `custom_components/meiertobler_smartguard` from the selected tagged

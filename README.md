@@ -143,6 +143,13 @@ concurrently.
 | HK60 effective operating mode | `5005` |
 | HK60 season status | `5009` |
 
+### Additional measurements in development
+
+The next release adds optional heating-buffer and hot-water measurements;
+see [Additional measurements](docs/ADDITIONAL_MEASUREMENTS.md) for their API
+sources, availability behavior and test status. Published `v0.3.0` retains the
+eight sensors listed above.
+
 ## HK60 operating-mode select
 
 The select exposes the verified options `auto`, `normal`, `reduced`,

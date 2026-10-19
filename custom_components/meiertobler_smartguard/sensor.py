@@ -11,14 +11,14 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import EntityCategory, UnitOfTemperature, UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGuardValue
 from .const import ENUM_STATES
 from .data import SmartGuardConfigEntry
-from .entity import SmartGuardEntity
+from .entity import SmartGuardEntity, async_add_optional_entities
 
 ValueFormatter = Callable[[SmartGuardValue], str | float | int | None]
 
@@ -86,6 +86,32 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
     ),
 )
 
+OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            suggested_display_precision=2,
+        )
+        for key in ("buffer_temperature", "dhw_temperature")
+    ),
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.DURATION,
+            state_class=SensorStateClass.TOTAL_INCREASING,
+            native_unit_of_measurement=UnitOfTime.HOURS,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            suggested_display_precision=0,
+        )
+        for key in ("buffer_heater_operating_hours", "dhw_heater_operating_hours")
+    ),
+)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -95,6 +121,14 @@ async def async_setup_entry(
     """Set up SmartGuard sensors from a config entry."""
     async_add_entities(
         SmartGuardSensor(entry, description) for description in SENSOR_DESCRIPTIONS
+    )
+    async_add_optional_entities(
+        entry,
+        {
+            description.key: SmartGuardSensor(entry, description)
+            for description in OPTIONAL_SENSOR_DESCRIPTIONS
+        },
+        async_add_entities,
     )
 
 

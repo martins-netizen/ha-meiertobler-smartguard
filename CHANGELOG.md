@@ -3,6 +3,15 @@
 All notable changes to this project are documented in this file. The project
 uses stable semantic versions for release candidates and published releases.
 
+## [Unreleased]
+
+### Added
+
+- Optional heating-buffer and domestic-hot-water temperatures, heater status
+  indicators and operating-hour counters. Enabled modules are discovered via
+  the manufacturer-documented config endpoints. Missing or malformed optional
+  readings do not interrupt the existing core entities.
+
 ## [0.3.0] - 2026-09-20
 
 First public, field-tested release.

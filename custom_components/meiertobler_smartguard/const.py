@@ -13,7 +13,7 @@ EXPECTED_DEVICE_TYPE = "1001"
 DEFAULT_UPDATE_INTERVAL_SECONDS = 60
 DEFAULT_REQUEST_TIMEOUT_SECONDS = 10
 
-DataPointKind = Literal["temperature", "enum"]
+DataPointKind = Literal["temperature", "enum", "counter", "boolean"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -24,6 +24,8 @@ class SmartGuardDataPoint:
     datapoint_id: int
     kind: DataPointKind
     subsystem_path: tuple[int, int] | None = None
+    minimum: float | None = None
+    maximum: float | None = None
 
     def path(self, serial_number: str) -> str:
         """Return the API path for this datapoint."""
@@ -50,6 +52,21 @@ DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     HK60_SELECTED_MODE_DATA_POINT,
     SmartGuardDataPoint("hk60_effective_mode", 5005, "enum", (1, 2)),
     SmartGuardDataPoint("hk60_season_status", 5009, "enum", (1, 2)),
+)
+
+# Manufacturer: SmartGuard, Netzwerk und Datenzugangspunkte, pages 9, 18-19.
+# These modules are optional and must report enabled=true before polling.
+OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
+    SmartGuardDataPoint("buffer_temperature", 1001, "temperature", (2, 1), -50, 125),
+    SmartGuardDataPoint("buffer_heater_status", 3191, "boolean", (2, 1)),
+    SmartGuardDataPoint(
+        "buffer_heater_operating_hours", 3192, "counter", (2, 1), 0, 2**31 - 1
+    ),
+    SmartGuardDataPoint("dhw_temperature", 1001, "temperature", (3, 1), -50, 125),
+    SmartGuardDataPoint("dhw_heater_status", 4191, "boolean", (3, 1)),
+    SmartGuardDataPoint(
+        "dhw_heater_operating_hours", 4192, "counter", (3, 1), 0, 2**31 - 1
+    ),
 )
 
 ENUM_STATES: dict[str, dict[int, str]] = {

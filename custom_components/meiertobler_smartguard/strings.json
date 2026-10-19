@@ -96,6 +96,18 @@
           "heating_season": "Heating season",
           "cooling_season": "Cooling season"
         }
+      },
+      "buffer_temperature": {
+        "name": "Heating buffer temperature"
+      },
+      "dhw_temperature": {
+        "name": "Hot water temperature"
+      },
+      "buffer_heater_operating_hours": {
+        "name": "Heating buffer heater operating hours"
+      },
+      "dhw_heater_operating_hours": {
+        "name": "Hot water heater operating hours"
       }
     },
     "select": {
@@ -109,6 +121,14 @@
           "heating": "Heating",
           "cooling": "Cooling"
         }
+      }
+    },
+    "binary_sensor": {
+      "buffer_heater_status": {
+        "name": "Heating buffer heater indicator"
+      },
+      "dhw_heater_status": {
+        "name": "Hot water heater indicator"
       }
     }
   }

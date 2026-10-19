@@ -19,16 +19,20 @@ Version **0.3.0** bietet:
 Geprüft ist SmartGuard 2.0 mit Gerätetyp `1001`; für die HK60-Entitäten muss
 HK60 aktiviert sein. Benötigt wird Home Assistant **2026.9.0 oder neuer**.
 
-**Installation über HACS:** Dieses Repository als benutzerdefiniertes
-Repository der Kategorie **Integration** hinzufügen, **Meier Tobler SmartGuard**
-in Version **0.3.0** herunterladen und Home Assistant neu starten. Anschliessend
+**Installation über HACS:** In HACS nach **Meier Tobler SmartGuard** suchen,
+Version **0.3.0** herunterladen und Home Assistant neu starten. Anschliessend
 unter **Einstellungen > Geräte & Dienste > Integration hinzufügen** nach
 **Meier Tobler SmartGuard** suchen und den Hostnamen oder die IP-Adresse des
 Gateways eingeben. Die ausführlichen [Installationsschritte](#installation)
 stehen weiter unten.
 
-Die Aufnahme in den HACS-Standardkatalog ist
-[beantragt](https://github.com/hacs/default/pull/11172) und noch nicht bestätigt.
+Die Integration wurde am **19. Oktober 2026** in den HACS-Standardkatalog
+[aufgenommen](https://github.com/hacs/default/pull/11172). Die Verteilung des
+Katalogs kann nach der Freigabe bis zu acht Stunden dauern. Falls der Eintrag
+noch nicht sichtbar ist, helfen die unten beschriebenen Schritte für ein
+benutzerdefiniertes Repository. Bestehende HACS-Installationen benötigen
+deswegen keine Neuinstallation.
+
 Die lokale HTTP-API hat keine Authentifizierung; verwende sie nur in einem
 geschützten lokalen Netzwerk. Dies ist ein unabhängiges Community-Projekt
 ohne Verbindung zu oder Unterstützung durch Meier Tobler AG.
@@ -70,10 +74,25 @@ and never publish the gateway API to the internet.
 
 ## Installation
 
+### HACS
+
+This integration was added to the default HACS catalogue on 2026-10-19 in
+[hacs/default#11172](https://github.com/hacs/default/pull/11172).
+
+1. Open **HACS** in Home Assistant and search for **Meier Tobler SmartGuard**.
+2. Open the integration, select **Download**, and choose version `v0.3.0`.
+3. Restart Home Assistant when HACS requests it.
+4. Open **Settings > Devices & services > Add integration** and select
+   **Meier Tobler SmartGuard**.
+5. Enter the hostname or IP address of the SmartGuard gateway.
+
+Catalogue updates can take up to eight hours after approval. Existing HACS
+installations do not need to be reinstalled because of the catalogue addition.
+
 ### HACS custom repository
 
-Until this project is included in the default HACS catalogue, add it as a
-custom integration repository:
+If the integration is not yet visible while the catalogue update is being
+distributed, add it as a custom integration repository:
 
 1. Open **HACS** in Home Assistant.
 2. Open the three-dot menu and select **Custom repositories**.
@@ -171,14 +190,12 @@ privately as described in [SECURITY.md](SECURITY.md).
 
 The repository is public, and the Quality, Hassfest, and official HACS
 validation jobs pass on the protected `main` branch. Version `0.3.0` is a full
-GitHub release and can be selected after adding this project to HACS as a custom
-integration repository.
+GitHub release and is available through HACS.
 
 Inclusion in the default HACS catalogue was requested on 2026-09-22 in
-[hacs/default#11172](https://github.com/hacs/default/pull/11172). The submission
-is open and awaiting HACS review; catalogue inclusion has not yet been approved.
-Use the custom-repository installation instructions above while review is
-pending.
+[hacs/default#11172](https://github.com/hacs/default/pull/11172). HACS maintainers
+approved and merged the submission on 2026-10-19. Catalogue inclusion is
+complete; distribution to users can take up to eight hours after approval.
 
 The current `hacs.json` uses HACS' standard integration layout. HACS therefore
 installs `custom_components/meiertobler_smartguard` from the selected tagged

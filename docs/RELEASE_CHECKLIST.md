@@ -20,6 +20,9 @@ publish automatically; the owner must make a separate publication decision.
       2026-09-21. See [HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).
 - [x] HACS default-catalogue submission opened on 2026-09-22:
       [hacs/default#11172](https://github.com/hacs/default/pull/11172).
+- [x] HACS maintainers approved and merged the default-catalogue submission
+      on 2026-10-19 in
+      [hacs/default#11172](https://github.com/hacs/default/pull/11172).
 
 ## 1. Prepare a version pull request
 
@@ -104,9 +107,9 @@ approved. Before making a private repository public:
 
 ## 6. HACS default-repository submission
 
-Completed on 2026-09-22 for `v0.3.0` in
-[hacs/default#11172](https://github.com/hacs/default/pull/11172). The submission
-is open and awaiting HACS review.
+Submitted on 2026-09-22 for `v0.3.0` in
+[hacs/default#11172](https://github.com/hacs/default/pull/11172). HACS maintainers
+approved and merged the submission on 2026-10-19.
 
 - [x] Verify that the repository is public and hosted on GitHub.
 - [x] Verify that the official HACS action and Hassfest pass without errors or
@@ -116,10 +119,13 @@ is open and awaiting HACS review.
       `manifest.json`, and `hacs.json` meet current HACS requirements.
 - [x] Submit the repository only from the owner or a major contributor and
       follow the current HACS submission template.
-- [ ] HACS maintainers approve and merge the default-catalogue submission.
+- [x] HACS maintainers approve and merge the default-catalogue submission.
 
-Default HACS inclusion is a later, independent decision. Public custom-repository
-testing should succeed before submitting it.
+The repository is included in the default HACS catalogue. Distribution of the
+updated catalogue to users can take up to eight hours after approval. Existing
+HACS installations do not need to be reinstalled because of the catalogue
+addition. The completed custom-repository installation test is recorded in
+[HACS_TEST_V0.3.0.md](HACS_TEST_V0.3.0.md).
 
 ## 7. Post-release verification and recovery
 

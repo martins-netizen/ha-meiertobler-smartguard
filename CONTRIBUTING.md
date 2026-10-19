@@ -19,6 +19,18 @@ documentation ranges such as `192.0.2.0/24`.
 Dependency updates are reviewed through normal pull requests. They are never
 merged automatically.
 
+## CI dependency updates
+
+`.github/requirements-ci.txt` is compiled from `requirements-ci.in` by uv.
+Its header records `--universal` and the Python version used for resolution.
+Dependabot uses the `uv` ecosystem for `/.github`, which preserves these
+options. Keep this updater and the universal header so tool updates retain
+the macOS/Windows dependencies and environment markers.
+
+For a manual Ruff update, use the command recorded in the requirements header
+with `--upgrade-package ruff==<new-version>` added. Review the dependency diff
+and run the usual checks; unrelated versions should stay pinned.
+
 ## Release candidates
 
 Release metadata must use the same stable version in `manifest.json` and

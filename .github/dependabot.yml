@@ -16,7 +16,8 @@ updates:
       - dependencies
       - github-actions
 
-  - package-ecosystem: pip
+  # Preserve uv's --universal and --python-version options when compiling.
+  - package-ecosystem: uv
     directory: "/.github"
     schedule:
       interval: weekly

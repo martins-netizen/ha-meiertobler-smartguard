@@ -1,6 +1,7 @@
 # Additional storage measurements
 
-Status: implementation for the next release; live gateway verification pending.
+Status: implementation for the next release; read-only gateway verification
+passed. Home Assistant installation testing is still pending.
 The published `v0.3.0` release retains eight sensors and one HK60 mode select.
 
 ## Data sources
@@ -36,9 +37,16 @@ This extension adds no heater controls or setpoint changes.
 ## Verification before release
 
 - [x] Check API paths and types against the manufacturer documentation.
-- [ ] Verify module configuration and the six read-only endpoints on a live gateway.
-- [ ] Compare both live temperatures with the SmartGuard UI at the same time.
+- [x] Verify module configuration and the six read-only endpoints on a live gateway.
+- [x] Cross-check the two storage temperature readings against a device display.
 - [ ] Confirm entity discovery, units and availability on the test installation.
 
-The previous screenshots establish that buffer and hot-water modules are
-present, but historical screenshot values are not live API responses.
+## Read-only verification outcome
+
+The six optional endpoints returned values of the documented types, and a
+display comparison supported the two temperature mappings. The detailed
+measurement report and installation-specific sensor labels remain private.
+No write, reload or restart was performed by the read-only probe.
+
+Entity discovery, units, availability and preservation of existing entities
+must still be verified after installing the merged code in Home Assistant.

@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import ipaddress
 import json
+import logging
 import math
 import re
 from dataclasses import dataclass
@@ -19,15 +20,17 @@ from .const import (
     EXPECTED_DEVICE_TYPE,
     HK60_SELECTED_MODE_DATA_POINT,
     HK60_SELECTED_MODE_TO_VALUE,
+    OPTIONAL_DATA_POINTS,
     SmartGuardDataPoint,
 )
 
-type SmartGuardValue = float | int
+type SmartGuardValue = float | int | bool
 type SmartGuardSnapshot = dict[str, SmartGuardValue]
 _HOSTNAME_RE: Final = re.compile(
     r"(?=^.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*"
     r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.?$"
 )
+_LOGGER = logging.getLogger(__name__)
 
 
 class SmartGuardError(Exception):
@@ -117,13 +120,37 @@ class SmartGuardApiClient:
         )
 
     async def async_read_all(self, serial_number: str) -> SmartGuardSnapshot:
-        """Read all verified datapoints sequentially."""
+        """Read core values and independently collect available optional values."""
         snapshot: SmartGuardSnapshot = {}
         for datapoint in DATA_POINTS:
             snapshot[datapoint.key] = await self.async_read_datapoint(
                 serial_number,
                 datapoint,
             )
+        snapshot.update(await self._async_read_optional(serial_number))
+        return snapshot
+
+    async def _async_read_optional(self, serial_number: str) -> SmartGuardSnapshot:
+        """Read only enabled buffer/DHW modules without failing the core update."""
+        snapshot: SmartGuardSnapshot = {}
+        for group, unit in ((2, 1), (3, 1)):
+            path = f"/api/v1/{EXPECTED_DEVICE_TYPE}/{serial_number}/{group}/{unit}/config"
+            try:
+                config = await self._async_get_json(path)
+            except SmartGuardError:
+                _LOGGER.debug("Optional SmartGuard module %s/%s unavailable", group, unit)
+                continue
+            if config.get("enabled") is not True:
+                continue
+            for datapoint in OPTIONAL_DATA_POINTS:
+                if datapoint.subsystem_path != (group, unit):
+                    continue
+                try:
+                    snapshot[datapoint.key] = await self.async_read_datapoint(
+                        serial_number, datapoint
+                    )
+                except SmartGuardError:
+                    _LOGGER.debug("Optional SmartGuard value %s unavailable", datapoint.key)
         return snapshot
 
     async def async_read_datapoint(
@@ -137,16 +164,28 @@ class SmartGuardApiClient:
             raise SmartGuardInvalidResponseError("datapoint value missing")
 
         value = payload["value"]
-        if datapoint.kind == "enum":
-            if isinstance(value, bool) or not isinstance(value, int):
-                raise SmartGuardInvalidResponseError("invalid enum value")
+        if datapoint.kind == "boolean":
+            if not isinstance(value, bool):
+                raise SmartGuardInvalidResponseError("invalid boolean value")
             return value
-
-        if isinstance(value, bool) or not isinstance(value, (int, float)):
-            raise SmartGuardInvalidResponseError("invalid numeric value")
-        numeric = float(value)
-        if not math.isfinite(numeric):
-            raise SmartGuardInvalidResponseError("non-finite numeric value")
+        numeric: float | int
+        if datapoint.kind in ("enum", "counter"):
+            if isinstance(value, bool) or not isinstance(value, int):
+                raise SmartGuardInvalidResponseError("invalid integer value")
+            numeric = value
+        else:
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise SmartGuardInvalidResponseError("invalid numeric value")
+            try:
+                numeric = float(value)
+            except OverflowError as err:
+                raise SmartGuardInvalidResponseError("numeric value overflow") from err
+            if not math.isfinite(numeric):
+                raise SmartGuardInvalidResponseError("non-finite numeric value")
+        if (datapoint.minimum is not None and numeric < datapoint.minimum) or (
+            datapoint.maximum is not None and numeric > datapoint.maximum
+        ):
+            raise SmartGuardInvalidResponseError("datapoint outside documented range")
         return numeric
 
     async def async_set_hk60_selected_mode(

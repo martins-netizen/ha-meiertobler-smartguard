@@ -60,7 +60,7 @@ async def test_platform_setup_adds_all_entities(
     config_entry: MockConfigEntry,
 ) -> None:
     """Platform setup creates eight sensors and one select."""
-    entry, _, _ = _runtime_entry(hass, config_entry)
+    entry, _, coordinator = _runtime_entry(hass, config_entry)
     entities: list[object] = []
 
     await async_setup_sensor(hass, entry, entities.extend)
@@ -68,6 +68,7 @@ async def test_platform_setup_adds_all_entities(
 
     assert len(entities) == len(SENSOR_DESCRIPTIONS) + 1
     assert isinstance(entities[-1], SmartGuardModeSelect)
+    await coordinator.async_shutdown()
 
 
 def test_sensor_values_and_device_info(

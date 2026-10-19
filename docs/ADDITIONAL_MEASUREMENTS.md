@@ -1,0 +1,44 @@
+# Additional storage measurements
+
+Status: implementation for the next release; live gateway verification pending.
+The published `v0.3.0` release retains eight sensors and one HK60 mode select.
+
+## Data sources
+
+The manufacturer's [SmartGuard network and data access documentation](https://dokumente.meiertobler.ch/files/product-assets/90355/lvxlo.pdf)
+defines the module configuration format on page 9 and the values on pages
+18-19. Paths below are relative to `/api/v1/1001/<serial_number>`.
+
+| Measurement | Module | Datapoint | Type / unit |
+| --- | --- | --- | --- |
+| Heating buffer temperature B30 | `2/1` | `1001` | Decimal, °C |
+| Heating buffer heater indicator | `2/1` | `3191` | Boolean |
+| Heating buffer heater operating hours | `2/1` | `3192` | Integer, h |
+| Hot water temperature B40 | `3/1` | `1001` | Decimal, °C |
+| Hot water heater indicator | `3/1` | `4191` | Boolean |
+| Hot water heater operating hours | `3/1` | `4192` | Integer, h |
+
+## Availability and interpretation
+
+Each update reads the module's `/config` endpoint. Only `enabled: true` enables
+its additional GET requests. Entities appear after the first valid reading,
+including when a module becomes available after startup.
+
+A missing, malformed or temporarily inaccessible optional reading makes its
+existing entity unavailable. Other readings continue to update. Temperatures
+outside the documented -50 to 125 °C range, including the -273.15 °C sentinel,
+are rejected. A boolean false and an operating-hour count of zero remain valid.
+
+The heater indicators are the statuses reported by SmartGuard. They do not
+measure the physical ASKOHEAT devices' electrical power or energy consumption.
+This extension adds no heater controls or setpoint changes.
+
+## Verification before release
+
+- [x] Check API paths and types against the manufacturer documentation.
+- [ ] Verify module configuration and the six read-only endpoints on a live gateway.
+- [ ] Compare both live temperatures with the SmartGuard UI at the same time.
+- [ ] Confirm entity discovery, units and availability on the test installation.
+
+The previous screenshots establish that buffer and hot-water modules are
+present, but historical screenshot values are not live API responses.

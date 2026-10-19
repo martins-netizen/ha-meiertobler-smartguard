@@ -43,7 +43,7 @@ async def async_setup_entry(
     entry.runtime_data = SmartGuardRuntimeData(client, coordinator, identity)
     await hass.config_entries.async_forward_entry_setups(
         entry,
-        [Platform.SENSOR, Platform.SELECT],
+        [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SELECT],
     )
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
@@ -58,7 +58,7 @@ async def async_unload_entry(
 
     return await hass.config_entries.async_unload_platforms(
         entry,
-        [Platform.SENSOR, Platform.SELECT],
+        [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SELECT],
     )
 
 

@@ -96,6 +96,18 @@
           "heating_season": "Heizsaison",
           "cooling_season": "Kühlsaison"
         }
+      },
+      "buffer_temperature": {
+        "name": "Heizpuffer IST"
+      },
+      "dhw_temperature": {
+        "name": "Warmwasser IST"
+      },
+      "buffer_heater_operating_hours": {
+        "name": "Heizpuffer Heizeinsatz Betriebsstunden"
+      },
+      "dhw_heater_operating_hours": {
+        "name": "Warmwasser Heizeinsatz Betriebsstunden"
       }
     },
     "select": {
@@ -109,6 +121,14 @@
           "heating": "Heizen",
           "cooling": "Kühlen"
         }
+      }
+    },
+    "binary_sensor": {
+      "buffer_heater_status": {
+        "name": "Heizpuffer Heizeinsatz Anzeige"
+      },
+      "dhw_heater_status": {
+        "name": "Warmwasser Heizeinsatz Anzeige"
       }
     }
   }

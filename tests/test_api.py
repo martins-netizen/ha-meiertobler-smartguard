@@ -106,6 +106,7 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         session = FakeSession(
             [FakeResponse(200, identity)]
             + [FakeResponse(200, {"value": value}) for value in values]
+            + [FakeResponse(200, {"enabled": False}) for _ in range(2)]
         )
         client = SmartGuardApiClient("192.0.2.10", session)
 
@@ -116,7 +117,7 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(parsed_identity.serial_number, "654321")
         self.assertEqual(list(snapshot), [point.key for point in DATA_POINTS])
         self.assertEqual(snapshot["hk60_operating_status"], 2)
-        self.assertIn("/api/v1/1001/654321/1/2/datapoints/5009", session.urls[-1])
+        self.assertIn("http://192.0.2.10/api/v1/1001/654321/1/2/datapoints/5009", session.urls)
 
     async def test_rejects_unsupported_device(self) -> None:
         session = FakeSession(

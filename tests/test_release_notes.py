@@ -6,6 +6,17 @@ import pytest
 
 from scripts.validate import ROOT, validate_release_notes
 
+CANDIDATE_NOTES = (
+    "# Release notes: 0.4.0\n\n"
+    "Status: release candidate\n\n"
+    "This candidate is not yet published. The annotated `v0.4.0` tag is pending.\n"
+)
+
+
+def test_candidate_fixture_passes() -> None:
+    """Candidate validation stays covered after the repository publishes a release."""
+    validate_release_notes("0.4.0", CANDIDATE_NOTES)
+
 
 def test_prepared_and_historical_release_notes_pass() -> None:
     """A prepared version must not borrow the previous release's publication."""
@@ -20,7 +31,7 @@ def test_prepared_and_historical_release_notes_pass() -> None:
 )
 def test_candidate_rejects_misleading_or_mismatched_metadata(change: str) -> None:
     """Preparation cannot pass with missing or contradictory release identity."""
-    notes = (ROOT / "docs/RELEASE_NOTES_0.4.0.md").read_text(encoding="utf-8")
+    notes = CANDIDATE_NOTES
     if change == "unsupported_status":
         notes = notes.replace("Status: release candidate", "Status: ready")
     elif change == "ambiguous_status":
@@ -31,6 +42,7 @@ def test_candidate_rejects_misleading_or_mismatched_metadata(change: str) -> Non
         notes = notes.replace("# Release notes: 0.4.0", "# Release notes: 0.3.0")
     else:
         notes = notes.replace("annotated `v0.4.0` tag", "annotated `v0.3.0` tag")
+    assert notes != CANDIDATE_NOTES
     with pytest.raises(RuntimeError):
         validate_release_notes("0.4.0", notes)
 

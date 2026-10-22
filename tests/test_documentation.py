@@ -20,6 +20,7 @@ def test_documentation_is_linked_and_local_links_resolve() -> None:
         "docs/HACS_TEST_V0.3.0.md",
         "docs/RELEASE_CHECKLIST.md",
         "docs/RELEASE_NOTES_0.3.0.md",
+        "docs/RELEASE_NOTES_0.4.0.md",
         "docs/TROUBLESHOOTING.md",
     }
     assert required_guides <= set(re.findall(r"\]\(([^)#]+\.md)(?:#[^)]+)?\)", readme))

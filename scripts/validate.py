@@ -98,6 +98,24 @@ def _validate_local_markdown_links() -> None:
                 )
 
 
+def validate_release_notes(version: str, release_notes: str) -> None:
+    """Accept an honest candidate or a published release with its own evidence."""
+    for fragment in (f"# Release notes: {version}", f"annotated `v{version}` tag"):
+        if fragment not in release_notes:
+            raise RuntimeError(f"Release notes are missing required text: {fragment}")
+    statuses = re.findall(r"^Status: (.+)$", release_notes, flags=re.MULTILINE)
+    if statuses == ["release candidate"]:
+        if "not yet published" not in release_notes:
+            raise RuntimeError("Candidate release notes must state not yet published")
+    elif statuses == ["published release"]:
+        if f"releases/tag/v{version}" not in release_notes:
+            raise RuntimeError("Published release notes must link their own version")
+        if re.search(r"SHA-256\s+`[0-9a-f]{64}`", release_notes) is None:
+            raise RuntimeError("Published release notes must record a SHA-256 checksum")
+    else:
+        raise RuntimeError("Release notes must have one supported publication status")
+
+
 def _validate_documentation(version: str) -> None:
     """Validate user documentation and privacy-sensitive support surfaces."""
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -120,15 +138,7 @@ def _validate_documentation(version: str) -> None:
     if not release_notes_path.is_file():
         raise RuntimeError(f"Release notes are missing: {release_notes_path.name}")
     release_notes = release_notes_path.read_text(encoding="utf-8")
-    for fragment in (
-        f"# Release notes: {version}",
-        "Status: published release",
-        "releases/tag/v0.3.0",
-        "190b3aeb71e43fed8592242416ed5cd702bdbc9c2e82bdb279b4cea4d9209dc5",
-        f"annotated `v{version}` tag",
-    ):
-        if fragment not in release_notes:
-            raise RuntimeError(f"Release notes are missing required text: {fragment}")
+    validate_release_notes(version, release_notes)
 
     troubleshooting = (ROOT / "docs" / "TROUBLESHOOTING.md").read_text(encoding="utf-8")
     for heading in ("### Symptom", "### Description", "### Resolution"):

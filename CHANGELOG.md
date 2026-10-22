@@ -5,12 +5,31 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+## [0.4.0] - Unreleased
+
+Release candidate; not yet published.
+
 ### Added
 
 - Optional heating-buffer and domestic-hot-water temperatures, heater status
   indicators and operating-hour counters. Enabled modules are discovered via
   the manufacturer-documented config endpoints. Missing or malformed optional
   readings do not interrupt the existing core entities.
+
+### Security
+
+- Restrict release output to the repository's `dist` directory and replace
+  artifact symlinks without writing to their targets.
+- Require SHA-256 hashes in both CI installation workflows. Prefer wheels;
+  permit only the two documented source-only test dependencies, with pinned,
+  hashed build tools and automatic build-dependency fetching disabled.
+
+### Documentation
+
+- Record the successful Home Assistant test of all six optional measurements
+  and preservation of the original entities and settings.
+- Separate release-candidate validation from published-release evidence while
+  retaining the immutable 0.3.0 publication record.
 
 ## [0.3.0] - 2026-09-20
 

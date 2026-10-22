@@ -43,6 +43,12 @@ A local Home Assistant integration for Meier Tobler SmartGuard 2.0 gateways.
 
 ## Status
 
+The development branch targets **0.4.0**, a release candidate that is not yet
+published. It adds six optional storage measurements and hardens release/CI
+tooling. The feature code has passed a Home Assistant installation test;
+release publication and a HACS 0.3.0-to-0.4.0 update test remain separate steps.
+See the [0.4.0 candidate notes](docs/RELEASE_NOTES_0.4.0.md).
+
 Version [`0.3.0`](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0)
 is the first public, field-tested release. It provides:
 
@@ -143,12 +149,14 @@ concurrently.
 | HK60 effective operating mode | `5005` |
 | HK60 season status | `5009` |
 
-### Additional measurements in development
+### Additional measurements in the 0.4.0 candidate
 
-The next release adds optional heating-buffer and hot-water measurements;
+The 0.4.0 candidate adds optional heating-buffer and hot-water measurements;
 see [Additional measurements](docs/ADDITIONAL_MEASUREMENTS.md) for their API
-sources, availability behavior and test status. Published `v0.3.0` retains the
-eight sensors listed above.
+sources, availability behavior and completed Home Assistant feature test.
+When both modules provide valid data, the candidate has 12 sensors, two binary
+indicators and the existing HK60 select. Published `v0.3.0` retains the eight
+sensors listed above.
 
 ## HK60 operating-mode select
 
@@ -188,6 +196,8 @@ redacted. The integration does not store or expose a SmartGuard password.
 - [Changelog](CHANGELOG.md) records the development history, and the
   [0.3.0 release notes](docs/RELEASE_NOTES_0.3.0.md) describe the published
   release and its validation evidence.
+- [0.4.0 candidate notes](docs/RELEASE_NOTES_0.4.0.md) describe the pending
+  update, compatibility and remaining publication checks.
 
 Bug reports use a structured issue form and must contain only sanitized,
 synthetic installation data. Security vulnerabilities must be reported
@@ -243,7 +253,7 @@ Run the deterministic repository checks with:
 ```bash
 python3 scripts/validate.py
 python3 scripts/release.py check
-python3 scripts/release.py verify-tag --tag v0.3.0
+python3 scripts/release.py verify-tag --tag v0.4.0
 python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
 python3 -m mypy \

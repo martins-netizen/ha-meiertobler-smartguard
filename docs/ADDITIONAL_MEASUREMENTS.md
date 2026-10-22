@@ -1,7 +1,7 @@
 # Additional storage measurements
 
-Status: implementation for the next release; read-only gateway verification
-passed. Home Assistant installation testing is still pending.
+Status: **PASS** for read-only gateway verification and Home Assistant feature
+installation testing. Included in the unpublished 0.4.0 candidate.
 The published `v0.3.0` release retains eight sensors and one HK60 mode select.
 
 ## Data sources
@@ -39,7 +39,8 @@ This extension adds no heater controls or setpoint changes.
 - [x] Check API paths and types against the manufacturer documentation.
 - [x] Verify module configuration and the six read-only endpoints on a live gateway.
 - [x] Cross-check the two storage temperature readings against a device display.
-- [ ] Confirm entity discovery, units and availability on the test installation.
+- [x] Confirm entity discovery, units and availability on the test installation.
+- [x] Confirm preservation of existing entity IDs and personal settings.
 
 ## Read-only verification outcome
 
@@ -48,5 +49,16 @@ display comparison supported the two temperature mappings. The detailed
 measurement report and installation-specific sensor labels remain private.
 No write, reload or restart was performed by the read-only probe.
 
-Entity discovery, units, availability and preservation of existing entities
-must still be verified after installing the merged code in Home Assistant.
+## Home Assistant installation outcome
+
+The merged feature source was installed and verified byte for byte. All 15
+entities were available: the original eight sensors and HK60 select, plus two
+storage temperatures, two diagnostic operating-hour counters and two heater
+indicators. Temperature and inactive-indicator display was confirmed; zero
+operating hours remained valid. Existing IDs, personal settings and protected
+Home Assistant configuration were preserved. The installer made no mode writes.
+
+This is a feature installation test, not a claim that 0.4.0 is published or that
+HACS has already distributed it. A tagged-bundle check and HACS upgrade test
+remain part of the release process. Raw diagnostics, measurements, hostnames
+and device identifiers remain private.

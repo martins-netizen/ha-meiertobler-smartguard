@@ -5,9 +5,10 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-## [0.4.0] - Unreleased
+## [0.4.0] - 2026-10-22
 
-Release candidate; not yet published.
+Published release; see [release notes](docs/RELEASE_NOTES_0.4.0.md) for integrity
+and validation evidence. The release-specific HACS upgrade test remains pending.
 
 ### Added
 

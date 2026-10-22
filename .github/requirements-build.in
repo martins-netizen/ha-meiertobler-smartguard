@@ -1,0 +1,4 @@
+# Tools for the two reviewed source-only CI dependencies (see CONTRIBUTING.md).
+pip==26.2.1
+setuptools
+wheel

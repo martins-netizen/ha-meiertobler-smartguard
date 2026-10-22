@@ -31,10 +31,26 @@ jobs:
         with:
           python-version: "3.14"
           cache: pip
-          cache-dependency-path: .github/requirements-ci.txt
+          cache-dependency-path: |
+            .github/requirements-build.txt
+            .github/requirements-ci.txt
+
+      - name: Install pinned build tools
+        run: >-
+          python -m pip install --disable-pip-version-check
+          --require-hashes --only-binary=:all:
+          -r .github/requirements-build.txt
 
       - name: Install validation dependencies
-        run: python -m pip install --disable-pip-version-check -r .github/requirements-ci.txt
+        # These two transitive test dependencies publish source archives only.
+        # Hashes and preinstalled build tools also cover their permitted builds.
+        run: >-
+          python -m pip install --disable-pip-version-check
+          --require-hashes --only-binary=:all: --no-binary=mock-open,pyric
+          --no-build-isolation --no-deps -r .github/requirements-ci.txt
+
+      - name: Check installed dependency consistency
+        run: python -m pip check
 
       - name: Validate repository invariants
         run: python scripts/validate.py

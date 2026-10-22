@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import re
+import tempfile
 import tomllib
 from collections.abc import Iterator, Sequence
 from pathlib import Path
@@ -67,7 +68,9 @@ def verify_tag(tag: str, root: Path = ROOT) -> str:
     """Verify that a stable release tag exactly matches the source version."""
     match = TAG_PATTERN.fullmatch(tag)
     if match is None:
-        raise ReleaseGateError("Release tag must use the stable form vMAJOR.MINOR.PATCH")
+        raise ReleaseGateError(
+            "Release tag must use the stable form vMAJOR.MINOR.PATCH"
+        )
     version = read_version(root)
     if tag != f"v{version}":
         raise ReleaseGateError(
@@ -85,7 +88,9 @@ def iter_release_files(root: Path = ROOT) -> Iterator[Path]:
     for path in sorted(integration.rglob("*")):
         relative = path.relative_to(root)
         if path.is_symlink():
-            raise ReleaseGateError(f"Release source must not contain symlinks: {relative}")
+            raise ReleaseGateError(
+                f"Release source must not contain symlinks: {relative}"
+            )
         if any(part in IGNORED_PARTS for part in relative.parts):
             continue
         if path.suffix in IGNORED_SUFFIXES:
@@ -100,25 +105,44 @@ def build_release(
 ) -> tuple[Path, Path]:
     """Build the deterministic integration ZIP and its SHA-256 checksum."""
     version = read_version(root)
-    output_directory.mkdir(parents=True, exist_ok=True)
-    archive = output_directory / f"meiertobler_smartguard-{version}.zip"
-    checksum = archive.with_suffix(".zip.sha256")
+    root = root.resolve()
+    if not output_directory.is_absolute():
+        output_directory = root / output_directory
+    output_directory = output_directory.resolve()
+    if not output_directory.is_relative_to(root / "dist"):
+        raise ReleaseGateError(
+            "Release output must remain inside the repository's dist directory"
+        )
 
     files = list(iter_release_files(root))
     if not files:
         raise ReleaseGateError("Release source contains no files")
 
-    with ZipFile(archive, "w", compression=ZIP_DEFLATED, compresslevel=9) as bundle:
-        for path in files:
-            relative = path.relative_to(root).as_posix()
-            info = ZipInfo(relative, date_time=ZIP_TIMESTAMP)
-            info.compress_type = ZIP_DEFLATED
-            info.create_system = 3
-            info.external_attr = 0o100644 << 16
-            bundle.writestr(info, path.read_bytes(), compresslevel=9)
+    output_directory.mkdir(parents=True, exist_ok=True)
+    archive = output_directory / f"meiertobler_smartguard-{version}.zip"
+    checksum = archive.with_suffix(".zip.sha256")
 
-    digest = hashlib.sha256(archive.read_bytes()).hexdigest()
-    checksum.write_text(f"{digest}  {archive.name}\n", encoding="utf-8")
+    # Replace directory entries instead of following pre-existing artifact links.
+    with tempfile.TemporaryDirectory(
+        prefix=".release-", dir=output_directory
+    ) as staging:
+        staged_archive = Path(staging) / archive.name
+        staged_checksum = Path(staging) / checksum.name
+        with ZipFile(
+            staged_archive, "w", compression=ZIP_DEFLATED, compresslevel=9
+        ) as bundle:
+            for path in files:
+                relative = path.relative_to(root).as_posix()
+                info = ZipInfo(relative, date_time=ZIP_TIMESTAMP)
+                info.compress_type = ZIP_DEFLATED
+                info.create_system = 3
+                info.external_attr = 0o100644 << 16
+                bundle.writestr(info, path.read_bytes(), compresslevel=9)
+
+        digest = hashlib.sha256(staged_archive.read_bytes()).hexdigest()
+        staged_checksum.write_text(f"{digest}  {archive.name}\n", encoding="utf-8")
+        staged_archive.replace(archive)
+        staged_checksum.replace(checksum)
     return archive, checksum
 
 
@@ -135,6 +159,7 @@ def _parser() -> argparse.ArgumentParser:
         "--output-directory",
         type=Path,
         default=Path("dist"),
+        help="output directory inside the repository's dist directory (default: dist)",
     )
     return parser
 

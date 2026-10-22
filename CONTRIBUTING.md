@@ -25,7 +25,18 @@ merged automatically.
 Its header records `--universal` and the Python version used for resolution.
 Dependabot uses the `uv` ecosystem for `/.github`, which preserves these
 options. Keep this updater and the universal header so tool updates retain
-the macOS/Windows dependencies and environment markers.
+the macOS/Windows dependencies and environment markers. Retain
+`--generate-hashes` as well: CI rejects packages without their recorded SHA-256
+hashes. Existing dependency versions must remain unchanged when adding hashes.
+
+Both CI workflows install wheels by default. The only source-build exceptions
+are the transitive test dependencies `mock-open` and `pyric`, whose pinned
+versions provide no wheels. Their source archives must match the hashes in
+`requirements-ci.txt`. Builds use `--no-build-isolation` and `--no-deps`, so
+pip does not automatically fetch additional build tools or dependencies.
+`requirements-build.txt`, compiled from `requirements-build.in`, pins and hashes
+the build tools installed first. `pip check` verifies the final dependency set.
+Review the source-build allowlist whenever these two dependencies change.
 
 For a manual Ruff update, use the command recorded in the requirements header
 with `--upgrade-package ruff==<new-version>` added. Review the dependency diff
@@ -41,3 +52,9 @@ Pushing such a tag runs the read-only Release Gate. It repeats all repository,
 typing, and test checks and uploads a deterministic integration ZIP plus its
 SHA-256 checksum as a temporary workflow artifact. It does not create or
 publish a GitHub release. Publication remains a separate manual review step.
+
+Release artifacts may only be written inside the repository's `dist` directory.
+Relative `--output-directory` paths are interpreted from the repository root,
+regardless of the working directory. Paths and directory symlinks that escape
+`dist` are rejected before any output is created. Existing artifact symlinks
+are replaced without writing to their targets.

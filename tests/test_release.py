@@ -47,8 +47,8 @@ def _write_versions(
 
 def test_current_release_version_and_tag() -> None:
     """The repository version is stable and matches its prospective tag."""
-    assert read_version() == "0.3.0"
-    assert verify_tag("v0.3.0") == "0.3.0"
+    assert read_version() == "0.4.0"
+    assert verify_tag("v0.4.0") == "0.4.0"
 
 
 @pytest.mark.parametrize(
@@ -112,7 +112,8 @@ def test_release_documents_describe_published_release() -> None:
 
 def test_build_release_is_deterministic(tmp_path: Path) -> None:
     """Two builds contain the same files and produce identical bytes."""
-    _write_versions(tmp_path, "0.3.0", "0.3.0")
+    version = read_version()
+    _write_versions(tmp_path, version, version)
     shutil.copytree(
         ROOT / INTEGRATION_RELATIVE,
         tmp_path / INTEGRATION_RELATIVE,

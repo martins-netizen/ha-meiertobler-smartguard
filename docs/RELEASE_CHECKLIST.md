@@ -4,6 +4,31 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
+## 0.4.0 candidate record
+
+Status: prepared release candidate; not yet published.
+
+- [x] Select 0.4.0 for the additive storage measurements and release/CI hardening.
+- [x] Keep manifest, project and root lock-file versions consistent.
+- [x] Prepare [0.4.0 release notes](RELEASE_NOTES_0.4.0.md) and changelog.
+- [x] Complete the merged feature's Home Assistant installation test; see
+      [Additional measurements](ADDITIONAL_MEASUREMENTS.md).
+- [ ] Pass all release-PR checks and approve the exact final merge commit.
+- [ ] Create the annotated `v0.4.0` tag and pass its Release Gate.
+- [ ] Inspect and verify the tagged ZIP/checksum against the selected commit.
+- [ ] Explicitly approve and publish the full GitHub release.
+- [ ] Verify HACS update from published 0.3.0 to published 0.4.0.
+
+The preparation helper requires security PR #23 to be merged and its protected
+`main` checks to pass before it opens the release PR.
+
+The completed feature test need not be repeated solely for a manifest version
+change. Preserve that evidence and verify that the release's runtime files are
+otherwise identical. Initial installation on the minimum supported Home
+Assistant version remains a distinct, unclaimed check. Existing guarded night
+switching has been exercised in the field; read-only measurements do not
+require another physical mode change.
+
 ## Published 0.3.0 record
 
 - [x] Protected source commit:

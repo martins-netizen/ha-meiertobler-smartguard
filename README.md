@@ -1,5 +1,29 @@
 # Meier Tobler SmartGuard for Home Assistant
 
+## Release status and current functionality
+
+The `main` branch contains the prepared **0.4.0** update, including six optional
+heating-buffer and domestic-hot-water measurements:
+
+| Module | Additional measurements |
+| --- | --- |
+| Heating buffer | Temperature, reported heater status, heater operating hours |
+| Domestic hot water | Temperature, reported heater status, heater operating hours |
+
+With both modules enabled and returning valid data, **0.4.0 provides 12 sensors,
+two binary sensors and one HK60 operating-mode select**. Operating-hour counters
+are diagnostic entities. Heater indicators report gateway status, not measured
+electrical power or energy. Existing entities, IDs and mode controls are retained.
+See [Additional measurements](docs/ADDITIONAL_MEASUREMENTS.md) for details and the
+completed Home Assistant feature test.
+
+**0.4.0 is not yet published.** The latest published HACS version is still
+[**0.3.0**](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0),
+with eight sensors and one mode select. The instructions below install that
+published version. The 0.4.0 tag, Release Gate and full GitHub release are the
+remaining publication steps; a HACS upgrade check follows publication. See the
+[0.4.0 candidate notes](docs/RELEASE_NOTES_0.4.0.md).
+
 ## Deutsch: SmartGuard 2.0 in Home Assistant
 
 Diese lokale Integration verbindet **Meier Tobler SmartGuard 2.0** mit
@@ -41,13 +65,7 @@ ohne Verbindung zu oder Unterstützung durch Meier Tobler AG.
 
 A local Home Assistant integration for Meier Tobler SmartGuard 2.0 gateways.
 
-## Status
-
-The development branch targets **0.4.0**, a release candidate that is not yet
-published. It adds six optional storage measurements and hardens release/CI
-tooling. The feature code has passed a Home Assistant installation test;
-release publication and a HACS 0.3.0-to-0.4.0 update test remain separate steps.
-See the [0.4.0 candidate notes](docs/RELEASE_NOTES_0.4.0.md).
+## Published 0.3.0 release
 
 Version [`0.3.0`](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0)
 is the first public, field-tested release. It provides:

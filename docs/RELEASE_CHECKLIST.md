@@ -4,23 +4,30 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-## 0.4.0 candidate record
+## Published 0.4.0 record
 
-Status: prepared release candidate; not yet published.
+Status: published on 2026-10-22 at 20:01:41 UTC; release-specific HACS upgrade
+test pending.
 
 - [x] Select 0.4.0 for the additive storage measurements and release/CI hardening.
 - [x] Keep manifest, project and root lock-file versions consistent.
 - [x] Prepare [0.4.0 release notes](RELEASE_NOTES_0.4.0.md) and changelog.
 - [x] Complete the merged feature's Home Assistant installation test; see
       [Additional measurements](ADDITIONAL_MEASUREMENTS.md).
-- [ ] Pass all release-PR checks and approve the exact final merge commit.
-- [ ] Create the annotated `v0.4.0` tag and pass its Release Gate.
-- [ ] Inspect and verify the tagged ZIP/checksum against the selected commit.
-- [ ] Explicitly approve and publish the full GitHub release.
+- [x] Pass release PR #24 and final source `main` checks: Quality, Hassfest,
+      HACS and SonarCloud. Source: `02b7cff7869a642b2191d3877e19f211cc72a35f`.
+- [x] Create the annotated `v0.4.0` tag and pass its
+      [Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/39843987656).
+- [x] Inspect and verify the tagged ZIP/checksum and all 18 integration files.
+      SHA-256: `9b856d6c16bb023262992da7a9528a71cdc231ce92abe7e4e54daea3182bb4b2`.
+- [x] Explicitly approve and publish the
+      [full latest release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.4.0).
+- [x] Verify the public release, latest status and both downloaded assets.
 - [ ] Verify HACS update from published 0.3.0 to published 0.4.0.
 
-The preparation helper requires security PR #23 to be merged and its protected
-`main` checks to pass before it opens the release PR.
+Security PR #23, release PR #24 and README PR #25 were merged before tagging.
+The publication check did not contact Home Assistant. The completed feature
+installation is distinct from the pending HACS release upgrade test.
 
 The completed feature test need not be repeated solely for a manifest version
 change. Preserve that evidence and verify that the release's runtime files are

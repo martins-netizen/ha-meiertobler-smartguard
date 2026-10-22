@@ -2,7 +2,7 @@
 
 ## Release status and current functionality
 
-The `main` branch contains the prepared **0.4.0** update, including six optional
+The published **0.4.0** release adds six optional
 heating-buffer and domestic-hot-water measurements:
 
 | Module | Additional measurements |
@@ -17,12 +17,11 @@ electrical power or energy. Existing entities, IDs and mode controls are retaine
 See [Additional measurements](docs/ADDITIONAL_MEASUREMENTS.md) for details and the
 completed Home Assistant feature test.
 
-**0.4.0 is not yet published.** The latest published HACS version is still
-[**0.3.0**](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0),
-with eight sensors and one mode select. The instructions below install that
-published version. The 0.4.0 tag, Release Gate and full GitHub release are the
-remaining publication steps; a HACS upgrade check follows publication. See the
-[0.4.0 candidate notes](docs/RELEASE_NOTES_0.4.0.md).
+**[0.4.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.4.0)
+is the latest published release**, available through the existing HACS entry.
+The annotated tag, Release Gate and attached ZIP/checksum were verified before
+publication on 2026-10-22. The separate HACS upgrade test remains pending; see
+the [0.4.0 release notes](docs/RELEASE_NOTES_0.4.0.md).
 
 ## Deutsch: SmartGuard 2.0 in Home Assistant
 
@@ -31,10 +30,14 @@ Diese lokale Integration verbindet **Meier Tobler SmartGuard 2.0** mit
 SmartGuard-Gateway und ermöglicht die Anzeige der verifizierten Anlagenwerte
 sowie die Betriebsmoduswahl für den **HK60-Heizkreis**.
 
-Version **0.3.0** bietet:
+Version **0.4.0** bietet:
 
 - acht Sensoren für Wärmequelle, Kondensator, HK60-Vorlauf sowie Betriebsmodus,
   Betriebsstatus und Saisonstatus;
+- optional je eine Temperatur, Heizeinsatz-Anzeige und Betriebsstundenzählung
+  für Heizpuffer und Warmwasser: insgesamt bis zu zwölf Sensoren und zwei
+  Binärsensoren; die Anzeigen melden den Gateway-Status, keine elektrische
+  Leistung oder Energie;
 - eine Auswahl für den HK60-Betriebsmodus, einschliesslich Auto, Heizen und
   Kühlen, mit unmittelbarer Rückleseprüfung nach jeder Änderung;
 - lokale Abfragen alle 60 Sekunden, Einrichtung über die Oberfläche und
@@ -44,11 +47,12 @@ Geprüft ist SmartGuard 2.0 mit Gerätetyp `1001`; für die HK60-Entitäten muss
 HK60 aktiviert sein. Benötigt wird Home Assistant **2026.9.0 oder neuer**.
 
 **Installation über HACS:** In HACS nach **Meier Tobler SmartGuard** suchen,
-Version **0.3.0** herunterladen und Home Assistant neu starten. Anschliessend
+Version **0.4.0** herunterladen und Home Assistant neu starten. Anschliessend
 unter **Einstellungen > Geräte & Dienste > Integration hinzufügen** nach
 **Meier Tobler SmartGuard** suchen und den Hostnamen oder die IP-Adresse des
 Gateways eingeben. Die ausführlichen [Installationsschritte](#installation)
-stehen weiter unten.
+stehen weiter unten. Bei einem Update bleibt die bestehende Integration
+erhalten; sie muss nicht erneut eingerichtet werden.
 
 Die Integration wurde am **19. Oktober 2026** in den HACS-Standardkatalog
 [aufgenommen](https://github.com/hacs/default/pull/11172). Die Verteilung des
@@ -65,15 +69,17 @@ ohne Verbindung zu oder Unterstützung durch Meier Tobler AG.
 
 A local Home Assistant integration for Meier Tobler SmartGuard 2.0 gateways.
 
-## Published 0.3.0 release
+## Published 0.4.0 release
 
-Version [`0.3.0`](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0)
-is the first public, field-tested release. It provides:
+Version [`0.4.0`](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.4.0)
+extends the first public, field-tested 0.3.0 release. It provides:
 
 - UI configuration and connection validation;
 - stable device identification from the gateway API;
 - one coordinated update every 60 seconds;
-- eight sensor entities for the currently verified controller and HK60 data;
+- eight sensor entities for the verified controller and HK60 data;
+- six optional storage measurements: two temperatures, two diagnostic
+  operating-hour counters and two reported heater-status binary sensors;
 - one HK60 operating-mode select with an allowlist and immediate readback;
 - redacted diagnostics for support and local troubleshooting;
 - one tested, guarded night-heating blueprint with a stable public source;
@@ -89,7 +95,7 @@ value. The displayed state is never changed optimistically.
 
 The locally verified SmartGuard REST data API is available over HTTP without
 authentication. The password configured in the local SmartGuard user interface
-does not protect this HTTP REST endpoint. Version `0.3.0` therefore communicates
+does not protect this HTTP REST endpoint. The integration therefore communicates
 only over local HTTP and never stores SmartGuard credentials.
 
 Use this integration only on a segmented local network. Restrict TCP port 80 on
@@ -104,14 +110,16 @@ This integration was added to the default HACS catalogue on 2026-10-19 in
 [hacs/default#11172](https://github.com/hacs/default/pull/11172).
 
 1. Open **HACS** in Home Assistant and search for **Meier Tobler SmartGuard**.
-2. Open the integration, select **Download**, and choose version `v0.3.0`.
+2. Open the integration, select **Download**, and choose version `v0.4.0`.
 3. Restart Home Assistant when HACS requests it.
 4. Open **Settings > Devices & services > Add integration** and select
    **Meier Tobler SmartGuard**.
 5. Enter the hostname or IP address of the SmartGuard gateway.
 
-Catalogue updates can take up to eight hours after approval. Existing HACS
-installations do not need to be reinstalled because of the catalogue addition.
+For an existing installation, use **Update** on the existing HACS entry and
+restart Home Assistant. Keep the config entry, entity settings and automations;
+do not add the integration again. The release-specific upgrade test is tracked
+in the [release checklist](docs/RELEASE_CHECKLIST.md).
 
 ### HACS custom repository
 
@@ -123,7 +131,7 @@ distributed, add it as a custom integration repository:
 3. Enter `https://github.com/martins-netizen/ha-meiertobler-smartguard`.
 4. Select **Integration** as the category and add the repository.
 5. Open **Meier Tobler SmartGuard**, select **Download**, choose version
-   `v0.3.0`, and restart Home Assistant when HACS requests it.
+   `v0.4.0`, and restart Home Assistant when HACS requests it.
 6. Open **Settings > Devices & services > Add integration** and select
    **Meier Tobler SmartGuard**.
 
@@ -134,8 +142,8 @@ first end-to-end HACS installation test is tracked separately in the
 
 ### Manual installation
 
-Download the attached `meiertobler_smartguard-0.3.0.zip` from the
-[0.3.0 release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.3.0),
+Download the attached `meiertobler_smartguard-0.4.0.zip` from the
+[0.4.0 release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.4.0),
 verify its published SHA-256 checksum, and extract it into the Home Assistant
 configuration directory so that the integration is located at
 `/config/custom_components/meiertobler_smartguard`. Restart Home Assistant,
@@ -167,14 +175,13 @@ concurrently.
 | HK60 effective operating mode | `5005` |
 | HK60 season status | `5009` |
 
-### Additional measurements in the 0.4.0 candidate
+### Additional measurements in 0.4.0
 
-The 0.4.0 candidate adds optional heating-buffer and hot-water measurements;
+Version 0.4.0 adds optional heating-buffer and hot-water measurements;
 see [Additional measurements](docs/ADDITIONAL_MEASUREMENTS.md) for their API
 sources, availability behavior and completed Home Assistant feature test.
-When both modules provide valid data, the candidate has 12 sensors, two binary
-indicators and the existing HK60 select. Published `v0.3.0` retains the eight
-sensors listed above.
+When both modules provide valid data, the integration has 12 sensors, two binary
+indicators and the existing HK60 select. The eight core sensors are listed above.
 
 ## HK60 operating-mode select
 
@@ -214,8 +221,8 @@ redacted. The integration does not store or expose a SmartGuard password.
 - [Changelog](CHANGELOG.md) records the development history, and the
   [0.3.0 release notes](docs/RELEASE_NOTES_0.3.0.md) describe the published
   release and its validation evidence.
-- [0.4.0 candidate notes](docs/RELEASE_NOTES_0.4.0.md) describe the pending
-  update, compatibility and remaining publication checks.
+- [0.4.0 release notes](docs/RELEASE_NOTES_0.4.0.md) describe the current
+  release, compatibility, publication evidence and pending HACS upgrade test.
 
 Bug reports use a structured issue form and must contain only sanitized,
 synthetic installation data. Security vulnerabilities must be reported
@@ -224,7 +231,7 @@ privately as described in [SECURITY.md](SECURITY.md).
 ## Development and HACS status
 
 The repository is public, and the Quality, Hassfest, and official HACS
-validation jobs pass on the protected `main` branch. Version `0.3.0` is a full
+validation jobs pass on the protected `main` branch. Version `0.4.0` is a full
 GitHub release and is available through HACS.
 
 Inclusion in the default HACS catalogue was requested on 2026-09-22 in
@@ -249,8 +256,8 @@ SHA-256 checksum.
 The workflow uploads these files only as a temporary GitHub Actions artifact.
 It does not create or publish a GitHub release. After manual inspection, a
 release must still be created explicitly; therefore pushing a tag alone can
-never publish this integration. Version `0.3.0` completed this process before
-its public release.
+never publish this integration. Versions `0.3.0` and `0.4.0` completed this
+process before their public releases.
 
 ## Removal
 

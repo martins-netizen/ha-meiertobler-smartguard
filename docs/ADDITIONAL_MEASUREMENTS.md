@@ -1,8 +1,9 @@
 # Additional storage measurements
 
 Status: **PASS** for read-only gateway verification and Home Assistant feature
-installation testing. Included in the unpublished 0.4.0 candidate.
-The published `v0.3.0` release retains eight sensors and one HK60 mode select.
+installation testing. Included in the published
+[0.4.0 release](RELEASE_NOTES_0.4.0.md). The separate release-specific HACS
+upgrade test remains pending.
 
 ## Data sources
 
@@ -58,7 +59,8 @@ indicators. Temperature and inactive-indicator display was confirmed; zero
 operating hours remained valid. Existing IDs, personal settings and protected
 Home Assistant configuration were preserved. The installer made no mode writes.
 
-This is a feature installation test, not a claim that 0.4.0 is published or that
-HACS has already distributed it. A tagged-bundle check and HACS upgrade test
-remain part of the release process. Raw diagnostics, measurements, hostnames
-and device identifiers remain private.
+This feature installation test preceded publication. The subsequent tagged
+bundle and publication checks are recorded in the [0.4.0 release notes](RELEASE_NOTES_0.4.0.md).
+The HACS upgrade, restart and availability test remains pending in the
+[release checklist](RELEASE_CHECKLIST.md). Raw diagnostics, measurements,
+hostnames and device identifiers remain private.

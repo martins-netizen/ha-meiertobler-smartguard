@@ -1,10 +1,10 @@
 # Release notes: 0.4.0
 
-Status: release candidate
+Status: published release
 
-This candidate is not yet published. The planned annotated `v0.4.0` tag,
-tagged Release Gate and full GitHub release remain pending. The latest
-published release is [0.3.0](RELEASE_NOTES_0.3.0.md).
+[Version 0.4.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.4.0)
+was published as a full, latest GitHub release on 2026-10-22. Its
+annotated `v0.4.0` tag and Release Gate were verified before publication.
 
 ## Changes from 0.3.0
 
@@ -33,7 +33,7 @@ electrical power or energy meters.
   first valid readings; unavailable modules do not block the original entities.
 - No new runtime dependency, configuration migration or entity renaming.
 
-After publication, use the existing HACS entry to update to 0.4.0 and restart
+Use the existing HACS entry to update to 0.4.0 and restart
 Home Assistant. Keep the existing config entry; do not remove and recreate the
 integration. Confirm the existing entities and any supported additional values.
 Operating-hour counters are diagnostic entities and may appear in that section.
@@ -52,11 +52,28 @@ original mode select and guarded night automation have prior field evidence.
 See [Additional measurements](ADDITIONAL_MEASUREMENTS.md) for the anonymized
 feature result. These checks do not claim a new HACS release upgrade test.
 
-Repository validation, Ruff, strict MyPy, regression tests and deterministic
-local bundle checks are required for this candidate. Successful PR and final
-`main` checks, the annotated-tag Release Gate, bundle inspection, explicit
-publication and the HACS 0.3.0-to-0.4.0 update check are recorded separately in
-the [release checklist](RELEASE_CHECKLIST.md).
+Release PR #24 and README PR #25 were merged through the protected branch.
+Quality, Hassfest, HACS and SonarCloud passed on source commit
+`02b7cff7869a642b2191d3877e19f211cc72a35f`. The tagged
+[Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/39843987656)
+passed repository validation, Ruff, strict MyPy and the regression suite.
+
+The 18 integration files in the downloaded bundle were verified byte for byte
+against the tagged source. The two uploaded release assets, public release and
+latest-release status were verified after publication at 20:01:41 UTC.
+The HACS 0.3.0-to-0.4.0 upgrade, restart and availability check remains pending
+in the [release checklist](RELEASE_CHECKLIST.md).
+
+## Integrity
+
+Source commit: `02b7cff7869a642b2191d3877e19f211cc72a35f`.
+Annotated tag object: `db9198f50e5b35e920e895c1cf0c6e6d45d4ffd8`.
+
+Manual bundle: `meiertobler_smartguard-0.4.0.zip` (18 integration files).
+SHA-256 `9b856d6c16bb023262992da7a9528a71cdc231ce92abe7e4e54daea3182bb4b2`.
+The attached `.zip.sha256` file contains the same checksum. GitHub-generated
+source archives are distinct from this manual-installation bundle; HACS uses
+the tagged integration source tree.
 
 ## Known limitations
 

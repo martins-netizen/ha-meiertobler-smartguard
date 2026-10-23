@@ -2,8 +2,9 @@
 
 Status: **PASS** for read-only gateway verification and Home Assistant feature
 installation testing. Included in the published
-[0.4.0 release](RELEASE_NOTES_0.4.0.md). The separate release-specific HACS
-upgrade test remains pending.
+[0.4.0 release](RELEASE_NOTES_0.4.0.md). The subsequent HACS
+upgrade and entity availability were user-confirmed; see
+[the upgrade record](HACS_TEST_V0.4.0.md).
 
 ## Data sources
 
@@ -61,6 +62,7 @@ Home Assistant configuration were preserved. The installer made no mode writes.
 
 This feature installation test preceded publication. The subsequent tagged
 bundle and publication checks are recorded in the [0.4.0 release notes](RELEASE_NOTES_0.4.0.md).
-The HACS upgrade, restart and availability test remains pending in the
-[release checklist](RELEASE_CHECKLIST.md). Raw diagnostics, measurements,
+The subsequent HACS upgrade and entity availability were user-confirmed in the
+[upgrade record](HACS_TEST_V0.4.0.md); no new independent byte or restart check
+is claimed. Raw diagnostics, measurements,
 hostnames and device identifiers remain private.

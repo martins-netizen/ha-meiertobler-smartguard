@@ -5,6 +5,18 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+## [0.4.1] - Unreleased
+
+Documentation patch candidate; not yet published.
+
+### Documentation
+
+- Replace the release-process-heavy README with a concise user overview,
+  illustrative graphic and links to installation and technical guides.
+- Keep installation instructions version-neutral across publication.
+- Record the user-confirmed 0.4.0 HACS update and entity availability.
+- Runtime logic is unchanged; only the integration manifest version advances.
+
 ## [0.4.0] - 2026-10-22
 
 Published release; see [release notes](docs/RELEASE_NOTES_0.4.0.md) for integrity

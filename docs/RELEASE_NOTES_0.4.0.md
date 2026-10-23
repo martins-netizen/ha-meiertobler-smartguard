@@ -50,7 +50,8 @@ bytes, all 15 entities, existing IDs/settings and protected configuration were
 verified. Temperature and inactive-indicator displays were confirmed. The
 original mode select and guarded night automation have prior field evidence.
 See [Additional measurements](ADDITIONAL_MEASUREMENTS.md) for the anonymized
-feature result. These checks do not claim a new HACS release upgrade test.
+feature result. The subsequent user-confirmed HACS upgrade is recorded separately in
+[HACS_TEST_V0.4.0.md](HACS_TEST_V0.4.0.md).
 
 Release PR #24 and README PR #25 were merged through the protected branch.
 Quality, Hassfest, HACS and SonarCloud passed on source commit
@@ -61,8 +62,10 @@ passed repository validation, Ruff, strict MyPy and the regression suite.
 The 18 integration files in the downloaded bundle were verified byte for byte
 against the tagged source. The two uploaded release assets, public release and
 latest-release status were verified after publication at 20:01:41 UTC.
-The HACS 0.3.0-to-0.4.0 upgrade, restart and availability check remains pending
-in the [release checklist](RELEASE_CHECKLIST.md).
+The maintainer confirmed the HACS update to 0.4.0 and existing entity
+availability on 2026-10-23. The starting installation already contained the
+storage feature. No new independent source-byte, registry or separate restart
+verification is claimed; see the [upgrade record](HACS_TEST_V0.4.0.md).
 
 ## Integrity
 

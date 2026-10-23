@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="480" viewBox="0 0 1120 480" role="img" aria-labelledby="title description">
+  <title id="title">Meier Tobler SmartGuard for Home Assistant</title>
+  <desc id="description">Local heat-pump monitoring, verified HK60 operating-mode selection and optional heating-buffer and hot-water readings. Illustrative overview without installation data.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0a2333"/><stop offset="1" stop-color="#101923"/></linearGradient>
+    <linearGradient id="shield" x1="48" y1="32" x2="208" y2="224" gradientUnits="userSpaceOnUse"><stop stop-color="#18A7C8"/><stop offset="1" stop-color="#075B91"/></linearGradient>
+  </defs>
+  <rect width="1120" height="480" rx="24" fill="url(#background)"/>
+  <path d="M48 212H1072" stroke="#294555"/>
+  <g transform="translate(38 34) scale(.58)">
+    <path fill="url(#shield)" d="M128 14 222 50v65c0 61-39 105-94 127-55-22-94-66-94-127V50l94-36Z"/>
+    <path fill="none" stroke="#fff" stroke-linecap="round" stroke-width="17" d="M82 99c0-15 12-27 27-27h38c15 0 27 12 27 27s-12 27-27 27h-38c-15 0-27 12-27 27s12 27 27 27h45"/>
+    <circle cx="177" cy="180" r="12" fill="#F7A51A"/>
+  </g>
+  <g font-family="DejaVu Sans, sans-serif">
+    <text x="215" y="66" font-size="19" letter-spacing="3" fill="#6cdbf4">MEIER TOBLER</text>
+    <text x="211" y="124" font-size="54" font-weight="700" fill="#f3f8fc">SmartGuard</text>
+    <text x="214" y="166" font-size="25" fill="#bfd1dc">Local heat-pump data in Home Assistant</text>
+    <g transform="translate(48 240)">
+      <rect width="320" height="151" rx="14" fill="#153141"/>
+      <rect width="4" height="96" y="27" rx="2" fill="#38c9e9"/>
+      <text x="24" y="40" font-size="22" font-weight="700" fill="#f3f8fc">Heat pump</text>
+      <text x="24" y="78" font-size="21" fill="#bfd1dc">Source and condenser</text>
+      <text x="24" y="109" font-size="21" fill="#bfd1dc">temperature readings</text>
+    </g>
+    <g transform="translate(400 240)">
+      <rect width="320" height="151" rx="14" fill="#153141"/>
+      <rect width="4" height="96" y="27" rx="2" fill="#38c9e9"/>
+      <text x="24" y="40" font-size="22" font-weight="700" fill="#f3f8fc">HK60 heating circuit</text>
+      <text x="24" y="78" font-size="21" fill="#bfd1dc">Status, flow temperature</text>
+      <text x="24" y="109" font-size="21" fill="#bfd1dc">and verified mode control</text>
+    </g>
+    <g transform="translate(752 240)">
+      <rect width="320" height="151" rx="14" fill="#153141"/>
+      <rect width="4" height="96" y="27" rx="2" fill="#f7a51a"/>
+      <text x="24" y="40" font-size="22" font-weight="700" fill="#f3f8fc">Optional storage</text>
+      <text x="24" y="78" font-size="21" fill="#bfd1dc">Buffer and hot water:</text>
+      <text x="24" y="109" font-size="21" fill="#bfd1dc">temperature, status, hours</text>
+    </g>
+    <text x="48" y="440" font-size="18" fill="#9ab5c5">Local polling · No cloud account · Existing automations retained</text>
+    <text x="1072" y="440" font-size="16" text-anchor="end" fill="#9ab5c5">Community integration</text>
+  </g>
+</svg>

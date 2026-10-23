@@ -4,10 +4,29 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
+## 0.4.1 documentation patch candidate
+
+Status: prepared candidate; not yet published.
+
+- [x] Prepare the concise README, illustrative graphic and linked guides.
+- [x] Keep manifest, project and lock-file root versions at 0.4.1.
+- [x] Retain 0.4.0 runtime logic; only its manifest version changes.
+- [x] Record the user-confirmed 0.4.0 HACS upgrade and entity availability.
+- [ ] Pass all PR checks and merge through the protected branch.
+- [ ] Verify Quality, Hassfest, HACS and SonarCloud on the final main commit.
+- [ ] Create annotated `v0.4.1`, pass its Release Gate and inspect the bundle.
+- [ ] Explicitly publish the full GitHub release with both verified assets.
+- [ ] Check the new README and graphic in HACS after metadata refresh.
+
+The README links to Releases for current availability. Candidate status belongs
+in versioned notes and this checklist, so the HACS description can remain useful
+before and after publication. Do not move the existing v0.4.0 tag to update it.
+
 ## Published 0.4.0 record
 
-Status: published on 2026-10-22 at 20:01:41 UTC; release-specific HACS upgrade
-test pending.
+Status: published on 2026-10-22 at 20:01:41 UTC. The maintainer confirmed the
+HACS upgrade and entity availability on 2026-10-23; see
+[HACS_TEST_V0.4.0.md](HACS_TEST_V0.4.0.md) for scope and limitations.
 
 - [x] Select 0.4.0 for the additive storage measurements and release/CI hardening.
 - [x] Keep manifest, project and root lock-file versions consistent.
@@ -23,11 +42,13 @@ test pending.
 - [x] Explicitly approve and publish the
       [full latest release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.4.0).
 - [x] Verify the public release, latest status and both downloaded assets.
-- [ ] Verify HACS update from published 0.3.0 to published 0.4.0.
+- [x] Receive user confirmation of the HACS update to published 0.4.0 and all
+      existing entities present. The prior installation was 0.3.0 plus the
+      already-tested storage feature; no new independent byte check is claimed.
 
 Security PR #23, release PR #24 and README PR #25 were merged before tagging.
 The publication check did not contact Home Assistant. The completed feature
-installation is distinct from the pending HACS release upgrade test.
+installation and the subsequent user-confirmed HACS upgrade are distinct records.
 
 The completed feature test need not be repeated solely for a manifest version
 change. Preserve that evidence and verify that the release's runtime files are
@@ -70,8 +91,8 @@ require another physical mode change.
       identifiers, or unreviewed diagnostics are present.
 - [ ] Run `python3 scripts/validate.py`.
 - [ ] Run `python3 scripts/release.py check`.
-- [ ] Run Ruff, strict MyPy, and the complete test suite documented in the
-      README.
+- [ ] Run Ruff, strict MyPy, and the complete test suite in the
+      [technical reference](TECHNICAL_REFERENCE.md).
 - [ ] Open a pull request and require successful Quality, Hassfest, and HACS
       checks before review.
 

@@ -150,10 +150,10 @@ def _validate_documentation(version: str) -> None:
         "triggers:",
         "conditions:",
         "actions:",
-        "action: select.select_option",
+        "use_blueprint:",
         "select.replace_with_your_smartguard_mode_select",
-        'option: "heating"',
-        'option: "auto"',
+        "path: martins-netizen/smartguard_guarded_night_heating.yaml",
+        "override_helper:",
     )
     if any(fragment not in examples for fragment in required_example_fragments):
         raise RuntimeError("Automation examples are missing a required safety pattern")
@@ -168,6 +168,8 @@ def _validate_documentation(version: str) -> None:
         "id: select_heating",
         "id: return_auto",
         "is_state(enable_helper_entity, 'on')",
+        "is_state(override_helper_entity, 'off')",
+        "is_state(override_helper_entity, 'on')",
         "is_state(mode_select_entity, 'auto')",
         "is_state(operating_status_entity, 'cooling')",
         "<= (maximum_temperature | float)",
@@ -175,6 +177,10 @@ def _validate_documentation(version: str) -> None:
         "action: select.select_option",
         "option: heating",
         "option: auto",
+        "id: clear_override",
+        "action: input_boolean.turn_on",
+        "action: input_boolean.turn_off",
+        "is_number(states(indoor_temperature_entity))",
     )
     if any(fragment not in blueprint for fragment in required_blueprint_fragments):
         raise RuntimeError("SmartGuard blueprint is missing a required safeguard")

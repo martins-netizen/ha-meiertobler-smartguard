@@ -70,6 +70,7 @@ by Meier Tobler AG. See the [security policy](SECURITY.md).
 - [Installation, updates and recovery](docs/INSTALLATION.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Guarded automation examples](docs/AUTOMATION_EXAMPLES.md)
+- [Blueprint and quality evidence review](docs/QUALITY_REVIEW.md)
 - [Additional storage measurements](docs/ADDITIONAL_MEASUREMENTS.md)
 - [Technical reference and development checks](docs/TECHNICAL_REFERENCE.md)
 - [Report a bug](https://github.com/martins-netizen/ha-meiertobler-smartguard/issues/new/choose)

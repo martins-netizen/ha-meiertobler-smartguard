@@ -36,7 +36,7 @@ rules:
   parallel-updates: done
   reauthentication-flow:
     status: exempt
-    comment: Version 0.3.0 uses the verified unauthenticated local HTTP API.
+    comment: The verified local HTTP API does not authenticate integration requests.
   test-coverage: done
 
   # Gold
@@ -51,7 +51,7 @@ rules:
   docs-data-update: done
   docs-examples:
     status: todo
-    comment: A stable public blueprint link exists; import and end-to-end migration testing remain.
+    comment: The blueprint has automated import and execution tests; UI import and production migration confirmation remain.
   docs-known-limitations: done
   docs-supported-devices: done
   docs-supported-functions: done
@@ -63,8 +63,8 @@ rules:
   entity-category: done
   entity-device-class: done
   entity-disabled-by-default:
-    status: exempt
-    comment: All version 0.3.0 entities are part of the verified functional core.
+    status: todo
+    comment: Optional diagnostic operating-hour counters are enabled by default; review their defaults without changing existing installations.
   entity-translations: done
   exception-translations: done
   icon-translations:

@@ -74,5 +74,8 @@ Run the complete suite for release-status changes, including release-note tests.
 Synthetic candidate cases use fixed text independently of the current release
 notes. CI requires at least 95 percent statement and branch coverage. The suite
 covers setup, unload/reload, config flow, coordinator, API/write verification,
-entity formatting, optional readings and redacted diagnostics. Recovery behavior
-and the public blueprint import check remain separate, unclaimed features.
+entity formatting, optional readings and redacted diagnostics. Blueprint tests
+also exercise the HA GitHub importer with mocked HTTP, time/state triggers,
+helper restoration and simulated mode writes. Real UI import and production
+replacement remain separate, unclaimed checks. See the
+[blueprint and quality evidence review](QUALITY_REVIEW.md).

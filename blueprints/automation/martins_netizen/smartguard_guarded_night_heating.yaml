@@ -4,8 +4,11 @@ blueprint:
     Selects heating at the configured night time only when the automation is
     enabled, the requested SmartGuard mode is auto, the operating status is
     cooling, and the indoor temperature is at or below the configured limit.
-    At the configured morning time it returns to auto only if the requested
-    mode is still heating, so a later manual selection is never overwritten.
+    A separate persistent helper records a confirmed change made by this
+    automation. At the configured morning time it returns to auto only while
+    that helper is on and the requested mode is still heating. Selecting
+    another known mode clears the helper. Selecting heating again while it is
+    already selected cannot be distinguished from keeping the night override.
   domain: automation
   author: martins-netizen
   homeassistant:
@@ -42,9 +45,19 @@ blueprint:
             entity:
               filter:
                 - domain: input_boolean
+        override_helper:
+          name: Night-heating ownership helper
+          description: >-
+            A separate input boolean used only by this automation. Create it
+            initially off and leave its state restoration enabled. Do not
+            reuse the enable helper or share it with another automation.
+          selector:
+            entity:
+              filter:
+                - domain: input_boolean
         indoor_temperature:
           name: Indoor-temperature sensor
-          description: A representative or maximum indoor-temperature sensor.
+          description: A representative or maximum indoor-temperature sensor in °C.
           selector:
             entity:
               filter:
@@ -80,6 +93,7 @@ variables:
   mode_select_entity: !input mode_select
   operating_status_entity: !input operating_status
   enable_helper_entity: !input enable_helper
+  override_helper_entity: !input override_helper
   indoor_temperature_entity: !input indoor_temperature
   maximum_temperature: !input maximum_indoor_temperature
 
@@ -90,8 +104,19 @@ triggers:
   - trigger: time
     at: !input auto_time
     id: return_auto
+  - trigger: state
+    entity_id: !input mode_select
+    to:
+      - auto
+      - normal
+      - reduced
+      - frost_protection
+      - cooling
+    id: clear_override
 
-conditions: []
+conditions:
+  - condition: template
+    value_template: "{{ enable_helper_entity != override_helper_entity }}"
 
 actions:
   - choose:
@@ -102,8 +127,11 @@ actions:
           - condition: template
             value_template: >-
               {{ is_state(enable_helper_entity, 'on')
+                 and is_state(override_helper_entity, 'off')
                  and is_state(mode_select_entity, 'auto')
                  and is_state(operating_status_entity, 'cooling')
+                 and state_attr(indoor_temperature_entity, 'unit_of_measurement') == '°C'
+                 and is_number(states(indoor_temperature_entity))
                  and (states(indoor_temperature_entity) | float(999))
                      <= (maximum_temperature | float) }}
         sequence:
@@ -112,19 +140,46 @@ actions:
               entity_id: !input mode_select
             data:
               option: heating
+          - condition: template
+            value_template: "{{ is_state(mode_select_entity, 'heating') }}"
+          - action: input_boolean.turn_on
+            target:
+              entity_id: !input override_helper
       - alias: Return only the blueprint's heating mode to auto
         conditions:
           - condition: trigger
             id: return_auto
           - condition: template
             value_template: >-
-              {{ is_state(mode_select_entity, 'heating') }}
+              {{ is_state(override_helper_entity, 'on')
+                 and is_state(mode_select_entity, 'heating') }}
         sequence:
           - action: select.select_option
             target:
               entity_id: !input mode_select
             data:
               option: auto
+          - condition: template
+            value_template: "{{ is_state(mode_select_entity, 'auto') }}"
+          - action: input_boolean.turn_off
+            target:
+              entity_id: !input override_helper
+      - alias: Forget ownership after a known different mode
+        conditions:
+          - condition: trigger
+            id:
+              - clear_override
+              - return_auto
+          - condition: template
+            value_template: >-
+              {{ is_state(override_helper_entity, 'on')
+                 and (trigger.id == 'clear_override' or
+                      states(mode_select_entity) in
+                      ['auto', 'normal', 'reduced', 'frost_protection', 'cooling']) }}
+        sequence:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: !input override_helper
 
-mode: single
-max_exceeded: silent
+mode: queued
+max: 10

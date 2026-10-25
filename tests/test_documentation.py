@@ -39,17 +39,13 @@ def test_documentation_is_linked_and_local_links_resolve() -> None:
 
 
 def test_automation_examples_use_guarded_current_syntax() -> None:
-    """Examples use placeholders, current syntax, and pre-write guards."""
+    """Examples document the ownership-aware blueprint and import namespace."""
     examples = (ROOT / "docs" / "AUTOMATION_EXAMPLES.md").read_text(encoding="utf-8")
     assert "triggers:" in examples
     assert "conditions:" in examples
     assert "actions:" in examples
-    assert "action: select.select_option" in examples
-    assert examples.count("select.replace_with_your_smartguard_mode_select") >= 5
-    assert 'state: "auto"' in examples
-    assert 'state: "heating"' in examples
-    assert 'option: "heating"' in examples
-    assert 'option: "auto"' in examples
+    assert "override_helper:" in examples
+    assert "path: martins-netizen/smartguard_guarded_night_heating.yaml" in examples
     assert "docs-examples` quality rule" in examples
 
 
@@ -57,13 +53,17 @@ def test_automation_example_yaml_is_valid() -> None:
     """Every automation example is a valid standalone YAML mapping."""
     examples = (ROOT / "docs" / "AUTOMATION_EXAMPLES.md").read_text(encoding="utf-8")
     blocks = re.findall(r"```yaml\n(.*?)\n```", examples, flags=re.DOTALL)
-    assert len(blocks) == 3
+    assert len(blocks) == 2
     for block in blocks:
         automation = yaml.safe_load(block)
         assert isinstance(automation, dict)
-        assert isinstance(automation.get("triggers"), list)
-        assert isinstance(automation.get("conditions"), list)
-        assert isinstance(automation.get("actions"), list)
+        if "use_blueprint" in automation:
+            inputs = automation["use_blueprint"]["input"]
+            assert inputs["enable_helper"] != inputs["override_helper"]
+        else:
+            assert isinstance(automation.get("triggers"), list)
+            assert isinstance(automation.get("conditions"), list)
+            assert isinstance(automation.get("actions"), list)
 
 
 def test_hacs_test_record_describes_source_based_installation() -> None:

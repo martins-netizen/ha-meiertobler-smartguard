@@ -10,7 +10,7 @@ blueprint:
     another known mode clears the helper. Selecting heating again while it is
     already selected cannot be distinguished from keeping the night override.
   domain: automation
-  author: Martin Schafer
+  author: martins-netizen
   homeassistant:
     min_version: 2026.9.0
   input:

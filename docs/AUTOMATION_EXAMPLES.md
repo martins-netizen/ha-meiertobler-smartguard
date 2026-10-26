@@ -13,36 +13,70 @@ temperature is low enough. A persistent ownership helper records a confirmed
 change made by this automation. Morning recovery leaves manually selected
 heating alone when that marker is off.
 
-### Prepare the inputs
+### 1. Create the two helpers
 
 Under **Settings > Devices & services > Helpers > Create helper > Toggle**,
-create **two separate Toggle helpers**. Start both off.
+create **two separate Toggle helpers**:
 
-| Input | Select or enter |
-| --- | --- |
-| HK60 operating-mode select | The SmartGuard select with internal options `auto` and `heating` |
-| HK60 operating-status sensor | The operating-status sensor, not selected/effective mode |
-| Automatic night-heating enable helper | A toggle for enabling new night overrides |
-| Night-heating ownership helper | A different toggle used exclusively by this automation |
-| Indoor-temperature sensor | A representative or maximum room temperature in **°C** |
-| Maximum indoor temperature | Your limit; default **25 °C**, not a heating setpoint |
-| Select heating / Return to auto | Local times; defaults **23:00 / 06:00** |
+1. **SmartGuard Blueprint – Freigabe**: permits new automatic night changes.
+2. **SmartGuard Blueprint – Nachtmerker**: remembers a confirmed change made by
+   this automation so it can return that change to Auto in the morning.
 
-Keep the ownership helper's normal state restoration. Do not configure an
-`initial` value that resets it at every restart. Do not share this marker with
-other automations or turn it on manually. Using the same helper for enable and
-ownership prevents all actions.
+Start **both off**. Use a new, dedicated marker for each automation. The
+blueprint selects existing helpers; it does not create them for you.
 
-### Import and create the automation
+Keep the marker's normal state restoration. If you create helpers in YAML,
+omit an `initial` value that would reset the marker at every restart. Use
+different helpers for the two fields. The automation manages the marker;
+leave it off during setup.
+
+### 2. Import the blueprint
 
 1. Open **Settings > Automations & scenes > Blueprints > Import blueprint**.
 2. Paste this GitHub address, select **Preview**, then **Import blueprint**:
 
    https://github.com/martins-netizen/ha-meiertobler-smartguard/blob/main/blueprints/automation/martins_netizen/smartguard_guarded_night_heating.yaml
 
-3. Choose **Create automation**, fill in the inputs above and save.
-4. Keep the enable helper off while reviewing inputs and traces; turn it on
-   only when you want scheduled night changes.
+3. Choose **Create automation** to open the configuration form.
+
+Importing and opening this form is enough for an initial visual check. You can
+leave the editor without saving an automation. Keep an existing working night
+automation while reviewing this separate example.
+
+### 3. Fill in the numbered form sections
+
+The form uses German labels and includes its helper-creation instructions.
+Follow the sections in order:
+
+1. **Zwei Helfer vorbereiten**: select the two helpers created above.
+2. **SmartGuard auswählen**: select the operating-mode control and current
+   operating-status sensor from the same SmartGuard device.
+3. **Raumtemperatur prüfen**: select a room-temperature sensor and review the
+   temperature limit.
+4. **Schaltzeiten (optional)**: expand this section only to change the default
+   times, **23:00 / 06:00**, in Home Assistant's configured time zone.
+
+| Form field | Select or enter |
+| --- | --- |
+| Freigabeschalter | **SmartGuard Blueprint – Freigabe**, initially off |
+| Nachtmerker | **SmartGuard Blueprint – Nachtmerker**, initially off; dedicated to this automation |
+| Betriebsmodus einstellen | The SmartGuard select, labelled **HK60 Betriebsmodus einstellen** in German, with internal options `auto` and `heating` |
+| Aktueller Betriebsstatus | The operating-status sensor, labelled **HK60 Betriebsstatus** in German; its states include heating and cooling |
+| Raumtemperaturfühler | A representative or maximum room-temperature sensor in **°C** |
+| Temperaturgrenze für den Nachtwechsel | Your permission limit; default **25 °C**, including equality. SmartGuard continues to regulate the heating; this is not a room-temperature setpoint. |
+| Nachts auf Heizen wechseln um | Local time; default **23:00** |
+| Morgens zurück auf Auto um | Local time; default **06:00** |
+
+Both helpers, the SmartGuard entities and the temperature sensor require a
+selection. The temperature limit and times already have defaults. Using the
+same helper for enable and ownership prevents all actions.
+
+### 4. Save when ready to use the automation
+
+Save a new automation with the two helpers still off. Review all inputs and
+coordinate any replacement of an existing night automation before turning the
+**Freigabe** helper on. Two active night controllers must not compete over the
+same mode select. Existing production automations are not replaced by an import.
 
 The URL tracks reviewed changes on `main`. Keep a copy before re-importing.
 Home Assistant imports GitHub files under the owner name: the default stored
@@ -89,6 +123,12 @@ the helper. A failed night service does not create ownership; a failed morning
 return retains existing ownership. Inspect the automation trace.
 
 ### Existing automations and re-importing
+
+The guided German form changes labels and input grouping only. Existing input
+keys, selectors, defaults, conditions and actions remain the same as the
+ownership-aware version. Saved inputs remain compatible. Re-import from the
+Blueprints menu to receive the form update; a HACS integration update does not
+update a separately imported blueprint. Review the inputs after re-importing.
 
 The new blueprint requires the **separate ownership helper**. Older copies
 returned any current `heating` mode to `auto` without recording who selected it.

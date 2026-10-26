@@ -5,7 +5,7 @@ description = "Home Assistant custom integration for Meier Tobler SmartGuard"
 readme = "README.md"
 requires-python = ">=3.13"
 license = { text = "MIT" }
-authors = [{ name = "Martin Schafer" }]
+authors = [{ name = "martins-netizen" }]
 dependencies = []
 
 [tool.ruff]

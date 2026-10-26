@@ -1,71 +1,96 @@
 blueprint:
-  name: SmartGuard guarded night heating
-  description: >-
-    Selects heating at the configured night time only when the automation is
-    enabled, the requested SmartGuard mode is auto, the operating status is
-    cooling, and the indoor temperature is at or below the configured limit.
-    A separate persistent helper records a confirmed change made by this
-    automation. At the configured morning time it returns to auto only while
-    that helper is on and the requested mode is still heating. Selecting
-    another known mode clears the helper. Selecting heating again while it is
-    already selected cannot be distinguished from keeping the night override.
+  name: SmartGuard – Nachtumschaltung mit Rückkehr zu Auto
+  description: |-
+    Wechselt nachts bei Kühlbetrieb von Auto auf Heizen, bis zur eingestellten
+    Raumtemperaturgrenze. Morgens geht die Automation nach ihrem eigenen
+    Nachtwechsel wieder auf Auto zurück.
+
+    **Einrichtung:** Gehe die Abschnitte 1 bis 4 durch. Lass die beiden Schalter
+    während der Einrichtung ausgeschaltet. Die Freigabe schaltest du erst ein,
+    wenn diese Automation die Nachtumschaltung übernehmen soll.
   domain: automation
   author: martins-netizen
   homeassistant:
     min_version: 2026.9.0
   input:
+    safeguards:
+      name: 1. Zwei Helfer vorbereiten
+      icon: mdi:shield-check
+      description: |-
+        Erstelle unter **Einstellungen → Geräte & Dienste → Helfer →
+        Helfer erstellen → Umschalter** zwei getrennte Umschalter:
+
+        1. **SmartGuard Blueprint – Freigabe**
+        2. **SmartGuard Blueprint – Nachtmerker**
+
+        Lass beide **aus** und wähle sie unten aus. Jede Automation braucht
+        ihren eigenen Nachtmerker.
+      input:
+        enable_helper:
+          name: Freigabeschalter
+          description: >-
+            Wähle „SmartGuard Blueprint – Freigabe“. Dieser Schalter erlaubt
+            neue automatische Nachtwechsel. Lass den Umschalter während der
+            Einrichtung ausgeschaltet.
+          selector:
+            entity:
+              filter:
+                - domain: input_boolean
+        override_helper:
+          name: Nachtmerker
+          description: >-
+            Wähle den zweiten Umschalter „SmartGuard Blueprint – Nachtmerker“.
+            Die Automation merkt sich damit ihren Wechsel auf Heizen.
+            Verwende ihn ausschliesslich für diese Automation und lass seinen
+            Zustand nach einem Neustart wiederherstellen. Der Merker wird
+            automatisch geschaltet.
+          selector:
+            entity:
+              filter:
+                - domain: input_boolean
     smartguard_entities:
-      name: SmartGuard entities
+      name: 2. SmartGuard auswählen
       icon: mdi:heat-pump
+      description: Wähle beide Entitäten vom selben SmartGuard-Gerät.
       input:
         mode_select:
-          name: HK60 operating-mode select
-          description: Select entity provided by the SmartGuard integration.
+          name: Betriebsmodus einstellen
+          description: Wähle die SmartGuard-Auswahl „HK60 Betriebsmodus einstellen“.
           selector:
             entity:
               filter:
                 - integration: meiertobler_smartguard
                   domain: select
         operating_status:
-          name: HK60 operating-status sensor
-          description: Sensor whose internal states include cooling and heating.
+          name: Aktueller Betriebsstatus
+          description: >-
+            Wähle „HK60 Betriebsstatus“. Dieser Sensor zeigt die aktuelle
+            Tätigkeit der Anlage an, zum Beispiel Heizen oder Kühlen.
           selector:
             entity:
               filter:
                 - integration: meiertobler_smartguard
                   domain: sensor
-    safeguards:
-      name: Safeguards
-      icon: mdi:shield-check
+    temperature_settings:
+      name: 3. Raumtemperatur prüfen
+      icon: mdi:home-thermometer
       input:
-        enable_helper:
-          name: Automatic night-heating enable helper
-          description: The night change runs only while this input boolean is on.
-          selector:
-            entity:
-              filter:
-                - domain: input_boolean
-        override_helper:
-          name: Night-heating ownership helper
-          description: >-
-            A separate input boolean used only by this automation. Create it
-            initially off and leave its state restoration enabled. Do not
-            reuse the enable helper or share it with another automation.
-          selector:
-            entity:
-              filter:
-                - domain: input_boolean
         indoor_temperature:
-          name: Indoor-temperature sensor
-          description: A representative or maximum indoor-temperature sensor in °C.
+          name: Raumtemperaturfühler
+          description: >-
+            Wähle einen Raumfühler oder deinen vorhandenen Sensor für die
+            höchste Raumtemperatur. Der Wert muss in °C vorliegen.
           selector:
             entity:
               filter:
                 - domain: sensor
                   device_class: temperature
         maximum_indoor_temperature:
-          name: Maximum indoor temperature
-          description: Heating is selected only at or below this value.
+          name: Temperaturgrenze für den Nachtwechsel
+          description: >-
+            Bis zu dieser Raumtemperatur darf nachts auf Heizen gewechselt
+            werden, einschliesslich des Grenzwerts. Das ist eine
+            Freigabegrenze; die Heizungsregelung übernimmt weiterhin SmartGuard.
           default: 25.0
           selector:
             number:
@@ -75,16 +100,20 @@ blueprint:
               unit_of_measurement: °C
               mode: box
     schedule:
-      name: Schedule
+      name: 4. Schaltzeiten (optional)
       icon: mdi:clock-outline
+      description: >-
+        Vorgaben sind 23:00 Uhr für den Nachtwechsel und 06:00 Uhr für die
+        Rückkehr zu Auto. Es gilt die in Home Assistant eingestellte Zeitzone.
+      collapsed: true
       input:
         heating_time:
-          name: Select heating at
+          name: Nachts auf Heizen wechseln um
           default: "23:00:00"
           selector:
             time:
         auto_time:
-          name: Return to auto at
+          name: Morgens zurück auf Auto um
           default: "06:00:00"
           selector:
             time:

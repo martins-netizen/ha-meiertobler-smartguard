@@ -137,6 +137,12 @@ async def test_reconfigure_success(
         )
         assert result["type"] is FlowResultType.FORM
         assert result["step_id"] == "reconfigure"
+        host_marker = next(
+            marker
+            for marker in result["data_schema"].schema
+            if marker.schema == CONF_HOST
+        )
+        assert host_marker.description == {"suggested_value": TEST_HOST}
 
         result = await hass.config_entries.flow.async_configure(
             result["flow_id"],

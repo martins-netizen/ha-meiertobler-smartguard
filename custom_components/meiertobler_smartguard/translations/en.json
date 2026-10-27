@@ -45,6 +45,15 @@
     },
     "write_not_confirmed": {
       "message": "SmartGuard did not confirm the requested operating mode."
+    },
+    "invalid_host": {
+      "message": "The saved SmartGuard address is invalid. Check Settings > System > Repairs."
+    },
+    "unsupported_device": {
+      "message": "The configured device is not a supported SmartGuard gateway. Check Settings > System > Repairs."
+    },
+    "wrong_device": {
+      "message": "A different SmartGuard gateway answered. Check Settings > System > Repairs."
     }
   },
   "entity": {
@@ -130,6 +139,20 @@
       "dhw_heater_status": {
         "name": "Hot water heater indicator"
       }
+    }
+  },
+  "issues": {
+    "invalid_host": {
+      "title": "Check the SmartGuard address",
+      "description": "The saved address for {entry_title} is invalid. Open [the SmartGuard integration]({integration_url}) and select Reconfigure. Enter only the hostname or IP address of the original gateway, without a scheme, path, port, or credentials."
+    },
+    "unsupported_device": {
+      "title": "The configured device is not supported",
+      "description": "The address configured for {entry_title} answers as an unsupported device. Open [the SmartGuard integration]({integration_url}) and select Reconfigure to point this entry to its original SmartGuard 2.0 gateway. If you restored the original gateway at the same address, reload the entry. Other device types are not supported."
+    },
+    "wrong_device": {
+      "title": "A different SmartGuard gateway answered",
+      "description": "The address configured for {entry_title} now answers as a different SmartGuard gateway. Setup was stopped before reading measurements or enabling controls. Open [the SmartGuard integration]({integration_url}) and select Reconfigure to enter the address of the original gateway. If it is back at the same address, reload the entry. Configure an intentional replacement as a separate device."
     }
   }
 }

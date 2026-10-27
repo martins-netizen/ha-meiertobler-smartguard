@@ -4,6 +4,31 @@ Start with the symptom that matches what Home Assistant shows. Do not post a
 SmartGuard password, internal IP address, serial number, global device
 identifier, or unreviewed diagnostics in an issue.
 
+## Configuration repairs on development main
+
+These notices are implemented on the development branch and are not included
+in the currently published 0.4.1 release.
+
+After loading an existing entry, **Settings > System > Repairs** explains an
+invalid saved host, a confirmed unsupported device, or a different SmartGuard
+identity at the saved address. Each entry has at most one of these notices.
+The integration does not show a permanent repair for a timeout, connection
+failure or ambiguous response; these keep the existing automatic retry path.
+
+Open the integration link in the notice and select **Reconfigure** on the
+affected entry. Enter the original gateway's current address. If the original
+gateway is already back at the saved address, reload that entry instead. A
+successful identity check clears its notice. A different device is blocked
+before measurement requests or control entities are set up; accepting it as a
+replacement requires a separate configuration entry. The integration never
+silently changes the saved identity.
+
+The repair page does not automatically change a host or send a heating command.
+Failed reconfiguration leaves the existing entry and notice intact. Removing
+the entry deletes its persistent notices and leaves other entries untouched.
+The notice stores the entry title and an integration navigation link, without
+the gateway address, serial number or global device identifier.
+
 ## The integration cannot connect during setup
 
 ### Symptom
@@ -38,7 +63,7 @@ Setup reaches the gateway but reports an unsupported device.
 
 ### Description
 
-Version `0.3.0` accepts only the locally verified SmartGuard 2.0 device type
+The integration accepts only the locally verified SmartGuard 2.0 device type
 `1001`. Refusing another type prevents the integration from guessing API paths
 or writing to an unverified controller.
 

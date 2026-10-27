@@ -42,6 +42,21 @@ For a manual Ruff update, use the command recorded in the requirements header
 with `--upgrade-package ruff==<new-version>` added. Review the dependency diff
 and run the usual checks; unrelated versions should stay pinned.
 
+Both workflows require Python **3.14.10 or a later 3.14 patch** and check for
+the latest available patch, including when an older runner cache exists. The
+dependency inputs also require at least **pip 26.2.2**, **certifi 2026.10.19**,
+and **uv 0.13.4** following the
+[Python security guidance for the eMudhra incident](https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576).
+The test plugin pins Home Assistant 2026.10.4, whose required uv 0.13.5 meets
+that minimum. Keep the runtime, build-tool and test dependency sets consistent;
+do not bypass Home Assistant's dependency constraints. These development
+requirements do not update Python in an existing Home Assistant installation.
+
+Configuration forms use Home Assistant's probatio schema types, available in
+the supported Home Assistant 2026.9.0 baseline, to match the newer Home Assistant
+type contract. Keep the saved host suggestion covered when updating the test
+baseline.
+
 ## Release candidates
 
 Release metadata must use the same stable version in `manifest.json` and

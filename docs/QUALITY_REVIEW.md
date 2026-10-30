@@ -1,7 +1,8 @@
 # Blueprint and quality evidence review
 
 Reviewed against the published 0.4.1 source and the repository's current
-integration/blueprint implementation. The rule statuses below are maintained
+integration/blueprint implementation, including the prepared 0.5.0 source.
+The rule statuses below are maintained
 in [quality_scale.yaml](../custom_components/meiertobler_smartguard/quality_scale.yaml).
 
 ## Blueprint findings and correction
@@ -53,14 +54,14 @@ repository dependencies and CI MyPy command were not changed.
 | `docs-examples` | Todo: automated import/execution evidence is now present; keep the previously required UI/import and production migration confirmation open |
 | `entity-disabled-by-default` | Todo: optional diagnostic operating-hour counters are enabled by default; the old exemption for only the original functional core is no longer accurate |
 | `discovery` | Todo: no reliable local discovery mechanism verified |
-| `repair-issues` | Done on development main: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
+| `repair-issues` | Done in the 0.5.0 source: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
 
 This review does not disable existing entities, change integration defaults,
 add discovery, or change a release/tag. Other existing checklist entries
 are retained; this is a focused blueprint/evidence review, not a new audit of
 every rule. Future default changes need a separate behavior/migration review.
 
-## Actionable configuration repairs on development main
+## Actionable configuration repairs in the 0.5.0 source
 
 Existing entries stop setup and receive a translated repair when the saved
 host is invalid, the responding device is unsupported, or its global identity
@@ -80,8 +81,8 @@ keep normal retries without new repair notices.
 transient failures, reconfiguration, unchanged entity IDs, multiple entries,
 removal and privacy. Both existing EN/DE catalogs contain issue and setup-error
 translations. This is automated evidence; no rendered repair UI, live gateway
-fault or productive installation is claimed. The published 0.4.1 release does
-not yet contain these development changes.
+fault or productive installation is claimed. The 0.4.1 release does not contain
+these changes; see the [0.5.0 notes](RELEASE_NOTES_0.5.0.md) for publication status.
 
 ## Reference contracts
 

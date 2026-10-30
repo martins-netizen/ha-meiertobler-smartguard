@@ -16,20 +16,22 @@ The graphic is an illustrative feature overview, not a live installation screens
 
 - **Heat pump:** source inlet and condenser inlet/outlet temperatures.
 - **HK60:** flow temperature, operating status, selected/effective mode and season.
+  Optional room heating/cooling targets are read-only displays of settings.
+- **Controller:** outdoor temperature, Smart Grid status and three fault inputs.
 - **Mode control:** Auto, Normal, Reduced, Frost protection, Heating and Cooling.
   Every write is immediately read back; an unconfirmed change reports an error.
 - **Optional storage:** heating-buffer and hot-water temperatures, reported
-  heater indicators and diagnostic operating-hour counters.
+  heater indicators, diagnostic operating-hour counters and buffer heat request.
 - **Local operation:** one coordinated poll every 60 seconds, UI setup,
-  gateway-address reconfiguration and redacted diagnostics.
+  gateway-address reconfiguration, actionable configuration repairs and redacted
+  diagnostics.
 
-With both storage modules enabled and returning valid readings, the features above provide
-**12 sensors, two binary sensors and one mode select**. Heater indicators report
-SmartGuard status; they do not measure electrical power or energy. This
-integration adds no heater controls or editable temperature setpoints.
-
-Eight more optional [operating readings](docs/OPERATING_READINGS.md) are being
-prepared for a future release; that guide describes their development status.
+With all supported modules enabled and returning valid readings, these features
+provide **16 sensors, six binary sensors and one mode select**. Heater indicators
+and heat requests report gateway status; they do not measure electrical power
+or energy. This integration adds no heater controls or editable temperature
+setpoints. See the [operating readings guide](docs/OPERATING_READINGS.md) for
+availability and interpretation.
 
 ## Installation
 
@@ -59,8 +61,8 @@ manual installation, rollback and removal.
 
 - **Home Assistant 2026.9.0 or newer.**
 - **SmartGuard 2.0, device type `1001`.** HK60 must be enabled for its entities.
-- Buffer and hot-water modules are optional. Unsupported or unavailable optional
-  readings do not block the original entities.
+- Storage and additional operating readings are optional. Unsupported or
+  unavailable optional readings do not block the original entities.
 - **Trusted local network required:** the gateway REST API uses unauthenticated
   HTTP. Its UI password does not secure this API. Restrict gateway access to
   Home Assistant and never expose the API to the internet.
@@ -75,7 +77,7 @@ by Meier Tobler AG. See the [security policy](SECURITY.md).
 - [Guarded automation examples](docs/AUTOMATION_EXAMPLES.md)
 - [Blueprint and quality evidence review](docs/QUALITY_REVIEW.md)
 - [Additional storage measurements](docs/ADDITIONAL_MEASUREMENTS.md)
-- [Upcoming read-only operating readings](docs/OPERATING_READINGS.md)
+- [Additional read-only operating readings](docs/OPERATING_READINGS.md)
 - [Technical reference and development checks](docs/TECHNICAL_REFERENCE.md)
 - [Report a bug](https://github.com/martins-netizen/ha-meiertobler-smartguard/issues/new/choose)
 
@@ -89,7 +91,8 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release notes: [0.4.1](docs/RELEASE_NOTES_0.4.1.md),
+- Release notes: [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
+  [0.4.1](docs/RELEASE_NOTES_0.4.1.md),
   [0.4.0](docs/RELEASE_NOTES_0.4.0.md), [0.3.0](docs/RELEASE_NOTES_0.3.0.md).
 - HACS records: [0.4.0 upgrade](docs/HACS_TEST_V0.4.0.md),
   [0.3.0 installation](docs/HACS_TEST_V0.3.0.md).
@@ -99,6 +102,9 @@ Preparation and publication evidence live in the
 Diese lokale Integration verbindet **Meier Tobler SmartGuard 2.0** mit
 **Home Assistant**. Sie zeigt Wärmepumpen- und HK60-Werte sowie optional die
 Temperaturen und gemeldeten Heizeinsatzwerte von Heizpuffer und Warmwasser.
+Weitere optionale Anzeigen umfassen Raum-Sollwerte, Aussentemperatur,
+Smart-Grid-Status, Störsignale und Heizpuffer-Heizanforderung. Sollwerte werden
+nur angezeigt; sie sind hier nicht einstellbar.
 Die HK60-Betriebsmoduswahl wird nach jeder Änderung unmittelbar zurückgelesen.
 Heizeinsatz-Anzeigen sind keine elektrische Leistungs- oder Energiemessung.
 

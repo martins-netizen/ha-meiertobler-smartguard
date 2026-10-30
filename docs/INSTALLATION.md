@@ -32,9 +32,13 @@ If the new release is missing, select **Update information** and check again.
 The available version and the installed version are different states: refreshing
 metadata does not install anything.
 
-Optional storage entities appear after their first valid readings. Operating-hour
-counters are diagnostic entities. Missing optional modules do not block the
-original heat-pump and HK60 entities.
+Optional storage and [operating entities](OPERATING_READINGS.md) appear after
+their first valid readings. Operating-hour counters are diagnostic entities.
+Missing optional modules do not block the original heat-pump and HK60 entities.
+
+An integration update does not re-import blueprints or replace saved
+automations. Before separately re-importing the night-heating blueprint, review
+its [two-helper setup and ownership rules](AUTOMATION_EXAMPLES.md).
 
 ## Manual installation
 

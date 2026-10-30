@@ -18,7 +18,7 @@
 See [additional measurements](ADDITIONAL_MEASUREMENTS.md) for optional modules,
 paths, types, units and availability behavior.
 
-See [additional operating readings](OPERATING_READINGS.md) for the unreleased
+See [additional operating readings](OPERATING_READINGS.md) for the 0.5.0
 room targets, outdoor temperature, Smart Grid status, fault inputs and buffer
 heat request, including their separate availability and read-only semantics.
 
@@ -61,7 +61,7 @@ Use Python 3.14 and the pinned, hash-checked CI dependencies described in
 ```bash
 python3 scripts/validate.py
 python3 scripts/release.py check
-python3 scripts/release.py verify-tag --tag v0.4.1
+python3 scripts/release.py verify-tag --tag v0.5.0
 python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
 python3 -m mypy \

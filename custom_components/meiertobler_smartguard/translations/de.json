@@ -45,6 +45,15 @@
     },
     "write_not_confirmed": {
       "message": "SmartGuard hat den angeforderten Betriebsmodus nicht bestätigt."
+    },
+    "invalid_host": {
+      "message": "Die gespeicherte SmartGuard-Adresse ist ungültig. Prüfe Einstellungen > System > Reparaturen."
+    },
+    "unsupported_device": {
+      "message": "Das konfigurierte Gerät ist kein unterstütztes SmartGuard-Gateway. Prüfe Einstellungen > System > Reparaturen."
+    },
+    "wrong_device": {
+      "message": "Ein anderes SmartGuard-Gateway hat geantwortet. Prüfe Einstellungen > System > Reparaturen."
     }
   },
   "entity": {
@@ -130,6 +139,20 @@
       "dhw_heater_status": {
         "name": "Warmwasser Heizeinsatz Anzeige"
       }
+    }
+  },
+  "issues": {
+    "invalid_host": {
+      "title": "SmartGuard-Adresse prüfen",
+      "description": "Die gespeicherte Adresse für {entry_title} ist ungültig. Öffne [die SmartGuard-Integration]({integration_url}) und wähle Neu konfigurieren. Gib nur den Hostnamen oder die IP-Adresse des ursprünglichen Gateways ein, ohne Protokoll, Pfad, Port oder Zugangsdaten."
+    },
+    "unsupported_device": {
+      "title": "Das konfigurierte Gerät wird nicht unterstützt",
+      "description": "Die für {entry_title} konfigurierte Adresse antwortet als nicht unterstütztes Gerät. Öffne [die SmartGuard-Integration]({integration_url}) und wähle Neu konfigurieren, um die Adresse des ursprünglichen SmartGuard-2.0-Gateways anzugeben. Ist das ursprüngliche Gateway wieder unter derselben Adresse erreichbar, lade den Eintrag neu. Andere Gerätetypen werden nicht unterstützt."
+    },
+    "wrong_device": {
+      "title": "Ein anderes SmartGuard-Gateway hat geantwortet",
+      "description": "Unter der für {entry_title} konfigurierten Adresse antwortet jetzt ein anderes SmartGuard-Gateway. Die Einrichtung wurde vor dem Lesen von Messwerten oder Freigeben der Steuerung gestoppt. Öffne [die SmartGuard-Integration]({integration_url}) und wähle Neu konfigurieren, um die Adresse des ursprünglichen Gateways anzugeben. Ist es wieder unter derselben Adresse erreichbar, lade den Eintrag neu. Einen beabsichtigten Geräteaustausch richtest du als separates Gerät ein."
     }
   }
 }

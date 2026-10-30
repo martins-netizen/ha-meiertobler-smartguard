@@ -53,12 +53,35 @@ repository dependencies and CI MyPy command were not changed.
 | `docs-examples` | Todo: automated import/execution evidence is now present; keep the previously required UI/import and production migration confirmation open |
 | `entity-disabled-by-default` | Todo: optional diagnostic operating-hour counters are enabled by default; the old exemption for only the original functional core is no longer accurate |
 | `discovery` | Todo: no reliable local discovery mechanism verified |
-| `repair-issues` | Todo: no new actionable permanent-failure repair flow implemented |
+| `repair-issues` | Done on development main: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
 
 This review does not disable existing entities, change integration defaults,
-add discovery/repairs, or change a release/tag. Other existing checklist entries
+add discovery, or change a release/tag. Other existing checklist entries
 are retained; this is a focused blueprint/evidence review, not a new audit of
 every rule. Future default changes need a separate behavior/migration review.
+
+## Actionable configuration repairs on development main
+
+Existing entries stop setup and receive a translated repair when the saved
+host is invalid, the responding device is unsupported, or its global identity
+differs from the saved identity. A mismatched gateway is rejected before
+reading measurements or exposing controls. The original identity is retained;
+legacy entries without a saved unique ID are not falsely labelled mismatched.
+
+Notices are persistent, scoped by config-entry ID, deduplicated, and replaced
+when a different permanent cause is confirmed. A successful identity check
+clears them; an ambiguous timeout does not prove recovery. Entry removal clears
+only that entry's notices. The descriptions link to the existing reconfigure
+UI and explain how to reload a restored original gateway. There is no automatic
+repair action or gateway write. Temporary communication/measurement failures
+keep normal retries without new repair notices.
+
+[Native HA lifecycle tests](../tests/test_issues.py) cover blocked setup,
+transient failures, reconfiguration, unchanged entity IDs, multiple entries,
+removal and privacy. Both existing EN/DE catalogs contain issue and setup-error
+translations. This is automated evidence; no rendered repair UI, live gateway
+fault or productive installation is claimed. The published 0.4.1 release does
+not yet contain these development changes.
 
 ## Reference contracts
 

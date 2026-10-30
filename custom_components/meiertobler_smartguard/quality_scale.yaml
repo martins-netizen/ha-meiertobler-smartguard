@@ -72,8 +72,8 @@ rules:
     comment: Entities use Home Assistant platform and device-class icons.
   reconfiguration-flow: done
   repair-issues:
-    status: todo
-    comment: Repair issues will be added only for actionable permanent failures.
+    status: done
+    comment: Entry-specific repairs explain invalid saved hosts, unsupported devices and changed gateway identities; transient communication failures keep normal retries.
   stale-devices:
     status: exempt
     comment: The integration does not dynamically create or remove child devices.

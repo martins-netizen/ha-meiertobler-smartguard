@@ -71,6 +71,7 @@ async def test_setup_entry_builds_runtime_and_forwards_platforms() -> None:
     hass.config_entries.async_forward_entry_setups = AsyncMock()
     entry = MagicMock()
     entry.data = {CONF_HOST: TEST_HOST}
+    entry.unique_id = TEST_GLOBAL_DEVICE_ID
     entry.add_update_listener.return_value = "listener-remover"
 
     with (

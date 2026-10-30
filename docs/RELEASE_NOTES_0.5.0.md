@@ -1,12 +1,13 @@
 # Release notes: 0.5.0
 
-Status: release candidate
+Status: published release
 
-This candidate is **not yet published**. The annotated `v0.5.0` tag, tagged
-Release Gate and full GitHub release are still pending. Use
-[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
-to find the currently available stable version. This preparation does not
-install anything in Home Assistant.
+[Version 0.5.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.5.0)
+was published as a full stable release on **2026-10-30 at 18:32:19 UTC**.
+The annotated `v0.5.0` tag, tagged Release Gate and both verified release
+assets are complete. The maintainer subsequently confirmed the HACS update
+and successful operation on Home Assistant Core **2026.10.4** / OS **18.4**.
+See the publication and upgrade records below.
 
 ## Changes since 0.4.1
 
@@ -62,8 +63,8 @@ does not update Home Assistant's bundled Python or the host operating system.
 
 - Home Assistant **2026.9.0 or newer**; SmartGuard 2.0, device type `1001`.
 - Keep the existing config entry, entity IDs, names, settings and automations.
-- After publication, update through the existing HACS entry and restart Home
-  Assistant. Optional entities appear when their modules provide valid values.
+- Update through the existing HACS entry and restart Home Assistant.
+  Optional entities appear when their modules provide valid values.
 - Confirm the original entities and the available additional readings. A new
   physical mode-switch cycle or artificial fault is not needed for this check.
 - HACS uses the tagged integration source. The separately built manual ZIP
@@ -76,25 +77,59 @@ retained. All supported optional readings use at most **26 sequential GETs** per
 complete refresh. Room targets remain read-only; there are no new heating-curve,
 EVU/Smart Grid command or electric-heater controls.
 
-## Validation and remaining steps
+## Validation and publication record
 
-The complete versioned candidate passed the full automated suite on Python 3.14.10 and
-Home Assistant 2026.10.4: **209 tests and 26 subtests**, with **100% integration
+The complete versioned source passed the full automated suite on Python 3.14.10
+and Home Assistant 2026.10.4: **209 tests and 26 subtests**, with **100% integration
 statement and branch coverage** (487 statements / 82 branches). Repository
 validation, Ruff, strict MyPy and dependency consistency passed. Two independent
 local ZIP builds were identical and all 19 integration files matched the source
-bytes. These local results do not replace the still-pending tagged Release Gate.
+bytes.
 
-The selected eight datapoints were confirmed by a separate read-only gateway
-inventory. That is not an installation test of this release. A clean install on
-the minimum HA version, rendered repair UI and a new live blueprint migration
-are not claimed. Existing night-switching and earlier HACS update evidence
-remain historical results and need not be repeated for unchanged behavior.
+Release PR [#35](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/35)
+was squash-merged as `a541c3a17d0ca44206b70b32559512a10891e707`.
+Quality, Hassfest, HACS and SonarCloud passed on the exact PR head and final
+[main commit](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41105418305).
+The annotated tag object is `39ffba0c6c29c9b5572d730c0524343259389710`;
+it targets that same source commit.
 
-PR/main checks, the annotated tag, tagged Release Gate, explicit publication,
-and the actual HACS update/availability check are recorded separately in the
-[release checklist](RELEASE_CHECKLIST.md). No final release checksum is claimed
-before the tagged bundle is selected and verified.
+The subsequent tagged
+[Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41107474165)
+passed for `v0.5.0` on that source. The publication check verified all 19 ZIP
+members byte-for-byte against the pinned source, the checksum file and both
+uploaded assets through repeated downloads. The full GitHub release was then
+published explicitly; the read-only tag workflow did not publish it.
+
+### Release files and integrity
+
+- `meiertobler_smartguard-0.5.0.zip`: **37,494 bytes**, 19 integration files.
+- `meiertobler_smartguard-0.5.0.zip.sha256`: **99 bytes**, containing the exact
+  SHA-256 line for that ZIP.
+
+ZIP SHA-256
+`f7f388c34184fd3cb08a4f45c2258bec11d1f3857373c8417fb608ae647d6d4a`.
+
+The checksum file's own SHA-256 is
+`937bd6813e53140529298239f511cef55385bef0d919e8bfecb9a61c61419175`.
+GitHub's automatically generated source archives are separate files with
+different checksums. HACS installs the tagged integration source; these assets
+provide a separately verified manual-installation bundle.
+
+### HACS upgrade confirmation
+
+On **2026-10-30**, the maintainer confirmed that the HACS update to **0.5.0**
+worked successfully on **Home Assistant Core 2026.10.4 / Home Assistant OS 18.4**.
+This is the user-reported update and operating result, separate from the
+publication and earlier read-only gateway inventory.
+
+The feedback did not separately enumerate every entity or provide a new
+independent file/registry audit. A clean install on the minimum HA version,
+rendered repair UI and a new live blueprint migration are not claimed.
+Existing night-switching evidence need not be repeated for unchanged behavior.
+No new physical mode cycle or artificial fault was required for this update.
+
+The distinct source, publication and upgrade checks are summarised in the
+[release checklist](RELEASE_CHECKLIST.md).
 
 ## Known limitations
 

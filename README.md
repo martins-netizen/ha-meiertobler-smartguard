@@ -23,10 +23,13 @@ The graphic is an illustrative feature overview, not a live installation screens
 - **Local operation:** one coordinated poll every 60 seconds, UI setup,
   gateway-address reconfiguration and redacted diagnostics.
 
-With both storage modules enabled and returning valid readings, there are
+With both storage modules enabled and returning valid readings, the features above provide
 **12 sensors, two binary sensors and one mode select**. Heater indicators report
 SmartGuard status; they do not measure electrical power or energy. This
-integration adds no heater controls or temperature setpoints.
+integration adds no heater controls or editable temperature setpoints.
+
+Eight more optional [operating readings](docs/OPERATING_READINGS.md) are being
+prepared for a future release; that guide describes their development status.
 
 ## Installation
 
@@ -72,6 +75,7 @@ by Meier Tobler AG. See the [security policy](SECURITY.md).
 - [Guarded automation examples](docs/AUTOMATION_EXAMPLES.md)
 - [Blueprint and quality evidence review](docs/QUALITY_REVIEW.md)
 - [Additional storage measurements](docs/ADDITIONAL_MEASUREMENTS.md)
+- [Upcoming read-only operating readings](docs/OPERATING_READINGS.md)
 - [Technical reference and development checks](docs/TECHNICAL_REFERENCE.md)
 - [Report a bug](https://github.com/martins-netizen/ha-meiertobler-smartguard/issues/new/choose)
 

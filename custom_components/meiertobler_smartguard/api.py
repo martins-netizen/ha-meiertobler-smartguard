@@ -131,26 +131,35 @@ class SmartGuardApiClient:
         return snapshot
 
     async def _async_read_optional(self, serial_number: str) -> SmartGuardSnapshot:
-        """Read only enabled buffer/DHW modules without failing the core update."""
+        """Read enabled optional modules without failing the core update."""
         snapshot: SmartGuardSnapshot = {}
-        for group, unit in ((2, 1), (3, 1)):
-            path = f"/api/v1/{EXPECTED_DEVICE_TYPE}/{serial_number}/{group}/{unit}/config"
+        for subsystem_path in dict.fromkeys(
+            point.subsystem_path for point in OPTIONAL_DATA_POINTS
+        ):
+            path = f"/api/v1/{EXPECTED_DEVICE_TYPE}/{serial_number}"
+            if subsystem_path is not None:
+                group, unit = subsystem_path
+                path = f"{path}/{group}/{unit}"
             try:
-                config = await self._async_get_json(path)
+                config = await self._async_get_json(f"{path}/config")
             except SmartGuardError:
-                _LOGGER.debug("Optional SmartGuard module %s/%s unavailable", group, unit)
+                _LOGGER.debug(
+                    "Optional SmartGuard module %s unavailable", subsystem_path
+                )
                 continue
             if config.get("enabled") is not True:
                 continue
             for datapoint in OPTIONAL_DATA_POINTS:
-                if datapoint.subsystem_path != (group, unit):
+                if datapoint.subsystem_path != subsystem_path:
                     continue
                 try:
                     snapshot[datapoint.key] = await self.async_read_datapoint(
                         serial_number, datapoint
                     )
                 except SmartGuardError:
-                    _LOGGER.debug("Optional SmartGuard value %s unavailable", datapoint.key)
+                    _LOGGER.debug(
+                        "Optional SmartGuard value %s unavailable", datapoint.key
+                    )
         return snapshot
 
     async def async_read_datapoint(

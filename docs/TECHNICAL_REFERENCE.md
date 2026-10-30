@@ -18,6 +18,10 @@
 See [additional measurements](ADDITIONAL_MEASUREMENTS.md) for optional modules,
 paths, types, units and availability behavior.
 
+See [additional operating readings](OPERATING_READINGS.md) for the unreleased
+room targets, outdoor temperature, Smart Grid status, fault inputs and buffer
+heat request, including their separate availability and read-only semantics.
+
 ## HK60 writes
 
 The allowlisted options are `auto`, `normal`, `reduced`, `frost_protection`,

@@ -5,6 +5,15 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+### Added
+
+- Eight optional read-only operating entities: HK60 heating/cooling room
+  targets, controller outdoor temperature and Smart Grid status, three fault
+  inputs and the heating-buffer heat request. Modules and individual readings
+  can fail independently without hiding the original entities.
+- English/German names and Smart Grid labels; room targets remain settings
+  shown as sensors, and heating demand does not claim actual heater operation.
+
 ## [0.4.1] - Unreleased
 
 Documentation patch candidate; not yet published.

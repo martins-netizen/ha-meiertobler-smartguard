@@ -1,4 +1,4 @@
-"""Tests for optional storage measurements and independent failure handling."""
+"""Tests for optional measurements and independent failure handling."""
 
 from __future__ import annotations
 
@@ -29,6 +29,14 @@ EXTRA_VALUES = {
     "dhw_temperature": 48.5,
     "dhw_heater_status": True,
     "dhw_heater_operating_hours": 12,
+    "hk60_room_target_heating": 20.5,
+    "hk60_room_target_cooling": 25.5,
+    "controller_outdoor_temperature": 7.25,
+    "controller_smart_grid_status": 0,
+    "controller_generator_fault": False,
+    "controller_priority1_fault": True,
+    "controller_priority2_fault": False,
+    "buffer_heating_request": False,
 }
 
 
@@ -38,15 +46,15 @@ def _core_responses() -> list[FakeResponse]:
     ]
 
 
-async def test_enabled_storage_modules_use_documented_read_only_paths() -> None:
+async def test_enabled_optional_modules_use_documented_read_only_paths() -> None:
     """Optional values retain their exact types and never invoke a write."""
     responses = _core_responses()
-    for group in (2, 3):
+    for subsystem in ((2, 1), (3, 1), (1, 2), None):
         responses.append(FakeResponse(200, {"enabled": True, "label": "Private label"}))
         responses.extend(
             FakeResponse(200, {"value": EXTRA_VALUES[point.key]})
             for point in OPTIONAL_DATA_POINTS
-            if point.subsystem_path == (group, 1)
+            if point.subsystem_path == subsystem
         )
     session = FakeSession(responses)
     client = SmartGuardApiClient("192.0.2.10", session)
@@ -62,10 +70,20 @@ async def test_enabled_storage_modules_use_documented_read_only_paths() -> None:
         "2/1/datapoints/1001",
         "2/1/datapoints/3191",
         "2/1/datapoints/3192",
+        "2/1/datapoints/1004",
         "3/1/config",
         "3/1/datapoints/1001",
         "3/1/datapoints/4191",
         "3/1/datapoints/4192",
+        "1/2/config",
+        "1/2/datapoints/5201",
+        "1/2/datapoints/5202",
+        "config",
+        "datapoints/1115",
+        "datapoints/2703",
+        "datapoints/1004",
+        "datapoints/1005",
+        "datapoints/1006",
     }
 
 
@@ -77,12 +95,12 @@ async def test_disabled_or_unconfirmed_modules_are_not_polled(
 ) -> None:
     """Only the actual boolean true can enable optional module reads."""
     session = FakeSession(
-        _core_responses() + [FakeResponse(200, config) for _ in range(2)]
+        _core_responses() + [FakeResponse(200, config) for _ in range(4)]
     )
     client = SmartGuardApiClient("192.0.2.10", session)
 
     assert await client.async_read_all("654321") == TEST_SNAPSHOT
-    assert len(session.urls) == 10
+    assert len(session.urls) == 12
 
 
 async def test_missing_and_transient_optional_modules_retry_on_next_update() -> None:
@@ -90,10 +108,11 @@ async def test_missing_and_transient_optional_modules_retry_on_next_update() -> 
     session = FakeSession(
         _core_responses()
         + [FakeResponse(404, None), TimeoutError()]
+        + [FakeResponse(200, {"enabled": False}) for _ in range(2)]
         + _core_responses()
         + [FakeResponse(200, {"enabled": True})]
-        + [FakeResponse(200, {"value": value}) for value in (30.0, False, 0)]
-        + [FakeResponse(200, {"enabled": False})]
+        + [FakeResponse(200, {"value": value}) for value in (30.0, False, 0, False)]
+        + [FakeResponse(200, {"enabled": False}) for _ in range(3)]
     )
     client = SmartGuardApiClient("192.0.2.10", session)
 
@@ -113,7 +132,8 @@ async def test_one_missing_optional_value_does_not_hide_other_readings() -> None
             FakeResponse(503, None),
             FakeResponse(200, {"value": False}),
             FakeResponse(200, {"value": 0}),
-            FakeResponse(200, {"enabled": False}),
+            FakeResponse(200, {"value": False}),
+            *[FakeResponse(200, {"enabled": False}) for _ in range(3)],
         ]
     )
     snapshot = await SmartGuardApiClient("192.0.2.10", session).async_read_all("654321")
@@ -123,6 +143,7 @@ async def test_one_missing_optional_value_does_not_hide_other_readings() -> None
         **TEST_SNAPSHOT,
         "buffer_heater_status": False,
         "buffer_heater_operating_hours": 0,
+        "buffer_heating_request": False,
     }
 
 
@@ -190,7 +211,8 @@ async def test_optional_entities_appear_recover_and_unload(
     coordinator = config_entry.runtime_data.coordinator
 
     def entity_id(key: str) -> str | None:
-        platform = "binary_sensor" if key.endswith("_status") else "sensor"
+        point = next(point for point in OPTIONAL_DATA_POINTS if point.key == key)
+        platform = "binary_sensor" if point.kind == "boolean" else "sensor"
         return registry.async_get_entity_id(
             platform, DOMAIN, f"{TEST_GLOBAL_DEVICE_ID}_{key}"
         )
@@ -222,7 +244,7 @@ async def test_optional_entities_appear_recover_and_unload(
             entity.config_entry_id == config_entry.entry_id
             for entity in registry.entities.values()
         )
-        == 15
+        == 23
     )
     mock_api["set_mode"].assert_not_awaited()
 

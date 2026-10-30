@@ -16,7 +16,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGuardValue
-from .const import ENUM_STATES
+from .const import DATA_POINTS, ENUM_STATES
 from .data import SmartGuardConfigEntry
 from .entity import SmartGuardEntity, async_add_optional_entities
 
@@ -76,17 +76,43 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
     ),
     *(
         SmartGuardSensorEntityDescription(
-            key=key,
-            translation_key=key,
+            key=point.key,
+            translation_key=point.key,
             device_class=SensorDeviceClass.ENUM,
-            options=list(states.values()),
-            value_formatter=_enum_formatter(key),
+            options=list(ENUM_STATES[point.key].values()),
+            value_formatter=_enum_formatter(point.key),
         )
-        for key, states in ENUM_STATES.items()
+        for point in DATA_POINTS
+        if point.kind == "enum"
     ),
 )
 
 OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            suggested_display_precision=1,
+        )
+        for key in ("hk60_room_target_heating", "hk60_room_target_cooling")
+    ),
+    SmartGuardSensorEntityDescription(
+        key="controller_outdoor_temperature",
+        translation_key="controller_outdoor_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        suggested_display_precision=2,
+    ),
+    SmartGuardSensorEntityDescription(
+        key="controller_smart_grid_status",
+        translation_key="controller_smart_grid_status",
+        device_class=SensorDeviceClass.ENUM,
+        options=list(ENUM_STATES["controller_smart_grid_status"].values()),
+        value_formatter=_enum_formatter("controller_smart_grid_status"),
+    ),
     *(
         SmartGuardSensorEntityDescription(
             key=key,

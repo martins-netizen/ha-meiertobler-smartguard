@@ -106,7 +106,7 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         session = FakeSession(
             [FakeResponse(200, identity)]
             + [FakeResponse(200, {"value": value}) for value in values]
-            + [FakeResponse(200, {"enabled": False}) for _ in range(2)]
+            + [FakeResponse(200, {"enabled": False}) for _ in range(4)]
         )
         client = SmartGuardApiClient("192.0.2.10", session)
 
@@ -117,7 +117,9 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(parsed_identity.serial_number, "654321")
         self.assertEqual(list(snapshot), [point.key for point in DATA_POINTS])
         self.assertEqual(snapshot["hk60_operating_status"], 2)
-        self.assertIn("http://192.0.2.10/api/v1/1001/654321/1/2/datapoints/5009", session.urls)
+        self.assertIn(
+            "http://192.0.2.10/api/v1/1001/654321/1/2/datapoints/5009", session.urls
+        )
 
     async def test_rejects_unsupported_device(self) -> None:
         session = FakeSession(
@@ -166,8 +168,9 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         for value in (True, 1.5, "1"):
             session = FakeSession([FakeResponse(200, {"value": value})])
             client = SmartGuardApiClient("192.0.2.10", session)
-            with self.subTest(value=value), self.assertRaises(
-                SmartGuardInvalidResponseError
+            with (
+                self.subTest(value=value),
+                self.assertRaises(SmartGuardInvalidResponseError),
             ):
                 await client.async_read_datapoint("654321", enum_point)
 
@@ -175,8 +178,9 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         for value in ("12", float("nan"), float("inf")):
             session = FakeSession([FakeResponse(200, {"value": value})])
             client = SmartGuardApiClient("192.0.2.10", session)
-            with self.subTest(value=value), self.assertRaises(
-                SmartGuardInvalidResponseError
+            with (
+                self.subTest(value=value),
+                self.assertRaises(SmartGuardInvalidResponseError),
             ):
                 await client.async_read_datapoint("654321", DATA_POINTS[0])
 

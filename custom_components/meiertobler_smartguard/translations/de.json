@@ -117,6 +117,25 @@
       },
       "dhw_heater_operating_hours": {
         "name": "Warmwasser Heizeinsatz Betriebsstunden"
+      },
+      "hk60_room_target_heating": {
+        "name": "HK60 Raum-Soll Heizen"
+      },
+      "hk60_room_target_cooling": {
+        "name": "HK60 Raum-Soll Kühlen"
+      },
+      "controller_outdoor_temperature": {
+        "name": "Regler Aussentemperatur"
+      },
+      "controller_smart_grid_status": {
+        "name": "Smart-Grid-Status",
+        "state": {
+          "none": "Keine Vorgabe",
+          "normal": "Normal",
+          "push": "Push",
+          "eco": "Eco",
+          "forced": "Erzwungen"
+        }
       }
     },
     "select": {
@@ -138,6 +157,18 @@
       },
       "dhw_heater_status": {
         "name": "Warmwasser Heizeinsatz Anzeige"
+      },
+      "controller_generator_fault": {
+        "name": "Störmeldung Wärmeerzeuger"
+      },
+      "controller_priority1_fault": {
+        "name": "Sammelstörung Priorität 1"
+      },
+      "controller_priority2_fault": {
+        "name": "Sammelstörung Priorität 2"
+      },
+      "buffer_heating_request": {
+        "name": "Heizpuffer Heizanforderung"
       }
     }
   },

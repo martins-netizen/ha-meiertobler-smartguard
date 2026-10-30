@@ -54,7 +54,7 @@ DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     SmartGuardDataPoint("hk60_season_status", 5009, "enum", (1, 2)),
 )
 
-# Manufacturer: SmartGuard, Netzwerk und Datenzugangspunkte, pages 9, 18-19.
+# Manufacturer: SmartGuard, Netzwerk und Datenzugangspunkte, pages 9, 18-20.
 # These modules are optional and must report enabled=true before polling.
 OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     SmartGuardDataPoint("buffer_temperature", 1001, "temperature", (2, 1), -50, 125),
@@ -67,6 +67,16 @@ OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     SmartGuardDataPoint(
         "dhw_heater_operating_hours", 4192, "counter", (3, 1), 0, 2**31 - 1
     ),
+    SmartGuardDataPoint("hk60_room_target_heating", 5201, "temperature", (1, 2), 5, 30),
+    SmartGuardDataPoint("hk60_room_target_cooling", 5202, "temperature", (1, 2), 5, 30),
+    SmartGuardDataPoint(
+        "controller_outdoor_temperature", 1115, "temperature", None, -50, 125
+    ),
+    SmartGuardDataPoint("controller_smart_grid_status", 2703, "enum", None, 0, 4),
+    SmartGuardDataPoint("controller_generator_fault", 1004, "boolean"),
+    SmartGuardDataPoint("controller_priority1_fault", 1005, "boolean"),
+    SmartGuardDataPoint("controller_priority2_fault", 1006, "boolean"),
+    SmartGuardDataPoint("buffer_heating_request", 1004, "boolean", (2, 1)),
 )
 
 ENUM_STATES: dict[str, dict[int, str]] = {
@@ -93,6 +103,13 @@ ENUM_STATES: dict[str, dict[int, str]] = {
         0: "transition",
         1: "heating_season",
         2: "cooling_season",
+    },
+    "controller_smart_grid_status": {
+        0: "none",
+        1: "normal",
+        2: "push",
+        3: "eco",
+        4: "forced",
     },
 }
 

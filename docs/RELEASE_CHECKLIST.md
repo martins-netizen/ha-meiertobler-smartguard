@@ -4,11 +4,13 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-## 0.5.0 operating-readings and repairs candidate
+## Published 0.5.0 operating-readings and repairs record
 
-Status: prepared release candidate; **not yet published**. See
-[0.5.0 release notes](RELEASE_NOTES_0.5.0.md). Existing published tags/assets
-remain unchanged; the Release Gate still never publishes automatically.
+Status: **published on 2026-10-30 at 18:32:19 UTC**. The maintainer confirmed
+the HACS update and successful operation on **Home Assistant Core 2026.10.4 /
+Home Assistant OS 18.4** on the same date. See
+[0.5.0 release notes](RELEASE_NOTES_0.5.0.md). Earlier tags/assets remain
+unchanged; the read-only Release Gate never publishes automatically.
 
 - [x] Merge eight optional read-only operating entities and configuration repairs.
 - [x] Include the tested blueprint ownership guard and guided setup; imported
@@ -17,22 +19,35 @@ remain unchanged; the Release Gate still never publishes automatically.
 - [x] Prepare versioned notes, changelog, entity counts and upgrade guidance.
 - [x] Complete validation, Ruff, strict MyPy, all tests and deterministic bundle
       inspection on the exact versioned candidate.
-- [ ] Review the release PR and merge after Quality, Hassfest, HACS and SonarCloud.
-- [ ] Verify those four checks again on the exact final main commit.
-- [ ] Create annotated `v0.5.0`, pass its tagged Release Gate and inspect its ZIP.
-- [ ] Explicitly publish the full GitHub release with both verified assets.
-- [ ] Complete the actual HACS upgrade, restart, old-ID and additional-entity check.
+- [x] Review and merge release PR #35 after Quality, Hassfest, HACS and SonarCloud.
+- [x] Verify those four checks again on the exact final main commit.
+- [x] Create annotated `v0.5.0`, pass its tagged Release Gate and inspect its ZIP.
+- [x] Explicitly publish the full GitHub release with both verified assets.
+- [x] Receive positive maintainer feedback on the actual HACS update and operation
+      of 0.5.0 on Core 2026.10.4 / OS 18.4.
 
-The read-only live inventory verified the eight selected datapoints. It was not
-an installation test of 0.5.0. Repair fault injection, a new physical mode cycle
-and migration to a newly saved blueprint automation are not claimed or required
-as repetitions of already completed unchanged-behavior checks. A clean install
-on the minimum supported HA version remains separately unconfirmed.
+Published source: `a541c3a17d0ca44206b70b32559512a10891e707`;
+annotated tag object: `39ffba0c6c29c9b5572d730c0524343259389710`.
+The [four final main checks](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41105418305)
+and [tagged Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41107474165)
+passed on that exact source. The
+[full release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.5.0)
+contains both verified assets. ZIP SHA-256:
+`f7f388c34184fd3cb08a4f45c2258bec11d1f3857373c8417fb608ae647d6d4a`.
+
+The read-only live inventory verified the eight selected datapoints; the later
+maintainer-reported HACS update is a separate operating result. That feedback
+did not separately count all entities or provide a new file/registry audit.
+Repair fault injection, a new physical mode cycle and migration to a newly
+saved blueprint automation are not claimed or required as repetitions of
+already completed unchanged-behavior checks. A clean install on the minimum
+supported HA version remains separately unconfirmed.
 
 Local candidate checks passed on Python 3.14.10 / HA 2026.10.4: **209 tests and
 26 subtests**, **100% integration statement/branch coverage**. Two independent
 ZIP builds were identical; all **19 integration files** matched their source
-bytes. This is a candidate build, not the still-pending tagged Release Gate.
+bytes. These local checks and the subsequent successful tagged Release Gate
+are distinct records; publication verified the gated bundle and both downloads.
 
 ## Published 0.4.1 documentation patch record
 

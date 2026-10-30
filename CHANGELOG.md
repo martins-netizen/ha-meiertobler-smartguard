@@ -5,9 +5,12 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-## [0.5.0] - Unreleased
+## [0.5.0] - 2026-10-30
 
-Prepared release candidate; not yet published.
+Published release; see [release notes](docs/RELEASE_NOTES_0.5.0.md) for the
+tagged validation and package checksums. The maintainer confirmed the HACS
+update and successful operation on Home Assistant Core 2026.10.4 / OS 18.4
+on 2026-10-30.
 
 ### Added
 

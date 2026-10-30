@@ -5,6 +5,10 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+## [0.5.0] - Unreleased
+
+Prepared release candidate; not yet published.
+
 ### Added
 
 - Eight optional read-only operating entities: HK60 heating/cooling room
@@ -14,9 +18,20 @@ uses stable semantic versions for release candidates and published releases.
 - English/German names and Smart Grid labels; room targets remain settings
   shown as sensors, and heating demand does not claim actual heater operation.
 
-## [0.4.1] - Unreleased
+### Changed
 
-Documentation patch candidate; not yet published.
+- Show entry-specific repairs for invalid saved hosts, unsupported devices and
+  changed gateway identities; retain automatic retry for transient failures.
+- Guard blueprint morning recovery with a persistent ownership helper and
+  provide guided German setup. Blueprint re-import remains a separate action.
+- Update the CI Python baseline and pinned validation dependencies without
+  changing the runtime dependency list or the Home Assistant interpreter.
+
+## [0.4.1] - 2026-10-23
+
+Published documentation patch; see [release notes](docs/RELEASE_NOTES_0.4.1.md)
+for publication and checksum evidence. The HACS update, new README/graphic and
+all existing entities were user-confirmed on 2026-10-25.
 
 ### Documentation
 
@@ -29,7 +44,8 @@ Documentation patch candidate; not yet published.
 ## [0.4.0] - 2026-10-22
 
 Published release; see [release notes](docs/RELEASE_NOTES_0.4.0.md) for integrity
-and validation evidence. The release-specific HACS upgrade test remains pending.
+and validation evidence. The HACS upgrade and entity availability were
+user-confirmed; see [the upgrade record](docs/HACS_TEST_V0.4.0.md).
 
 ### Added
 

@@ -4,23 +4,55 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-## 0.4.1 documentation patch candidate
+## 0.5.0 operating-readings and repairs candidate
 
-Status: prepared candidate; not yet published.
+Status: prepared release candidate; **not yet published**. See
+[0.5.0 release notes](RELEASE_NOTES_0.5.0.md). Existing published tags/assets
+remain unchanged; the Release Gate still never publishes automatically.
+
+- [x] Merge eight optional read-only operating entities and configuration repairs.
+- [x] Include the tested blueprint ownership guard and guided setup; imported
+      blueprints and existing production automations are not automatically replaced.
+- [x] Choose 0.5.0 for additive functionality and align manifest/project/root lock.
+- [x] Prepare versioned notes, changelog, entity counts and upgrade guidance.
+- [x] Complete validation, Ruff, strict MyPy, all tests and deterministic bundle
+      inspection on the exact versioned candidate.
+- [ ] Review the release PR and merge after Quality, Hassfest, HACS and SonarCloud.
+- [ ] Verify those four checks again on the exact final main commit.
+- [ ] Create annotated `v0.5.0`, pass its tagged Release Gate and inspect its ZIP.
+- [ ] Explicitly publish the full GitHub release with both verified assets.
+- [ ] Complete the actual HACS upgrade, restart, old-ID and additional-entity check.
+
+The read-only live inventory verified the eight selected datapoints. It was not
+an installation test of 0.5.0. Repair fault injection, a new physical mode cycle
+and migration to a newly saved blueprint automation are not claimed or required
+as repetitions of already completed unchanged-behavior checks. A clean install
+on the minimum supported HA version remains separately unconfirmed.
+
+Local candidate checks passed on Python 3.14.10 / HA 2026.10.4: **209 tests and
+26 subtests**, **100% integration statement/branch coverage**. Two independent
+ZIP builds were identical; all **19 integration files** matched their source
+bytes. This is a candidate build, not the still-pending tagged Release Gate.
+
+## Published 0.4.1 documentation patch record
+
+Status: **published on 2026-10-23 at 05:40:13 UTC**. HACS update, new README/graphic
+and all 15 existing entities were user-confirmed on **2026-10-25**. See
+[0.4.1 release notes](RELEASE_NOTES_0.4.1.md) for exact scope and source references.
 
 - [x] Prepare the concise README, illustrative graphic and linked guides.
 - [x] Keep manifest, project and lock-file root versions at 0.4.1.
 - [x] Retain 0.4.0 runtime logic; only its manifest version changes.
-- [x] Record the user-confirmed 0.4.0 HACS upgrade and entity availability.
-- [ ] Pass all PR checks and merge through the protected branch.
-- [ ] Verify Quality, Hassfest, HACS and SonarCloud on the final main commit.
-- [ ] Create annotated `v0.4.1`, pass its Release Gate and inspect the bundle.
-- [ ] Explicitly publish the full GitHub release with both verified assets.
-- [ ] Check the new README and graphic in HACS after metadata refresh.
+- [x] Pass the publication source checks, annotated tag and Release Gate.
+- [x] Publish the full GitHub release with both verified assets.
+- [x] Confirm the 0.4.1 HACS update, new overview and existing entities.
 
-The README links to Releases for current availability. Candidate status belongs
-in versioned notes and this checklist, so the HACS description can remain useful
-before and after publication. Do not move the existing v0.4.0 tag to update it.
+Current annotated `v0.4.1` source: `094845ea561b3d23ccf26bc9fea0913de68a5b5d`.
+Its [subsequent tagged revalidation](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/40373063287)
+passed after repository metadata maintenance. ZIP SHA-256
+`bbc4734035a05897faa24063822a3da9a06d7a7e346abdb155e10121e4ffba22`;
+original assets and tag remain unchanged by this release preparation.
+The HACS/UI confirmation is not a new independent byte audit.
 
 ## Published 0.4.0 record
 
@@ -120,8 +152,11 @@ of `main`.
 - [ ] Recalculate SHA-256 locally and compare it with the supplied checksum.
 - [ ] Inspect the ZIP file list and confirm that it contains only the expected
       integration files.
-- [ ] Install the candidate ZIP in a test Home Assistant instance and complete
-      a smoke test of setup, polling, mode write/readback, reload, and removal.
+- [ ] Complete the relevant Home Assistant smoke checks for the selected
+      candidate: setup, polling, new entities, reload and recovery.
+
+Retain existing evidence for unchanged mode-write/readback and removal behavior.
+Adding read-only values does not require a new physical mode-switch cycle.
 
 The tag workflow has read-only repository permissions. It validates and builds
 artifacts but does not create a GitHub release.

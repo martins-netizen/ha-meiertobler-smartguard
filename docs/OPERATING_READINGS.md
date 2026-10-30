@@ -2,9 +2,10 @@
 
 [Back to the overview](../README.md)
 
-Status: **development only, not yet released**. These eight additional read-only
-entities are not included in the published 0.4.1 release. This change does not
-install anything in Home Assistant or add temperature controls.
+Introduced in the **0.5.0 source**. See the [0.5.0 release notes](RELEASE_NOTES_0.5.0.md)
+and [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
+for publication status and available downloads. These eight read-only entities
+are not included in 0.4.1. They add no temperature controls.
 
 ## Readings
 

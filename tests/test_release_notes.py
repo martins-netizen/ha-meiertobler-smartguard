@@ -20,8 +20,9 @@ def test_candidate_fixture_passes() -> None:
 
 def test_prepared_and_historical_release_notes_pass() -> None:
     """A prepared version must not borrow the previous release's publication."""
-    for version in ("0.3.0", "0.4.0"):
-        notes = (ROOT / "docs" / f"RELEASE_NOTES_{version}.md").read_text(encoding="utf-8")
+    for path in sorted((ROOT / "docs").glob("RELEASE_NOTES_*.md")):
+        version = path.stem.removeprefix("RELEASE_NOTES_")
+        notes = path.read_text(encoding="utf-8")
         validate_release_notes(version, notes)
 
 

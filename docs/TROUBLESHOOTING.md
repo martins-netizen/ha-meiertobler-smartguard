@@ -4,10 +4,12 @@ Start with the symptom that matches what Home Assistant shows. Do not post a
 SmartGuard password, internal IP address, serial number, global device
 identifier, or unreviewed diagnostics in an issue.
 
-## Configuration repairs on development main
+## Configuration repairs in 0.5.0 and later
 
-These notices are implemented on the development branch and are not included
-in the currently published 0.4.1 release.
+These notices are part of the 0.5.0 source and are not included in 0.4.1.
+See [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
+for available downloads and the [release notes](RELEASE_NOTES_0.5.0.md) for
+publication status.
 
 After loading an existing entry, **Settings > System > Repairs** explains an
 invalid saved host, a confirmed unsupported device, or a different SmartGuard
@@ -136,7 +138,7 @@ uses nor stores it.
 
 ### Resolution
 
-This is expected for version `0.3.0`. Keep the gateway on a segmented local
+This is expected for the verified local API. Keep the gateway on a segmented local
 network, restrict TCP port 80 to the Home Assistant host, and never forward the
 gateway API to the internet.
 

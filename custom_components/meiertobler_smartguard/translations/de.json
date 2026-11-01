@@ -251,5 +251,39 @@
       "title": "Ein anderes SmartGuard-Gateway hat geantwortet",
       "description": "Unter der für {entry_title} konfigurierten Adresse antwortet jetzt ein anderes SmartGuard-Gateway. Die Einrichtung wurde vor dem Lesen von Messwerten oder Freigeben der Steuerung gestoppt. Öffne [die SmartGuard-Integration]({integration_url}) und wähle Neu konfigurieren, um die Adresse des ursprünglichen Gateways anzugeben. Ist es wieder unter derselben Adresse erreichbar, lade den Eintrag neu. Einen beabsichtigten Geräteaustausch richtest du als separates Gerät ein."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ferienzeitraum für HK60 planen",
+        "description": "Beginn und Ende in der Home-Assistant-Zeitzone {timezone} auswählen. Erst die nächste ausdrückliche Bestätigung ändert den Heizungszeitraum. Die bestehende Abwesenheitssimulation für Licht wird durch diesen Dialog nicht gesteuert.",
+        "data": {
+          "start": "Ferienbeginn",
+          "end": "Ferienende"
+        }
+      },
+      "confirm": {
+        "title": "Sind Sie ganz sicher, dass Sie den Ferienzeitraum ändern möchten?",
+        "description": "Heizkreis: **{circuit}**. Betriebsmoduswahl: **{mode}**.\n\nBisheriger Beginn / Ende: **{previous}**\n\nNeuer Beginn / Ende: **{requested}**\n\nDas Gateway speichert die Daten einzeln. Geplante Schreibzugriffe: **{writes}**. Nach dem ersten Speichern gilt Beginn / Ende **{intermediate}**. Dieser Zwischenzeitraum kann die Heizung sofort beeinflussen, bevor beide neuen Daten gespeichert sind.\n\nDie Wirkung der Ferienabsenkung auf Raum- oder Vorlauf-SOLL ist noch nicht verifiziert. Nach dem Speichern werden beide Daten zurückgelesen. Ein Fehler oder Unterbruch kann eine Teiländerung hinterlassen; es gibt keine automatische Wiederholung oder blinde Rücksetzung. Die Lichtsimulation wird nicht geändert.",
+        "data": {
+          "confirm": "Ja, genau diesen Zeitraum für diesen Heizkreis speichern"
+        }
+      }
+    },
+    "error": {
+      "invalid_period": "Gültige Daten mit ganzen Sekunden eingeben: Ende nach Beginn und noch in der Zukunft. Bei der Zeitumstellung nicht existierende oder doppelte lokale Uhrzeiten eindeutig wählen.",
+      "confirmation_required": "Den angezeigten Heizkreis und ganzen Zeitraum bestätigen oder abbrechen."
+    },
+    "abort": {
+      "not_loaded": "Die SmartGuard-Integration zuerst laden, bevor der Ferienzeitraum bearbeitet wird.",
+      "period_unavailable": "Gateway, aktiver Heizkreis HK60 oder vollständiger bisheriger Zeitraum konnten nicht verifiziert werden. Keine Daten geschrieben. Zuerst den Zeitraum in SmartGuard prüfen; unbekannte Leerwerte werden nicht überschrieben.",
+      "no_changes": "Der gewünschte Zeitraum entspricht dem gespeicherten Zeitraum. Nichts geschrieben.",
+      "confirmation_expired": "Die Bestätigung fehlt, wurde bereits verwendet oder ist älter als fünf Minuten. Dialog neu öffnen, aktuellen Zeitraum lesen und neu bestätigen.",
+      "source_changed": "Gateway-Konfiguration, Heizkreis, Betriebsmoduswahl oder gespeicherter Zeitraum haben sich geändert. Kein Ferien-Schreibzugriff gestartet. Dialog neu öffnen und aktuellen Stand prüfen.",
+      "read_failed": "Die Vorprüfung vor dem Schreiben ist fehlgeschlagen. Kein Ferien-Schreibzugriff gestartet. Verbindung prüfen und Dialog neu öffnen.",
+      "period_ended": "Der vorgeschlagene Zeitraum ist bereits abgelaufen. Nichts geschrieben. Neues Ende wählen.",
+      "write_unknown": "Das Schreiben konnte nicht vollständig bestätigt und der aktuelle Zeitraum nicht gelesen werden. Eine Teiländerung ist möglich. Beide Daten und Betriebsmodus direkt in SmartGuard prüfen, bevor ein neuer Auftrag bestätigt wird. Keine automatische Wiederholung oder Rücksetzung.",
+      "write_incomplete": "Das Schreiben wurde nicht vollständig bestätigt. Zuletzt verifizierter Beginn / Ende: {actual}. Beide Daten und Betriebsmodus direkt in SmartGuard prüfen. Eine Teiländerung oder zwischenzeitliche Änderung ist möglich. Keine automatische Wiederholung oder Rücksetzung."
+    }
   }
 }

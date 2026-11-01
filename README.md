@@ -87,6 +87,15 @@ automations are retained. If HACS does not show an available release, use
 See the [installation guide](docs/INSTALLATION.md) for custom-repository and
 manual installation, rollback and removal.
 
+### Holiday period editor (unreleased)
+
+A guided **Configure** dialog edits the complete HK60 holiday period, with a
+concrete warning and explicit confirmation before any write. The two dates are
+read back; partial or unknown outcomes stop without automatic retry or rollback.
+The current published release does not include this editor. Physical holiday
+operation and the separate HA presence-simulation binding still need acceptance.
+See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
+
 ## Compatibility and security
 
 - **Home Assistant 2026.9.0 or newer.**

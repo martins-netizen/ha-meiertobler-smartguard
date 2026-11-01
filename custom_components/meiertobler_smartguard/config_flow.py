@@ -6,7 +6,8 @@ import logging
 from typing import Any
 
 import probatio
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult
+from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import TextSelector
 
@@ -20,6 +21,7 @@ from .api import (
     normalize_host,
 )
 from .const import CONF_HOST, DOMAIN, MODEL
+from .holiday_flow import SmartGuardHolidayOptionsFlow
 
 _LOGGER = logging.getLogger(__name__)
 _HOST_SCHEMA = probatio.Schema({probatio.Required(CONF_HOST): TextSelector()})
@@ -30,6 +32,14 @@ class SmartGuardConfigFlow(ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
     MINOR_VERSION = 1
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(
+        config_entry: ConfigEntry,
+    ) -> SmartGuardHolidayOptionsFlow:
+        """Open the guided holiday editor for an existing entry."""
+        return SmartGuardHolidayOptionsFlow()
 
     async def async_step_user(
         self,

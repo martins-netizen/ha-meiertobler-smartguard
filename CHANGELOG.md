@@ -5,6 +5,8 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+- Add an explicitly confirmed HK60 whole-period holiday editor with timezone validation, source guards and readback. Physical holiday operation remains unverified; lighting presence simulation is a separate HA step.
+
 ### Added
 
 - Two optional read-only HK60 holiday start/end timestamp sensors. Positive

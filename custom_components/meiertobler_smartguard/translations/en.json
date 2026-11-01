@@ -251,5 +251,39 @@
       "title": "A different SmartGuard gateway answered",
       "description": "The address configured for {entry_title} now answers as a different SmartGuard gateway. Setup was stopped before reading measurements or enabling controls. Open [the SmartGuard integration]({integration_url}) and select Reconfigure to enter the address of the original gateway. If it is back at the same address, reload the entry. Configure an intentional replacement as a separate device."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Plan an HK60 holiday period",
+        "description": "Choose start and end in the Home Assistant timezone: {timezone}. This changes the heating schedule only after the next explicit confirmation. The existing lighting presence simulation is not controlled by this editor.",
+        "data": {
+          "start": "Holiday start",
+          "end": "Holiday end"
+        }
+      },
+      "confirm": {
+        "title": "Are you sure you want to change the holiday period?",
+        "description": "Circuit: **{circuit}**. Selected mode: **{mode}**.\n\nPrevious start / end: **{previous}**\n\nRequested start / end: **{requested}**\n\nThe gateway stores dates separately. Planned writes: **{writes}**. After the first write, the stored start / end will be **{intermediate}**. This intermediate period may affect heating immediately, even before both requested dates are stored.\n\nThe effect of the holiday reduction on room or flow targets has not been verified. After saving, both dates are read back. A failed or interrupted write can leave a partial change; it is not retried or blindly rolled back. The lighting simulation is not changed.",
+        "data": {
+          "confirm": "Yes, save this exact period for this circuit"
+        }
+      }
+    },
+    "error": {
+      "invalid_period": "Enter valid whole-second dates with end after start and end still in the future. Nonexistent or repeated local times at daylight-saving transitions need an unambiguous time.",
+      "confirmation_required": "Confirm the displayed circuit and complete period, or cancel."
+    },
+    "abort": {
+      "not_loaded": "Load the SmartGuard integration before editing its holiday period.",
+      "period_unavailable": "The gateway, enabled HK60 circuit or complete current period could not be verified. No dates were written. Check the gateway schedule first; unknown unset values are not overwritten.",
+      "no_changes": "The requested period matches the stored period. Nothing was written.",
+      "confirmation_expired": "The confirmation is missing, already used or older than five minutes. Reopen the editor to read the current schedule and confirm a new request.",
+      "source_changed": "The gateway configuration, circuit, selected mode or stored schedule changed. No holiday write was started. Reopen the editor and review the current state.",
+      "read_failed": "The pre-write check failed. No holiday write was started. Check the connection and reopen the editor.",
+      "period_ended": "The proposed period has already ended. Nothing was written. Choose a new end time.",
+      "write_unknown": "The write could not be fully verified and the current period could not be read. A partial change is possible. Check both dates and the operating mode directly in SmartGuard before making another confirmed request. No automatic retry or rollback was performed.",
+      "write_incomplete": "The write was not fully confirmed. Last verified start / end: {actual}. Check both dates and the operating mode directly in SmartGuard. A partial or concurrent change is possible. No automatic retry or rollback was performed."
+    }
   }
 }

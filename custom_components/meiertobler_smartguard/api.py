@@ -8,6 +8,7 @@ import json
 import logging
 import math
 import re
+import time
 import unicodedata
 from dataclasses import dataclass
 from typing import Any, Final, cast
@@ -25,6 +26,7 @@ from .const import (
     OPTIONAL_DATA_POINTS,
     SmartGuardDataPoint,
 )
+from .holiday import HolidayPeriod, HolidayState, holiday_write_plan
 
 type SmartGuardValue = float | int | bool | str
 type SmartGuardSnapshot = dict[str, SmartGuardValue]
@@ -57,6 +59,22 @@ class SmartGuardUnsupportedDeviceError(SmartGuardError):
 
 class SmartGuardWriteVerificationError(SmartGuardError):
     """The gateway did not confirm a requested write."""
+
+
+class SmartGuardHolidayChangedError(SmartGuardError):
+    """The target or source state no longer matches the confirmation."""
+
+
+class SmartGuardHolidayConfirmationError(SmartGuardError):
+    """The confirmation expired before a holiday write could start."""
+
+
+class SmartGuardHolidayWriteError(SmartGuardError):
+    """A holiday write may be partial; never silently retry or roll it back."""
+
+    def __init__(self, actual: HolidayState | None) -> None:
+        super().__init__("holiday write not fully confirmed")
+        self.actual = actual
 
 
 @dataclass(frozen=True, slots=True)
@@ -136,7 +154,10 @@ class SmartGuardApiClient:
         """Read enabled optional modules without failing the core update."""
         snapshot: SmartGuardSnapshot = {}
         for subsystem_path in dict.fromkeys(
-            (*[point.subsystem_path for point in OPTIONAL_DATA_POINTS], *MODULE_LABEL_KEYS)
+            (
+                *[point.subsystem_path for point in OPTIONAL_DATA_POINTS],
+                *MODULE_LABEL_KEYS,
+            )
         ):
             path = f"/api/v1/{EXPECTED_DEVICE_TYPE}/{serial_number}"
             if subsystem_path is not None:
@@ -225,6 +246,102 @@ class SmartGuardApiClient:
             raise SmartGuardWriteVerificationError("written mode was not confirmed")
         return value
 
+    async def async_read_hk60_holiday_state(
+        self, identity: SmartGuardIdentity
+    ) -> HolidayState:
+        """Verify the target and read a stable pair without changing any setting."""
+        if await self.async_get_identity() != identity:
+            raise SmartGuardHolidayChangedError("gateway identity changed")
+        config = await self._async_get_json(
+            f"/api/v1/{EXPECTED_DEVICE_TYPE}/{identity.serial_number}/1/2/config"
+        )
+        if config.get("enabled") is not True:
+            raise SmartGuardInvalidResponseError("HK60 is not enabled")
+        previous = await self._async_read_holiday_period(identity.serial_number)
+        mode = await self.async_read_datapoint(
+            identity.serial_number, HK60_SELECTED_MODE_DATA_POINT
+        )
+        if mode not in HK60_SELECTED_MODE_TO_VALUE.values():
+            raise SmartGuardInvalidResponseError("unknown selected mode")
+        period = await self._async_read_holiday_period(identity.serial_number)
+        if period != previous:
+            raise SmartGuardHolidayChangedError("holiday period changed while reading")
+        return HolidayState(
+            period, cast("int", mode), normalize_module_label(config.get("label"))
+        )
+
+    async def _async_read_holiday_period(self, serial_number: str) -> HolidayPeriod:
+        """Read only the two observed date points; reject unknown unset markers."""
+        values = [
+            await self.async_read_datapoint(serial_number, point)
+            for point in OPTIONAL_DATA_POINTS
+            if point.key in ("hk60_holiday_start", "hk60_holiday_end")
+        ]
+        try:
+            return HolidayPeriod(cast("int", values[0]), cast("int", values[1]))
+        except ValueError as err:
+            raise SmartGuardInvalidResponseError("invalid holiday period") from err
+
+    async def async_set_hk60_holiday_period(
+        self,
+        identity: SmartGuardIdentity,
+        expected: HolidayState,
+        requested: HolidayPeriod,
+        *,
+        confirmation_deadline: float,
+    ) -> HolidayState:
+        """Apply a concretely confirmed pair with source guards and readbacks."""
+        target = HolidayState(requested, expected.selected_mode, expected.label)
+        async with self._write_lock:
+            if time.monotonic() >= confirmation_deadline:
+                raise SmartGuardHolidayConfirmationError("confirmation expired")
+            if await self.async_read_hk60_holiday_state(identity) != expected:
+                raise SmartGuardHolidayChangedError("confirmed source state changed")
+            if time.monotonic() >= confirmation_deadline:
+                raise SmartGuardHolidayConfirmationError("confirmation expired")
+            if requested.end <= time.time():
+                raise ValueError("holiday period has already ended")
+            for key, value, intermediate in holiday_write_plan(
+                expected.period, requested
+            ):
+                point = next(
+                    point
+                    for point in OPTIONAL_DATA_POINTS
+                    if point.key == f"hk60_holiday_{key}"
+                )
+                expected_step = HolidayState(
+                    intermediate, expected.selected_mode, expected.label
+                )
+                if await self._async_write_holiday_step(
+                    identity, point, value, expected_step, target
+                ):
+                    break
+            return target
+
+    async def _async_write_holiday_step(
+        self,
+        identity: SmartGuardIdentity,
+        point: SmartGuardDataPoint,
+        value: int,
+        expected: HolidayState,
+        target: HolidayState,
+    ) -> bool:
+        """Verify one step; after an error, only a complete readback can succeed."""
+        try:
+            await self._async_post_value(point.path(identity.serial_number), value)
+            actual = await self.async_read_hk60_holiday_state(identity)
+        except SmartGuardError as err:
+            try:
+                actual = await self.async_read_hk60_holiday_state(identity)
+            except SmartGuardError:
+                actual = None
+            if actual == target:
+                return True
+            raise SmartGuardHolidayWriteError(actual) from err
+        if actual != expected:
+            raise SmartGuardHolidayWriteError(actual)
+        return False
+
     async def _async_post_value(self, path: str, value: int) -> None:
         """Write one integer value without exposing device details in errors."""
         url = self._base_url.with_path(path)
@@ -238,6 +355,7 @@ class SmartGuardApiClient:
                     "Content-Type": "text/plain",
                 },
                 timeout=self._timeout,
+                allow_redirects=False,
             ) as response:
                 if response.status >= 500:
                     raise SmartGuardConnectionError("gateway server error")
@@ -258,6 +376,7 @@ class SmartGuardApiClient:
                 url,
                 headers={"Accept": "application/json"},
                 timeout=self._timeout,
+                allow_redirects=False,
             ) as response:
                 if response.status >= 500:
                     raise SmartGuardConnectionError("gateway server error")

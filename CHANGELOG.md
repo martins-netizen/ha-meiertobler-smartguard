@@ -5,6 +5,14 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+No changes yet.
+
+## [0.6.0] - 2026-11-01
+
+Release candidate; see [release notes](docs/RELEASE_NOTES_0.6.0.md) and
+[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
+for publication status.
+
 ### Added
 
 - Ten optional read-only HK60 sensors: current flow target temperature,

@@ -15,8 +15,13 @@ The graphic is an illustrative feature overview, not a live installation screens
 ## What you get
 
 - **Heat pump:** source inlet and condenser inlet/outlet temperatures.
-- **HK60:** flow temperature, operating status, selected/effective mode and season.
-  Optional room heating/cooling targets are read-only displays of settings.
+- **HK60:** actual and requested flow temperature, operating status,
+  selected/effective mode and season. Optional room targets, outdoor
+  thresholds, design outdoor temperature and damping durations are read-only
+  displays of controller settings.
+- **Configured names:** circuit/storage labels replace technical prefixes in
+  display names; diagnostic label sensors show the configured module assignments.
+  Numeric readings and mode control continue to cover HK60 only.
 - **Controller:** outdoor temperature, Smart Grid status and three fault inputs.
 - **Mode control:** Auto, Normal, Reduced, Frost protection, Heating and Cooling.
   Every write is immediately read back; an unconfirmed change reports an error.
@@ -26,19 +31,18 @@ The graphic is an illustrative feature overview, not a live installation screens
   gateway-address reconfiguration, actionable configuration repairs and redacted
   diagnostics.
 
-With all supported modules enabled and returning valid readings, these features
-provide **16 sensors, six binary sensors and one mode select**. Heater indicators
-and heat requests report gateway status; they do not measure electrical power
-or energy. This integration adds no heater controls or editable temperature
-setpoints. See the [operating readings guide](docs/OPERATING_READINGS.md) for
-availability and interpretation.
+The features above describe **0.6.0**. Check
+[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for published downloads; candidate status is recorded in the versioned notes.
+With every supported module and reading available, this version can provide
+**26 numeric/enum sensors, up to six diagnostic label sensors, six binary
+sensors and one mode select** (39 entities in total).
 
-Development on `main` additionally includes ten optional
-[HK60 flow-target and threshold sensors](docs/HK60_FLOW_AND_LIMITS.md).
-Configured circuit/storage labels are used in display names and exposed as
-diagnostic label sensors, including label-only discovery for HK50 and HK70.
-This addition is **not yet released**; installation through HACS requires a
-future release. The published 0.5.0 entity count above remains unchanged.
+Heater indicators and heat requests report gateway status; they do not measure
+electrical power or energy. This integration adds no heater controls or editable
+temperature setpoints. See the [operating readings guide](docs/OPERATING_READINGS.md)
+and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
+configured names and interpretation.
 
 ## Installation
 
@@ -98,7 +102,8 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release notes: [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
+- Release notes: [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
+  [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
   [0.4.1](docs/RELEASE_NOTES_0.4.1.md),
   [0.4.0](docs/RELEASE_NOTES_0.4.0.md), [0.3.0](docs/RELEASE_NOTES_0.3.0.md).
 - HACS records: [0.4.0 upgrade](docs/HACS_TEST_V0.4.0.md),
@@ -109,8 +114,10 @@ Preparation and publication evidence live in the
 Diese lokale Integration verbindet **Meier Tobler SmartGuard 2.0** mit
 **Home Assistant**. Sie zeigt Wärmepumpen- und HK60-Werte sowie optional die
 Temperaturen und gemeldeten Heizeinsatzwerte von Heizpuffer und Warmwasser.
-Weitere optionale Anzeigen umfassen Raum-Sollwerte, Aussentemperatur,
-Smart-Grid-Status, Störsignale und Heizpuffer-Heizanforderung. Sollwerte werden
+Weitere optionale Anzeigen umfassen Vorlauf SOLL und IST, Raum-Sollwerte,
+Heiz-/Kühlschwellen, Dämpfungszeiten, Aussentemperatur, Smart-Grid-Status,
+Störsignale und Heizpuffer-Heizanforderung. Konfigurierte Modulbezeichnungen
+machen die Anzeigen verständlicher; bestehende Entity-IDs bleiben erhalten. Sollwerte werden
 nur angezeigt; sie sind hier nicht einstellbar.
 Die HK60-Betriebsmoduswahl wird nach jeder Änderung unmittelbar zurückgelesen.
 Heizeinsatz-Anzeigen sind keine elektrische Leistungs- oder Energiemessung.

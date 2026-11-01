@@ -2,9 +2,10 @@
 
 [Back to the overview](../README.md) · [Operating readings](OPERATING_READINGS.md)
 
-This **unreleased** addition exposes ten optional read-only HK60 sensors.
-It is not included in published 0.5.0 and requires a future release for HACS
-installation. It adds no editable temperature or duration controls.
+Introduced in **0.6.0**: ten optional read-only HK60 sensors and configured
+module names. See the [versioned release notes](RELEASE_NOTES_0.6.0.md) and
+[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
+for publication status. No editable temperature or duration controls are added.
 
 ## Readings and interpretation
 
@@ -32,6 +33,13 @@ one decimal for display; stored numeric precision and user overrides remain
 unchanged. The target has the measurement state class so its changing values
 can be recorded in long-term statistics alongside actual flow readings.
 
+Use a target/actual comparison from the **same HK60 circuit**. Heat-pump
+condenser temperatures can belong to a different hydraulic point and can rise
+during hot-water production. A brief target/actual gap is not a fault diagnosis:
+account for startup, operating status, hot-water production and defrost before
+turning a sustained deviation into an operational warning. This release exposes
+the measurements; it does not install a fault-monitoring automation.
+
 The other nine values are **reported controller parameters**, not measured
 room/outdoor temperatures or elapsed heating/cooling time. They have no
 measurement or total-increasing state class. Damping values use hours and
@@ -56,7 +64,7 @@ The 60-second coordinated sequential polling interval is retained. With every
 supported module enabled and valid, a complete refresh uses **38 GET requests**:
 eight core readings, six configuration checks and 24 optional numeric readings.
 There are no per-entity network requests and no new gateway writes. This
-development version can provide **26 sensors, six binary sensors and one
+version can provide **26 numeric/enum sensors, six binary sensors and one
 HK60 mode select**, plus up to six diagnostic label sensors (39 entities in
 total). Unsupported readings or missing labels can reduce that count.
 

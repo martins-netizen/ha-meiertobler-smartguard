@@ -60,12 +60,14 @@ readings. There are no per-entity network requests or new gateway writes.
 With all readings available, the combined entity count is **16 sensors, six
 binary sensors and the existing single HK60 mode select**.
 
-The unreleased [HK60 flow target and limits](HK60_FLOW_AND_LIMITS.md) add ten
-optional sensors. With that addition on `main`, the complete refresh uses
-**38 GET requests**, including two additional HK50/HK70 configuration reads for
-labels. It provides **26 numeric/enum sensors, six binary sensors and one mode
-select**, plus up to six diagnostic label sensors. Published 0.5.0 retains the
-counts above.
+The **0.6.0** [HK60 flow target and limits](HK60_FLOW_AND_LIMITS.md) add ten
+optional sensors. The complete 0.6.0 refresh uses **38 GET requests**, including
+two additional HK50/HK70 configuration reads for labels. It provides **26
+numeric/enum sensors, six binary sensors and one mode select**, plus up to six
+diagnostic label sensors (39 entities in total). These are maximum counts;
+unsupported readings and missing labels reduce them. See the
+[0.6.0 notes](RELEASE_NOTES_0.6.0.md) for publication status. The 0.5.0 counts
+above remain its historical record.
 
 ## Verified scope and limits
 

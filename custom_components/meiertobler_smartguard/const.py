@@ -13,7 +13,9 @@ EXPECTED_DEVICE_TYPE = "1001"
 DEFAULT_UPDATE_INTERVAL_SECONDS = 60
 DEFAULT_REQUEST_TIMEOUT_SECONDS = 10
 
-DataPointKind = Literal["temperature", "duration", "enum", "counter", "boolean"]
+DataPointKind = Literal[
+    "temperature", "temperature_delta", "duration", "enum", "counter", "boolean"
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,6 +103,19 @@ OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     ),
     SmartGuardDataPoint("hk60_cooling_on_damping", 5278, "duration", (1, 2), 1, 48),
     SmartGuardDataPoint("hk60_cooling_off_damping", 5279, "duration", (1, 2), 1, 48),
+    # Manufacturer p. 20; all four were independently verified through GETs.
+    SmartGuardDataPoint(
+        "hk60_heating_temperature_boost", 5071, "temperature_delta", (1, 2), 0, 16
+    ),
+    SmartGuardDataPoint(
+        "hk60_design_flow_temperature", 5222, "temperature", (1, 2), 10, 80
+    ),
+    SmartGuardDataPoint(
+        "hk60_minimum_flow_normal", 5223, "temperature", (1, 2), 20, 90
+    ),
+    SmartGuardDataPoint(
+        "hk60_minimum_flow_reduced", 5225, "temperature", (1, 2), 15, 90
+    ),
 )
 
 # Labels are metadata from /config, never numeric datapoints or identifiers.

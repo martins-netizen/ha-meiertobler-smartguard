@@ -184,6 +184,18 @@
       },
       "dhw_label": {
         "name": "Hot water label"
+      },
+      "hk60_heating_temperature_boost": {
+        "name": "Heating boost{module_suffix}"
+      },
+      "hk60_design_flow_temperature": {
+        "name": "Design flow{module_suffix}"
+      },
+      "hk60_minimum_flow_normal": {
+        "name": "Min. flow normal{module_suffix}"
+      },
+      "hk60_minimum_flow_reduced": {
+        "name": "Min. flow reduced{module_suffix}"
       }
     },
     "select": {

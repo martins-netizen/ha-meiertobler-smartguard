@@ -88,6 +88,30 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
 )
 
 OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
+    SmartGuardSensorEntityDescription(
+        key="hk60_heating_temperature_boost",
+        translation_key="hk60_heating_temperature_boost",
+        device_class=SensorDeviceClass.TEMPERATURE_DELTA,
+        native_unit_of_measurement=UnitOfTemperature.KELVIN,
+        suggested_unit_of_measurement=UnitOfTemperature.KELVIN,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=1,
+    ),
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            suggested_display_precision=1,
+        )
+        for key in (
+            "hk60_design_flow_temperature",
+            "hk60_minimum_flow_normal",
+            "hk60_minimum_flow_reduced",
+        )
+    ),
     *(
         SmartGuardSensorEntityDescription(
             key=key,

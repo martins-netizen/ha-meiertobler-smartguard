@@ -120,6 +120,11 @@ MODULE_LABEL_DEFAULT_NAMES: dict[str, tuple[str, str]] = {
     "buffer_label": ("Heating buffer", "Heizpuffer"),
     "dhw_label": ("Hot water", "Warmwasser"),
 }
+CIRCUIT_MODULE_NAMES: dict[str, str] = {
+    "hk50_label": "HK50",
+    "hk60_label": "HK60",
+    "hk70_label": "HK70",
+}
 ENTITY_MODULE_LABEL_KEYS: dict[str, str] = {
     point.key: MODULE_LABEL_KEYS[point.subsystem_path]
     for point in (*DATA_POINTS, *OPTIONAL_DATA_POINTS)

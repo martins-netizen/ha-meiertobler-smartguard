@@ -44,6 +44,12 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
+Development on `main` also prepares shorter HK60 names with the measurement
+first, such as **Flow target · HK60**. The configured assignment remains in
+module metadata, for example **HK60: Example floor circuit**. This naming
+refinement is not included in published 0.6.0; it needs a subsequent release.
+Registered IDs, device assignment and user-defined names are preserved.
+
 ## Installation
 
 ### New installation with HACS

@@ -196,6 +196,6 @@ async def test_hk60_names_use_native_translations(
     translations = await async_get_translations(hass, language, "entity", {DOMAIN})
     for key in HK60_IDS:
         assert translations[f"component.{DOMAIN}.entity.sensor.{key}.name"]
-    assert translations[f"component.{DOMAIN}.entity.sensor.hk60_flow_target_temperature.name"].format(module_prefix="HK60 ") == (
-        "HK60 Vorlauf SOLL" if language == "de" else "HK60 flow target temperature"
+    assert translations[f"component.{DOMAIN}.entity.sensor.hk60_flow_target_temperature.name"].format(module_suffix=" · HK60") == (
+        "Vorlauf SOLL · HK60" if language == "de" else "Flow target · HK60"
     )

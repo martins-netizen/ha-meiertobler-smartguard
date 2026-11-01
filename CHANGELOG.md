@@ -5,7 +5,16 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-No changes yet.
+### Changed
+
+- Put the measurement first in short HK60 entity names, retaining the technical
+  circuit as a compact suffix instead of repeating long configured labels.
+- Describe the controller's reported outdoor reading as an outdoor temperature
+  sensor. Configured circuit assignments are separately available as
+  `module_display_name`, for example `HK60: Example floor circuit`.
+- Preserve registered entity IDs, unique IDs, device assignment, custom names,
+  precision overrides and raw configured label values; no datapoint or control
+  behavior changes. These naming refinements are not in published 0.6.0.
 
 ## [0.6.0] - 2026-11-01
 

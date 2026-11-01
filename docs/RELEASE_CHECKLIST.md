@@ -4,27 +4,35 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-## 0.6.0 flow-target and configured-name release candidate
+## Published 0.6.0 flow-target and configured-name release
 
-The versioned source contains PR #37's ten optional HK60 readings and module
-labels. This candidate is **not yet published**. The annotated `v0.6.0` tag,
-tagged Release Gate, full GitHub release and live HACS update remain separate
-steps. See [0.6.0 release notes](RELEASE_NOTES_0.6.0.md).
+Status: **published on 2026-11-01 at 11:03:54 UTC** as the stable full release.
+PR #38 versions PR #37's ten optional HK60 readings and configured labels.
+The annotated `v0.6.0` tag, tagged Release Gate and both verified assets are
+complete. **Live HACS update and UI acceptance remain pending**; the latest
+confirmed installation is 0.5.0. See [0.6.0 notes](RELEASE_NOTES_0.6.0.md).
 
 - [x] Retain the reviewed feature implementation and unchanged mode controls.
 - [x] Align manifest, project and root lock-file versions at 0.6.0.
 - [x] Prepare notes, changelog, 39-entity maximum and upgrade guidance.
 - [x] Validate the exact versioned source, full suite and deterministic bundle.
-- [ ] Merge the release PR after Quality, Hassfest, HACS and SonarCloud pass.
-- [ ] Verify all four checks on the exact merged commit.
-- [ ] Create the annotated tag and verify its successful tagged Release Gate.
-- [ ] Compare all 19 ZIP members with source and verify both uploaded assets.
-- [ ] Publish the stable full GitHub release explicitly.
+- [x] Merge the release PR after Quality, Hassfest, HACS and SonarCloud pass.
+- [x] Verify all four checks on the exact merged commit.
+- [x] Create the annotated tag and verify its successful tagged Release Gate.
+- [x] Compare all 19 ZIP members with source and verify both uploaded assets.
+- [x] Publish the stable full GitHub release explicitly.
 - [ ] Verify the HACS update, target/actual readings, module names and existing IDs.
 
 The earlier endpoint reads establish read-only datapoint mappings on one
 gateway. They do not establish installation acceptance of this candidate.
 Historical night-switching and 0.5.0 HACS results remain valid, separate records.
+
+Published source: `1b64e1e83e49a70b21fc025de09ee62eac6ec924`; annotated
+tag object: `5da0707fc126e241555fcc8ca70e94eeb7964809`;
+[Release Gate 41299829242](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41299829242)
+passed on that source. The full release contains the verified 39,421-byte ZIP
+and 99-byte checksum file. ZIP SHA-256:
+`339623147f11bb719da3894f44804ed2c64700ec999154444490fbfb7419e520`.
 
 ## Published 0.5.0 operating-readings and repairs record
 

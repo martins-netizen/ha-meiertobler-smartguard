@@ -1,7 +1,8 @@
 # Scheduled holidays, heating and presence simulation
 
 Status: **two read-only timestamp sensors and a confirmed whole-period editor
-implemented in the unreleased scope**. Published 0.6.0 includes neither.
+implemented in the 0.7.0 release candidate**. It is not yet published;
+published 0.6.0 includes neither. See the [candidate notes](RELEASE_NOTES_0.7.0.md).
 Physical holiday writes and their heating effect still require explicit live
 acceptance. Presence-simulation coupling remains **design only**.
 
@@ -37,7 +38,7 @@ later valid reply recovers the same entity. Existing IDs/custom names survive re
 
 No unit or statistics state class is attached. Each enabled HK60 refresh adds
 exactly two GETs and reuses its existing config check; disabled modules are not
-queried for these points. The complete unreleased scope uses up to 44 GETs and
+queried for these points. The complete 0.7.0 candidate uses up to 44 GETs and
 45 entities (32 numeric/enum/timestamp, six label, six binary, one select).
 Disabling an entity in the registry alone does not stop its coordinated read.
 

@@ -95,9 +95,9 @@ become unavailable and can recover later. Numeric readings remain independent.
 Labels are plain text, trimmed and limited to 128 characters; non-text and
 control-character values are ignored. They are never used in endpoint paths.
 
-### Shorter names prepared for the next release
+### Shorter names in the 0.7.0 candidate
 
-This **unreleased naming refinement** puts the measurement first and keeps
+This **0.7.0 candidate naming refinement** puts the measurement first and keeps
 only a short circuit suffix, such as **Flow target · HK60** or
 **Heating on threshold · HK60**. Long configured circuit labels no longer
 hide the measurement in narrow device views. German examples are **Vorlauf
@@ -116,8 +116,9 @@ assignment, entity/unique IDs, user names and display settings are preserved;
 no logical device migration or automation rewrite is performed. A later
 label change updates module metadata while the short HK60 measurement names
 stay readable. Integration diagnostics still redact every free-text label.
-There are no extra network requests or gateway writes, and published 0.6.0
-remains unchanged until a subsequent release is explicitly created.
+The naming refinement itself adds no requests or gateway writes. The full
+[0.7.0 candidate](RELEASE_NOTES_0.7.0.md) separately adds heating-curve/holiday
+readings and confirmed holiday editing; published 0.6.0 remains unchanged.
 
 HK60, buffer, hot-water and controller labels reuse the four existing config
 reads. HK50/HK70 add **two config GETs**, giving the 38-request budget above.

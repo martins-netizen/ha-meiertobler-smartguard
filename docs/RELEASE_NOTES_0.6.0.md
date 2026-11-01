@@ -5,8 +5,9 @@ Status: published release
 [Version 0.6.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.6.0)
 was published as a full stable release on **2026-11-01 at 11:03:54 UTC**.
 The annotated `v0.6.0` tag, tagged Release Gate and both verified assets are
-complete. The separate live HACS update and configured-name acceptance remain
-pending; the latest confirmed installation is still 0.5.0.
+complete. A separate technical installation check on 2026-11-01 verified all
+19 installed integration files against this release. The HACS update path and
+rendered-UI/configured-name acceptance remain distinct pending checks.
 
 ## Changes since 0.5.0
 
@@ -112,3 +113,11 @@ new heating-circuit controls. Unsupported return-temperature, controller-mode an
 EVU readings remain outside this release. Heater indicators and heat requests do
 not measure electrical power or energy. This independent community project is
 not affiliated with or endorsed by Meier Tobler AG.
+
+## Subsequent technical installation evidence
+
+A separate read-only installation report on 2026-11-01 confirmed version 0.6.0
+and byte-identical contents for all 19 integration files, with the existing
+flow-target entity and valid HA configuration. This establishes installed source,
+not independent HACS-path or rendered-UI acceptance. The later dashboard-only
+check does not prove another integration upgrade or a physical write test.

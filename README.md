@@ -44,24 +44,25 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
-Development on `main` also prepares shorter HK60 names with the measurement
-first, such as **Flow target · HK60**. The configured assignment remains in
-module metadata, for example **HK60: Example floor circuit**. This naming
-refinement is not included in published 0.6.0; it needs a subsequent release.
-Registered IDs, device assignment and user-defined names are preserved.
+## Next version: 0.7.0 candidate
 
-The next development update also adds four optional, read-only
-[heating-curve diagnostics](docs/HK60_HEATING_CURVE.md): heating boost, design
-flow and minimum normal/reduced flow. Two optional diagnostic timestamp sensors
-report **Holiday start · HK60** and **Holiday end · HK60** in Home Assistant's
-configured timezone. They do not set a period or confirm that holiday mode is active.
-Exact holiday times are redacted from downloaded diagnostics.
-
-With all supported readings available, this unreleased scope has 32
+The 0.7.0 candidate adds shorter HK60 measurement names, four read-only
+[heating-curve diagnostics](docs/HK60_HEATING_CURVE.md), two holiday timestamp
+sensors and a guided [holiday period editor](docs/HOLIDAY_MODE_PLAN.md).
+With all supported modules and readings available, it provides **32
 numeric/enum/timestamp sensors, six label sensors, six binary sensors and one
-mode select (45 entities), using up to 44 GETs per refresh. These additions are
-not part of published 0.6.0. Holiday control and presence-simulation coupling
-remain an [implementation plan](docs/HOLIDAY_MODE_PLAN.md).
+mode select** (45 entities), using up to 44 GETs per refresh.
+
+The editor shows the previous, requested and temporary intermediate periods
+and requires explicit confirmation. It reads both dates back and stops after
+partial or uncertain results without automatic retry or blind rollback.
+Physical holiday operation still needs acceptance; the lighting presence
+simulation and >24-hour absence suggestion remain separate HA work.
+
+**0.7.0 is a candidate, not yet published.** The latest published stable release
+remains 0.6.0. See the [0.7.0 candidate notes](docs/RELEASE_NOTES_0.7.0.md) for
+scope, validation and the remaining release steps. Existing entity IDs,
+custom names and automations are preserved.
 
 ## Installation
 
@@ -87,7 +88,7 @@ automations are retained. If HACS does not show an available release, use
 See the [installation guide](docs/INSTALLATION.md) for custom-repository and
 manual installation, rollback and removal.
 
-### Holiday period editor (unreleased)
+### Holiday period editor (0.7.0 candidate)
 
 A guided **Configure** dialog edits the complete HK60 holiday period, with a
 concrete warning and explicit confirmation before any write. The two dates are
@@ -117,6 +118,8 @@ by Meier Tobler AG. See the [security policy](SECURITY.md).
 - [Blueprint and quality evidence review](docs/QUALITY_REVIEW.md)
 - [Additional storage measurements](docs/ADDITIONAL_MEASUREMENTS.md)
 - [Additional read-only operating readings](docs/OPERATING_READINGS.md)
+- [HK60 heating-curve diagnostics](docs/HK60_HEATING_CURVE.md)
+- [Holiday period editor and presence-simulation plan](docs/HOLIDAY_MODE_PLAN.md)
 - [Technical reference and development checks](docs/TECHNICAL_REFERENCE.md)
 - [Report a bug](https://github.com/martins-netizen/ha-meiertobler-smartguard/issues/new/choose)
 
@@ -130,7 +133,8 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release notes: [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
+- Release notes: [0.7.0 candidate](docs/RELEASE_NOTES_0.7.0.md),
+  [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
   [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
   [0.4.1](docs/RELEASE_NOTES_0.4.1.md),
   [0.4.0](docs/RELEASE_NOTES_0.4.0.md), [0.3.0](docs/RELEASE_NOTES_0.3.0.md).

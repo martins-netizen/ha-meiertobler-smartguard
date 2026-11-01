@@ -5,39 +5,40 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-- Add an explicitly confirmed HK60 whole-period holiday editor with timezone validation, source guards and readback. Physical holiday operation remains unverified; lighting presence simulation is a separate HA step.
+## [0.7.0] - 2026-11-01
+
+Release candidate, not yet published. See the
+[0.7.0 notes](docs/RELEASE_NOTES_0.7.0.md) for validation and acceptance limits.
 
 ### Added
 
-- Two optional read-only HK60 holiday start/end timestamp sensors. Positive
-  whole Unix seconds are exposed as timezone-aware UTC values, with local
-  display handled by Home Assistant. Missing, invalid or unconfirmed zero
-  values remain unavailable; no holiday-active state or write is inferred.
-  Downloaded diagnostics redact both reported holiday times.
-- Four optional read-only HK60 heating-curve diagnostics: heating temperature
-  boost, design flow and minimum normal/reduced flow settings. The boost is a
-  temperature difference in kelvin, not an absolute temperature. These settings
-  are sensors without measurement statistics or new write support.
-- A plan for scheduled holiday periods coordinating heating and presence
-  simulation, independently of an optional long-absence suggestion. Future
-  changes require explicit confirmation.
+- A guided HK60 whole-period holiday editor: choose both dates, review the
+  circuit, old/new and intermediate periods, then explicitly confirm. Source
+  checks, expiring confirmation and full readback guard each write. Partial or
+  unknown results stop without automatic retry or blind rollback. Physical
+  holiday operation remains unverified; lighting coupling is separate HA work.
+- Two optional read-only holiday start/end timestamp sensors using whole UTC
+  Unix seconds and HA's local display. Invalid or unconfirmed zero values remain
+  unavailable. Downloaded integration diagnostics redact both holiday times.
+- Four optional read-only heating-curve diagnostics: heating boost in kelvin,
+  design flow and minimum normal/reduced flow. No editable temperature setpoints.
+- A plan retaining both independently scheduled holidays and an additional
+  >24-hour absence suggestion with a requested end time.
 
 ### Changed
 
-- Put the measurement first in short HK60 entity names, retaining the technical
-  circuit as a compact suffix instead of repeating long configured labels.
-- Describe the controller's reported outdoor reading as an outdoor temperature
-  sensor. Configured circuit assignments are separately available as
-  `module_display_name`, for example `HK60: Example floor circuit`.
-- Preserve registered entity IDs, unique IDs, device assignment, custom names,
-  precision overrides and raw configured label values; no datapoint or control
-  behavior changes. These naming refinements are not in published 0.6.0.
+- Put the HK60 measurement first with a short circuit suffix, keeping configured
+  assignments in module metadata. Describe the outdoor reading as an outdoor
+  temperature sensor. Preserve registered IDs, device assignment, custom names
+  and display settings.
+- Refuse HTTP redirects for gateway requests. Keep the existing verified mode
+  controls and share their local write lock with confirmed holiday changes.
 
 ## [0.6.0] - 2026-11-01
 
 Published stable release; see [release notes](docs/RELEASE_NOTES_0.6.0.md) for
-the source, tagged validation and package checksums. The separate live HACS
-update and configured-name acceptance remain pending.
+the source, tagged validation and package checksums. A separate technical installation check verified all 19 release files on
+2026-11-01; HACS/UI acceptance remains a distinct pending step.
 
 ### Added
 

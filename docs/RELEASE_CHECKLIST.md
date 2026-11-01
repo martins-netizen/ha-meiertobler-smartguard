@@ -4,13 +4,35 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
+## Prepared 0.7.0 holiday editor and diagnostics candidate
+
+Status: **release candidate, not yet published**. The current stable download
+remains 0.6.0. See [0.7.0 notes](RELEASE_NOTES_0.7.0.md).
+
+- [x] Retain merged naming, heating-curve, timestamp and editor PRs #40–#43.
+- [x] Align manifest, project and root lock-file versions at 0.7.0.
+- [x] Prepare user guidance, acceptance limits and device-state rollback notes.
+- [x] Validate the exact candidate and inspect two deterministic 21-file builds.
+- [ ] Review and merge the release PR after all four checks pass.
+- [ ] Verify the exact merged main, annotated `v0.7.0` tag and tagged Release Gate.
+- [ ] Inspect gated ZIP/checksum against the approved source and uploaded assets.
+- [ ] Explicitly publish the release; no automatic publication from the tag job.
+- [ ] Verify installation, entity/name preservation and optional readings on HA.
+- [ ] Accept a separately chosen, explicitly confirmed physical holiday test,
+      with previous dates retained and a reviewed corrective path.
+
+Synthetic tests and source checks do not establish live holiday operation or the
+meaning of the displayed K reduction. The independent presence-simulation plan
+and >24-hour absence suggestion are not installed by this release.
+
 ## Published 0.6.0 flow-target and configured-name release
 
 Status: **published on 2026-11-01 at 11:03:54 UTC** as the stable full release.
 PR #38 versions PR #37's ten optional HK60 readings and configured labels.
 The annotated `v0.6.0` tag, tagged Release Gate and both verified assets are
-complete. **Live HACS update and UI acceptance remain pending**; the latest
-confirmed installation is 0.5.0. See [0.6.0 notes](RELEASE_NOTES_0.6.0.md).
+complete. A separate 2026-11-01 technical report verified all 19 installed
+0.6.0 files. **HACS-path and rendered-UI acceptance remain pending**. See
+[0.6.0 notes](RELEASE_NOTES_0.6.0.md).
 
 - [x] Retain the reviewed feature implementation and unchanged mode controls.
 - [x] Align manifest, project and root lock-file versions at 0.6.0.
@@ -21,7 +43,8 @@ confirmed installation is 0.5.0. See [0.6.0 notes](RELEASE_NOTES_0.6.0.md).
 - [x] Create the annotated tag and verify its successful tagged Release Gate.
 - [x] Compare all 19 ZIP members with source and verify both uploaded assets.
 - [x] Publish the stable full GitHub release explicitly.
-- [ ] Verify the HACS update, target/actual readings, module names and existing IDs.
+- [x] Verify the installed 0.6.0 source against all 19 release files.
+- [ ] Verify the HACS update path, rendered names and existing IDs.
 
 The earlier endpoint reads establish read-only datapoint mappings on one
 gateway. They do not establish installation acceptance of this candidate.

@@ -1,9 +1,9 @@
 # Scheduled holidays, heating and presence simulation
 
-Status: **two read-only timestamp sensors implemented in the unreleased scope**.
-Scheduling, holiday writes and presence-simulation coupling remain **design only**.
-Published 0.6.0 does not include these timestamp sensors. No new gateway action
-or presence automation is provided by this change.
+Status: **two read-only timestamp sensors and a confirmed whole-period editor
+implemented in the unreleased scope**. Published 0.6.0 includes neither.
+Physical holiday writes and their heating effect still require explicit live
+acceptance. Presence-simulation coupling remains **design only**.
 
 ## Current read-only stage
 
@@ -45,7 +45,55 @@ Both exact dates are redacted in downloaded integration diagnostics. They are
 still available as entity states for the owner's intended HA use; normal HA
 state access/history protections apply. Reading them does not modify a period,
 validate that start precedes end, or prove that firmware holiday operation is
-active. No derived active flag, date-setting action or `5241` entity is added.
+active. No derived active flag or `5241` entity is added. Date editing uses the guided
+options dialog below; the two timestamp entities remain read-only.
+
+## Confirmed whole-period editor
+
+Open **Settings > Devices & services > Meier Tobler SmartGuard > Configure**.
+The integration must be loaded. Select both dates in the displayed HA timezone,
+review the old/new complete periods, circuit label and selected mode, then
+explicitly confirm. Cancelling or leaving the checkbox clear cannot write.
+The confirmation expires after five minutes and is consumed before network I/O.
+No generic write service or independently writable date entity bypasses it.
+Dates are held only in flow memory, not copied into config-entry options.
+
+Before writing, the client rechecks the physical gateway identity, enabled HK60
+module, mode, label and unchanged source pair. It reads the pair twice to detect
+observed changes while reading. All local writes share the existing mode-write
+lock. Confirmation expiry and the future end are rechecked inside that lock
+after the source read. API requests do not follow redirects to another target. These are best-effort conflict checks: the gateway offers no compare-and-set
+or transaction, so an external writer can still race between requests.
+
+The order preserves start < end at each intermediate step: start first when it
+is before the existing end, otherwise end first. Unchanged endpoints are skipped.
+The confirmation shows the exact first intermediate period and write count.
+Moving an old period into the future can temporarily extend the old end, which
+may activate holiday operation immediately. This is explicitly warned about;
+atomicity or harmless intermediate operation is not claimed.
+
+Both dates and context are read back after every successful POST. A rejection,
+timeout, differing readback or changed context stops subsequent writes. One
+read-only recovery attempt reports the actual pair, or an unknown result. A
+lost reply is accepted only if the entire requested state is independently
+confirmed. No automatic retry or blind rollback can overwrite a later manual
+change. After interruption, check SmartGuard and open a fresh confirmed request.
+
+Whole positive Unix seconds, ordered dates and an end still in the future are
+required. Earlier starts are permitted for already-started absences. Local times
+in the spring gap or repeated autumn hour are rejected without an explicit
+offset; do not guess. Conversion uses HA's timezone and UTC instants, without
+the frontend's local-minute adjustment. Unknown zero/unset values are rejected;
+no clear/disable behavior is invented. Maximum representable timestamp is a
+serialization bound, not a proven firmware scheduling limit.
+
+The editor changes only 5226/5227 on verified 1/2, using the supplied frontend's
+numeric JSON value with text/plain POST. It does not change the selected mode,
+holiday reduction, room targets, heating curve, hot water or lighting simulation.
+Successful readback proves stored dates only. It does not prove holiday-active
+status, the reference of the displayed K reduction or correct heating behavior.
+The first physical test needs a separately chosen and confirmed concrete period
+with previous values retained and a reviewed return path.
 
 ## A period can be planned independently
 

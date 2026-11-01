@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -16,11 +17,17 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGuardValue
-from .const import DATA_POINTS, ENUM_STATES, MODULE_LABEL_KEYS
+from .const import (
+    DATA_POINTS,
+    ENUM_STATES,
+    HOLIDAY_TIMESTAMP_KEYS,
+    MAX_TIMESTAMP_SECONDS,
+    MODULE_LABEL_KEYS,
+)
 from .data import SmartGuardConfigEntry
 from .entity import SmartGuardEntity, async_add_optional_entities
 
-ValueFormatter = Callable[[SmartGuardValue], str | float | int | None]
+ValueFormatter = Callable[[SmartGuardValue], str | float | int | datetime | None]
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -39,6 +46,15 @@ def _enum_formatter(key: str) -> ValueFormatter:
         return states.get(value)
 
     return formatter
+
+
+def _timestamp_formatter(value: SmartGuardValue) -> datetime | None:
+    """Expose positive whole Unix seconds as UTC, without local offset arithmetic."""
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None
+    if not 1 <= value <= MAX_TIMESTAMP_SECONDS:
+        return None
+    return datetime(1970, 1, 1, tzinfo=UTC) + timedelta(seconds=value)
 
 
 SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
@@ -88,6 +104,16 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
 )
 
 OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.TIMESTAMP,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            value_formatter=_timestamp_formatter,
+        )
+        for key in HOLIDAY_TIMESTAMP_KEYS
+    ),
     SmartGuardSensorEntityDescription(
         key="hk60_heating_temperature_boost",
         translation_key="hk60_heating_temperature_boost",
@@ -244,7 +270,7 @@ class SmartGuardSensor(SmartGuardEntity, SensorEntity):
         self.entity_description = description
 
     @property
-    def native_value(self) -> str | float | int | None:
+    def native_value(self) -> str | float | int | datetime | None:
         """Return the formatted value held in coordinator memory."""
         raw_value = self.coordinator.data.get(self.entity_description.key)
         if raw_value is None:
@@ -253,5 +279,5 @@ class SmartGuardSensor(SmartGuardEntity, SensorEntity):
 
     @property
     def available(self) -> bool:
-        """Mark an unknown future enum value unavailable instead of inventing a state."""
+        """Mark an invalid value unavailable instead of inventing a state."""
         return super().available and self.native_value is not None

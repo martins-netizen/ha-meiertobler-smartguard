@@ -1,7 +1,51 @@
 # Scheduled holidays, heating and presence simulation
 
-Status: **design only**. No holiday entity, schedule write, presence automation
-or new gateway action is implemented by the heating-curve change.
+Status: **two read-only timestamp sensors implemented in the unreleased scope**.
+Scheduling, holiday writes and presence-simulation coupling remain **design only**.
+Published 0.6.0 does not include these timestamp sensors. No new gateway action
+or presence automation is provided by this change.
+
+## Current read-only stage
+
+The existing enabled HK60 module contributes two optional diagnostic sensors:
+
+| Reading | Datapoint | Value exposed to Home Assistant |
+| --- | --- | --- |
+| Holiday start · HK60 | `1/2/5226` | Timezone-aware UTC timestamp |
+| Holiday end · HK60 | `1/2/5227` | Timezone-aware UTC timestamp |
+
+The supplied frontend converts local date/time input with
+`Math.floor(new Date(value).getTime() / 1000)` and reconstructs dates from
+`1000 * value`. Independent read-only replies confirmed integer values at both
+points. The wire format is therefore whole Unix seconds. Keep the integration's
+verified gateway identity and circuit path, rather than copying a hardcoded
+device identifier from the frontend.
+
+HA displays the reported instants in its configured timezone. The integration
+does not add a fixed UTC offset or mutate local time components. Synthetic
+winter, summer, rollover and both repeated autumn-hour cases are tested. The
+frontend's local-minute adjustment can cross a DST boundary; it is not used as
+a conversion algorithm here.
+
+Only positive integers representable through `9999-12-31T23:59:59Z` are accepted.
+These are serialization guards, **not verified firmware scheduling limits**.
+Zero has not been confirmed as an unset/disabled marker and is unavailable,
+rather than displayed as a real holiday in 1970 or treated as a successful clear.
+Booleans, numeric strings, floats and out-of-range values are also unavailable.
+An invalid optional point does not fail core polling or the other date, and a
+later valid reply recovers the same entity. Existing IDs/custom names survive reload.
+
+No unit or statistics state class is attached. Each enabled HK60 refresh adds
+exactly two GETs and reuses its existing config check; disabled modules are not
+queried for these points. The complete unreleased scope uses up to 44 GETs and
+45 entities (32 numeric/enum/timestamp, six label, six binary, one select).
+Disabling an entity in the registry alone does not stop its coordinated read.
+
+Both exact dates are redacted in downloaded integration diagnostics. They are
+still available as entity states for the owner's intended HA use; normal HA
+state access/history protections apply. Reading them does not modify a period,
+validate that start precedes end, or prove that firmware holiday operation is
+active. No derived active flag, date-setting action or `5241` entity is added.
 
 ## A period can be planned independently
 
@@ -52,12 +96,17 @@ The supplied frontend references start `5226`, end `5227` and holiday field
 circuit. Field `5241` has unit K in the HTML and must not be assumed to be a
 boolean holiday-active flag.
 
-Bounded read-only replies and the actual referenced frontend script must
-establish timestamp units, timezone handling, unset values, activation rules
-and supported write behavior. The static script URL must be resolved from the
-observed document/base, not guessed at the gateway root. An HTML save button
-alone is not proof of safe write semantics. No real planned absence dates,
-personal identities or raw device data should be published as evidence.
+The supplied frontend confirms a separate POST for each date, with a numeric
+JSON `value` in a `text/plain` body. It checks HTTP success only. It does not
+atomically update a period or immediately read both values back. The supplied
+date handler also has no joint-period validation or explicit confirmation.
+That demonstrates the UI request format, not a successful physical write test.
+
+Unset/disabled values, activation rules, inclusive/exclusive boundaries,
+supported date range, write ordering and partial-write behavior still need
+verification. Field `5241` is a display cell in the supplied HTML; its K value
+does not reveal the regulated target or its effect. No real planned absence
+dates, personal identities or raw device data should be published as evidence.
 
 Immediately before a future confirmed write, recheck target identity and the
 unchanged source schedule. Keep per-period ownership for only the state created

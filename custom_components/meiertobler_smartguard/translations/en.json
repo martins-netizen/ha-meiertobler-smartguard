@@ -196,6 +196,12 @@
       },
       "hk60_minimum_flow_reduced": {
         "name": "Min. flow reduced{module_suffix}"
+      },
+      "hk60_holiday_start": {
+        "name": "Holiday start{module_suffix}"
+      },
+      "hk60_holiday_end": {
+        "name": "Holiday end{module_suffix}"
       }
     },
     "select": {

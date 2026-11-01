@@ -52,11 +52,16 @@ Registered IDs, device assignment and user-defined names are preserved.
 
 The next development update also adds four optional, read-only
 [heating-curve diagnostics](docs/HK60_HEATING_CURVE.md): heating boost, design
-flow and minimum normal/reduced flow. With all supported readings available,
-this unreleased scope has 30 numeric/enum sensors, six label sensors, six binary
-sensors and one mode select (43 entities), using up to 42 GETs per refresh.
-These additions are not part of published 0.6.0. Holiday control is only an
-[implementation plan](docs/HOLIDAY_MODE_PLAN.md), not a supported write action.
+flow and minimum normal/reduced flow. Two optional diagnostic timestamp sensors
+report **Holiday start · HK60** and **Holiday end · HK60** in Home Assistant's
+configured timezone. They do not set a period or confirm that holiday mode is active.
+Exact holiday times are redacted from downloaded diagnostics.
+
+With all supported readings available, this unreleased scope has 32
+numeric/enum/timestamp sensors, six label sensors, six binary sensors and one
+mode select (45 entities), using up to 44 GETs per refresh. These additions are
+not part of published 0.6.0. Holiday control and presence-simulation coupling
+remain an [implementation plan](docs/HOLIDAY_MODE_PLAN.md).
 
 ## Installation
 

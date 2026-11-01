@@ -17,6 +17,7 @@ from custom_components.meiertobler_smartguard.api import SmartGuardApiClient
 from custom_components.meiertobler_smartguard.const import (
     DATA_POINTS,
     DOMAIN,
+    HOLIDAY_TIMESTAMP_KEYS,
     OPTIONAL_DATA_POINTS,
 )
 from custom_components.meiertobler_smartguard.diagnostics import (
@@ -80,7 +81,7 @@ async def test_eight_new_readings_use_exact_get_paths_and_shared_module_config()
     snapshot = await SmartGuardApiClient(TEST_HOST, session).async_read_all("654321")
 
     assert all(snapshot[key] == EXTRA_VALUES[key] for key in NEW_PATHS)
-    assert len(session.calls) == 42
+    assert len(session.calls) == 44
     assert all(method == "GET" for method, _, _ in session.calls)
     paths = [urlsplit(url).path for url in session.urls]
     for suffix in NEW_PATHS.values():
@@ -255,8 +256,8 @@ async def test_native_operating_entities_have_correct_units_semantics_and_recove
         for e in registry.entities.values()
         if e.config_entry_id == config_entry.entry_id
     ]
-    assert len(entries) == 37
-    assert sum(e.domain == "sensor" for e in entries) == 30
+    assert len(entries) == 39
+    assert sum(e.domain == "sensor" for e in entries) == 32
     assert sum(e.domain == "binary_sensor" for e in entries) == 6
     assert sum(e.domain == "select" for e in entries) == 1
 
@@ -297,7 +298,7 @@ async def test_native_operating_entities_have_correct_units_semantics_and_recove
                 if e.config_entry_id == config_entry.entry_id
             ]
         )
-        == 37
+        == 39
     )
 
     # Diagnostics include only validated values and do no additional I/O.
@@ -307,7 +308,10 @@ async def test_native_operating_entities_have_correct_units_semantics_and_recove
     assert diagnostics["identity"]["global_device_id"] == REDACTED
     assert TEST_HOST not in str(diagnostics)
     assert TEST_GLOBAL_DEVICE_ID not in str(diagnostics)
-    assert diagnostics["coordinator"]["data"] == snapshot
+    assert diagnostics["coordinator"]["data"] == {
+        key: REDACTED if key in HOLIDAY_TIMESTAMP_KEYS else value
+        for key, value in snapshot.items()
+    }
     mock_api["get_identity"].assert_not_awaited()
     mock_api["read_all"].assert_not_awaited()
     mock_api["set_mode"].assert_not_awaited()

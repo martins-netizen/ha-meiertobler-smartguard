@@ -13,8 +13,13 @@ EXPECTED_DEVICE_TYPE = "1001"
 DEFAULT_UPDATE_INTERVAL_SECONDS = 60
 DEFAULT_REQUEST_TIMEOUT_SECONDS = 10
 
+# UTC serialization limits, not a claim about the gateway's supported date range.
+# The meaning of epoch zero/unset dates has not been verified.
+MAX_TIMESTAMP_SECONDS = 253402300799
+HOLIDAY_TIMESTAMP_KEYS = ("hk60_holiday_start", "hk60_holiday_end")
+
 DataPointKind = Literal[
-    "temperature", "temperature_delta", "duration", "enum", "counter", "boolean"
+    "temperature", "temperature_delta", "duration", "enum", "counter", "boolean", "timestamp"
 ]
 
 
@@ -115,6 +120,13 @@ OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     ),
     SmartGuardDataPoint(
         "hk60_minimum_flow_reduced", 5225, "temperature", (1, 2), 15, 90
+    ),
+    # UI date conversion and two read-only checks confirm integer Unix seconds.
+    SmartGuardDataPoint(
+        "hk60_holiday_start", 5226, "timestamp", (1, 2), 1, MAX_TIMESTAMP_SECONDS
+    ),
+    SmartGuardDataPoint(
+        "hk60_holiday_end", 5227, "timestamp", (1, 2), 1, MAX_TIMESTAMP_SECONDS
     ),
 )
 

@@ -4,6 +4,28 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
+## 0.6.0 flow-target and configured-name release candidate
+
+The versioned source contains PR #37's ten optional HK60 readings and module
+labels. This candidate is **not yet published**. The annotated `v0.6.0` tag,
+tagged Release Gate, full GitHub release and live HACS update remain separate
+steps. See [0.6.0 release notes](RELEASE_NOTES_0.6.0.md).
+
+- [x] Retain the reviewed feature implementation and unchanged mode controls.
+- [x] Align manifest, project and root lock-file versions at 0.6.0.
+- [x] Prepare notes, changelog, 39-entity maximum and upgrade guidance.
+- [x] Validate the exact versioned source, full suite and deterministic bundle.
+- [ ] Merge the release PR after Quality, Hassfest, HACS and SonarCloud pass.
+- [ ] Verify all four checks on the exact merged commit.
+- [ ] Create the annotated tag and verify its successful tagged Release Gate.
+- [ ] Compare all 19 ZIP members with source and verify both uploaded assets.
+- [ ] Publish the stable full GitHub release explicitly.
+- [ ] Verify the HACS update, target/actual readings, module names and existing IDs.
+
+The earlier endpoint reads establish read-only datapoint mappings on one
+gateway. They do not establish installation acceptance of this candidate.
+Historical night-switching and 0.5.0 HACS results remain valid, separate records.
+
 ## Published 0.5.0 operating-readings and repairs record
 
 Status: **published on 2026-10-30 at 18:32:19 UTC**. The maintainer confirmed

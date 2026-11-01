@@ -116,7 +116,9 @@ async def test_native_names_follow_labels_preserving_ids_custom_names_and_privac
     mode = entity_id("hk60_selected_mode_select", "select")
     for eid in (actual, target, mode):
         attrs = hass.states.get(eid).attributes
-        assert LABELS["hk60_label"] in attrs["friendly_name"]
+        assert attrs["friendly_name"].endswith(" · HK60")
+        assert LABELS["hk60_label"] not in attrs["friendly_name"]
+        assert attrs["module_display_name"] == "HK60: " + LABELS["hk60_label"]
         assert attrs["module_name"] == LABELS["hk60_label"]
         assert attrs["module_id"] == "1/2"
     for key, label in [("buffer_temperature", LABELS["buffer_label"]), ("dhw_temperature", LABELS["dhw_label"])]:
@@ -134,8 +136,10 @@ async def test_native_names_follow_labels_preserving_ids_custom_names_and_privac
     mock_api["read_all"].return_value = renamed
     await coordinator.async_request_refresh()
     await hass.async_block_till_done()
-    assert "Example renamed circuit" in hass.states.get(target).attributes["friendly_name"]
-    assert "Example renamed circuit" in hass.states.get(mode).attributes["friendly_name"]
+    assert "Example renamed circuit" not in hass.states.get(target).attributes["friendly_name"]
+    assert hass.states.get(target).attributes["module_display_name"] == "HK60: Example renamed circuit"
+    assert "Example renamed circuit" not in hass.states.get(mode).attributes["friendly_name"]
+    assert hass.states.get(mode).attributes["module_display_name"] == "HK60: Example renamed circuit"
     assert hass.states.get(actual).attributes["friendly_name"].endswith("Personal flow name")
     assert registry.async_get(actual).options["sensor"]["display_precision"] == 3
     assert await hass.config_entries.async_reload(config_entry.entry_id)
@@ -166,4 +170,4 @@ async def test_native_names_follow_labels_preserving_ids_custom_names_and_privac
     assert all(hass.states.get(eid).state == "unavailable" for eid in label_ids.values())
     unknown = SmartGuardEntity(config_entry, "unmapped_future_key")
     assert unknown.extra_state_attributes is None
-    assert unknown.translation_placeholders == {"module_prefix": ""}
+    assert unknown.translation_placeholders == {"module_prefix": "", "module_suffix": ""}

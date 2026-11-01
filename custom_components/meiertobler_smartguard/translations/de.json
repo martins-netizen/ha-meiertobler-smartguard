@@ -68,40 +68,40 @@
         "name": "Kondensator Austritt"
       },
       "hk60_flow_temperature": {
-        "name": "{module_prefix}Vorlauf IST"
+        "name": "Vorlauf IST{module_suffix}"
       },
       "hk60_flow_target_temperature": {
-        "name": "{module_prefix}Vorlauf SOLL"
+        "name": "Vorlauf SOLL{module_suffix}"
       },
       "hk60_design_outdoor_temperature": {
-        "name": "{module_prefix}Auslegungstemperatur Heizen"
+        "name": "Auslegung aussen{module_suffix}"
       },
       "hk60_heating_on_temperature": {
-        "name": "{module_prefix}Aussentemperatur Heizen ein"
+        "name": "Heizgrenze ein{module_suffix}"
       },
       "hk60_heating_off_temperature": {
-        "name": "{module_prefix}Aussentemperatur Heizen aus"
+        "name": "Heizgrenze aus{module_suffix}"
       },
       "hk60_heating_on_damping": {
-        "name": "{module_prefix}Dämpfung Heizen ein"
+        "name": "Heizen ein: Dämpfung{module_suffix}"
       },
       "hk60_heating_off_damping": {
-        "name": "{module_prefix}Dämpfung Heizen aus"
+        "name": "Heizen aus: Dämpfung{module_suffix}"
       },
       "hk60_cooling_on_temperature": {
-        "name": "{module_prefix}Aussentemperatur Kühlen ein"
+        "name": "Kühlgrenze ein{module_suffix}"
       },
       "hk60_cooling_off_temperature": {
-        "name": "{module_prefix}Aussentemperatur Kühlen aus"
+        "name": "Kühlgrenze aus{module_suffix}"
       },
       "hk60_cooling_on_damping": {
-        "name": "{module_prefix}Dämpfung Kühlen ein"
+        "name": "Kühlen ein: Dämpfung{module_suffix}"
       },
       "hk60_cooling_off_damping": {
-        "name": "{module_prefix}Dämpfung Kühlen aus"
+        "name": "Kühlen aus: Dämpfung{module_suffix}"
       },
       "hk60_operating_status": {
-        "name": "{module_prefix}Betriebsstatus",
+        "name": "Betriebsstatus{module_suffix}",
         "state": {
           "standby": "Standby",
           "heating": "Heizen",
@@ -109,7 +109,7 @@
         }
       },
       "hk60_selected_mode": {
-        "name": "{module_prefix}Betriebsmoduswahl",
+        "name": "Moduswahl{module_suffix}",
         "state": {
           "auto": "Auto",
           "normal": "Normal",
@@ -120,7 +120,7 @@
         }
       },
       "hk60_effective_mode": {
-        "name": "{module_prefix}Betriebsmodus effektiv",
+        "name": "Modus effektiv{module_suffix}",
         "state": {
           "normal": "Normal",
           "reduced": "Reduziert",
@@ -129,7 +129,7 @@
         }
       },
       "hk60_season_status": {
-        "name": "{module_prefix}Saisonstatus",
+        "name": "Saisonstatus{module_suffix}",
         "state": {
           "transition": "Zwischensaison",
           "heating_season": "Heizsaison",
@@ -149,13 +149,13 @@
         "name": "{module_prefix}Heizeinsatz Betriebsstunden"
       },
       "hk60_room_target_heating": {
-        "name": "{module_prefix}Raum-Soll Heizen"
+        "name": "Raum-SOLL Heizen{module_suffix}"
       },
       "hk60_room_target_cooling": {
-        "name": "{module_prefix}Raum-Soll Kühlen"
+        "name": "Raum-SOLL Kühlen{module_suffix}"
       },
       "controller_outdoor_temperature": {
-        "name": "Regler Aussentemperatur"
+        "name": "Aussentemperaturfühler"
       },
       "controller_smart_grid_status": {
         "name": "Smart-Grid-Status",
@@ -188,7 +188,7 @@
     },
     "select": {
       "hk60_selected_mode": {
-        "name": "{module_prefix}Betriebsmodus einstellen",
+        "name": "Modus einstellen{module_suffix}",
         "state": {
           "auto": "Auto",
           "normal": "Normal",

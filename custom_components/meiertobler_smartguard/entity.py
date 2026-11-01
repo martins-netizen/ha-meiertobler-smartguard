@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 
 from homeassistant.core import callback
@@ -12,6 +13,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .api import normalize_module_label
 from .const import (
+    CIRCUIT_MODULE_NAMES,
     DOMAIN,
     ENTITY_MODULE_LABEL_KEYS,
     LABEL_MODULE_IDS,
@@ -21,6 +23,21 @@ from .const import (
 )
 from .coordinator import SmartGuardCoordinator
 from .data import SmartGuardConfigEntry
+
+
+def _circuit_display_name(circuit: str, label: str | None) -> str:
+    """Keep the technical assignment and configured name out of measurement names."""
+    if label is None:
+        return circuit
+    number = circuit.removeprefix("HK")
+    name = re.sub(
+        rf"^HK[ _-]*{number}(?:\s*[:·\u2013\u2014-]\s*|\s+|$)",
+        "",
+        label,
+        count=1,
+        flags=re.IGNORECASE,
+    ).strip()
+    return f"{circuit}: {name}" if name else circuit
 
 
 @callback
@@ -70,8 +87,10 @@ class SmartGuardEntity(CoordinatorEntity[SmartGuardCoordinator]):
             language = self.coordinator.hass.config.language
             names = MODULE_LABEL_DEFAULT_NAMES.get(key or "", ("", ""))
             label = names[1 if language == "de" else 0]
+        circuit = CIRCUIT_MODULE_NAMES.get(key or "")
         self._attr_translation_placeholders = {
-            "module_prefix": f"{label} " if label else ""
+            "module_prefix": f"{label} " if label else "",
+            "module_suffix": f" · {circuit}" if circuit else "",
         }
         self.__dict__.pop("translation_placeholders", None)
         self.__dict__.pop("name", None)
@@ -86,6 +105,10 @@ class SmartGuardEntity(CoordinatorEntity[SmartGuardCoordinator]):
         label = normalize_module_label(self.coordinator.data.get(key))
         if label is not None:
             attributes["module_name"] = label
+        if key in CIRCUIT_MODULE_NAMES:
+            attributes["module_display_name"] = _circuit_display_name(
+                CIRCUIT_MODULE_NAMES[key], label
+            )
         return attributes
 
     @callback

@@ -77,8 +77,8 @@ Labels are read from the controller root, HK50 (`1/1`), HK60 (`1/2`), HK70
 (`1/3`), heating buffer (`2/1`) and hot-water storage (`3/1`). A module must
 report boolean `enabled: true` before its label is used.
 
-For example, a configured label **Floor heating** replaces the technical HK60
-prefix in display names, producing **Floor heating flow target temperature**.
+In published **0.6.0**, a configured label **Floor heating** replaces the technical
+HK60 prefix in display names, producing **Floor heating flow target temperature**.
 Storage entities use their corresponding configured labels. Technical module
 IDs remain in the `module_id` attribute, with the configured text in
 `module_name`. The labels are also separate diagnostic sensors, making the
@@ -94,6 +94,30 @@ labels use the existing translated default names; existing label sensors
 become unavailable and can recover later. Numeric readings remain independent.
 Labels are plain text, trimmed and limited to 128 characters; non-text and
 control-character values are ignored. They are never used in endpoint paths.
+
+### Shorter names prepared for the next release
+
+This **unreleased naming refinement** puts the measurement first and keeps
+only a short circuit suffix, such as **Flow target · HK60** or
+**Heating on threshold · HK60**. Long configured circuit labels no longer
+hide the measurement in narrow device views. German examples are **Vorlauf
+SOLL · HK60**, **Heizgrenze ein · HK60** and **Heizen ein: Dämpfung · HK60**.
+The controller's reported outdoor reading becomes **Outdoor temperature sensor**
+(**Aussentemperaturfühler**), without suggesting a controller temperature.
+
+The configured assignment remains separate in `module_display_name`, for
+example **HK60: Example floor circuit**. A matching leading `HK 60` or `HK60:`
+in the label is not repeated in that display attribute. The raw `module_name`
+attribute and diagnostic label-sensor value are unchanged. HK50/HK70 retain
+label-only discovery and also expose their formatted assignment.
+
+Storage labels keep their current naming behavior. Existing gateway device
+assignment, entity/unique IDs, user names and display settings are preserved;
+no logical device migration or automation rewrite is performed. A later
+label change updates module metadata while the short HK60 measurement names
+stay readable. Integration diagnostics still redact every free-text label.
+There are no extra network requests or gateway writes, and published 0.6.0
+remains unchanged until a subsequent release is explicitly created.
 
 HK60, buffer, hot-water and controller labels reuse the four existing config
 reads. HK50/HK70 add **two config GETs**, giving the 38-request budget above.

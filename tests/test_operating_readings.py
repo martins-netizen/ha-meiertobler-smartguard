@@ -80,7 +80,7 @@ async def test_eight_new_readings_use_exact_get_paths_and_shared_module_config()
     snapshot = await SmartGuardApiClient(TEST_HOST, session).async_read_all("654321")
 
     assert all(snapshot[key] == EXTRA_VALUES[key] for key in NEW_PATHS)
-    assert len(session.calls) == 38
+    assert len(session.calls) == 42
     assert all(method == "GET" for method, _, _ in session.calls)
     paths = [urlsplit(url).path for url in session.urls]
     for suffix in NEW_PATHS.values():
@@ -255,8 +255,8 @@ async def test_native_operating_entities_have_correct_units_semantics_and_recove
         for e in registry.entities.values()
         if e.config_entry_id == config_entry.entry_id
     ]
-    assert len(entries) == 33
-    assert sum(e.domain == "sensor" for e in entries) == 26
+    assert len(entries) == 37
+    assert sum(e.domain == "sensor" for e in entries) == 30
     assert sum(e.domain == "binary_sensor" for e in entries) == 6
     assert sum(e.domain == "select" for e in entries) == 1
 
@@ -297,7 +297,7 @@ async def test_native_operating_entities_have_correct_units_semantics_and_recove
                 if e.config_entry_id == config_entry.entry_id
             ]
         )
-        == 33
+        == 37
     )
 
     # Diagnostics include only validated values and do no additional I/O.

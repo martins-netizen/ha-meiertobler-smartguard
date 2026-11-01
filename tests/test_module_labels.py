@@ -45,7 +45,7 @@ async def test_labels_use_existing_configs_plus_only_hk50_and_hk70_configs() -> 
     data = await SmartGuardApiClient(TEST_HOST, session).async_read_all("654321")
     assert data == {**TEST_SNAPSHOT, **EXTRA_VALUES, **LABELS}
     paths = [urlsplit(url).path for url in session.urls]
-    assert len(paths) == 38
+    assert len(paths) == 42
     for module in MODULE_LABEL_KEYS:
         assert paths.count(config_path(module)) == 1
     assert all(method == "GET" for method, _, _ in session.calls)
@@ -125,7 +125,7 @@ async def test_native_names_follow_labels_preserving_ids_custom_names_and_privac
         assert label in hass.states.get(entity_id(key)).attributes["friendly_name"]
     assert hass.states.get(label_ids["hk50_label"]).attributes["module_id"] == "1/1"
     assert hass.states.get(label_ids["hk70_label"]).attributes["module_id"] == "1/3"
-    assert len([e for e in registry.entities.values() if e.config_entry_id == config_entry.entry_id]) == 39
+    assert len([e for e in registry.entities.values() if e.config_entry_id == config_entry.entry_id]) == 43
 
     registry.async_update_entity(actual, name="Personal flow name")
     registry.async_update_entity_options(actual, "sensor", {"display_precision": 3})

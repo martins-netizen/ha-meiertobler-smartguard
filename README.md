@@ -50,6 +50,14 @@ module metadata, for example **HK60: Example floor circuit**. This naming
 refinement is not included in published 0.6.0; it needs a subsequent release.
 Registered IDs, device assignment and user-defined names are preserved.
 
+The next development update also adds four optional, read-only
+[heating-curve diagnostics](docs/HK60_HEATING_CURVE.md): heating boost, design
+flow and minimum normal/reduced flow. With all supported readings available,
+this unreleased scope has 30 numeric/enum sensors, six label sensors, six binary
+sensors and one mode select (43 entities), using up to 42 GETs per refresh.
+These additions are not part of published 0.6.0. Holiday control is only an
+[implementation plan](docs/HOLIDAY_MODE_PLAN.md), not a supported write action.
+
 ## Installation
 
 ### New installation with HACS

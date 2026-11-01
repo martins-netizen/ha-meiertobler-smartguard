@@ -48,6 +48,10 @@ EXTRA_VALUES = {
     "hk60_cooling_off_temperature": 22.0,
     "hk60_cooling_on_damping": 9.0,
     "hk60_cooling_off_damping": 3.0,
+    "hk60_heating_temperature_boost": 0.0,
+    "hk60_design_flow_temperature": 39.0,
+    "hk60_minimum_flow_normal": 23.0,
+    "hk60_minimum_flow_reduced": 17.0,
 }
 
 
@@ -101,6 +105,10 @@ async def test_enabled_optional_modules_use_documented_read_only_paths() -> None
         "1/2/datapoints/5277",
         "1/2/datapoints/5278",
         "1/2/datapoints/5279",
+        "1/2/datapoints/5071",
+        "1/2/datapoints/5222",
+        "1/2/datapoints/5223",
+        "1/2/datapoints/5225",
         "config",
         "datapoints/1115",
         "datapoints/2703",
@@ -267,7 +275,7 @@ async def test_optional_entities_appear_recover_and_unload(
             entity.config_entry_id == config_entry.entry_id
             for entity in registry.entities.values()
         )
-        == 33
+        == 37
     )
     mock_api["set_mode"].assert_not_awaited()
 

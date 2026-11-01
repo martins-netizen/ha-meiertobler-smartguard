@@ -184,6 +184,18 @@
       },
       "dhw_label": {
         "name": "Warmwasser Bezeichnung"
+      },
+      "hk60_heating_temperature_boost": {
+        "name": "Überhöhung Heizen{module_suffix}"
+      },
+      "hk60_design_flow_temperature": {
+        "name": "Auslegungsvorlauf{module_suffix}"
+      },
+      "hk60_minimum_flow_normal": {
+        "name": "Min. Vorlauf normal{module_suffix}"
+      },
+      "hk60_minimum_flow_reduced": {
+        "name": "Min. Vorlauf reduziert{module_suffix}"
       }
     },
     "select": {

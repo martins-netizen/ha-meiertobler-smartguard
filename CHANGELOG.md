@@ -5,6 +5,16 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+### Added
+
+- Four optional read-only HK60 heating-curve diagnostics: heating temperature
+  boost, design flow and minimum normal/reduced flow settings. The boost is a
+  temperature difference in kelvin, not an absolute temperature. These settings
+  are sensors without measurement statistics or new write support.
+- A plan for scheduled holiday periods coordinating heating and presence
+  simulation, independently of an optional long-absence suggestion. Future
+  changes require explicit confirmation.
+
 ### Changed
 
 - Put the measurement first in short HK60 entity names, retaining the technical

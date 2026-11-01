@@ -47,7 +47,7 @@ async def test_all_ten_hk60_fields_share_one_config_check_and_use_gets() -> None
         assert paths.count(f"{PREFIX}/1/2/datapoints/{point_id}") == 1
         assert data[key] == EXTRA_VALUES[key]
     assert paths.count(f"{PREFIX}/1/2/config") == 1
-    assert len(session.calls) == 38
+    assert len(session.calls) == 42
     assert all(method == "GET" for method, _, _ in session.calls)
 
 

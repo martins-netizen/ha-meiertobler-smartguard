@@ -196,6 +196,12 @@
       },
       "hk60_minimum_flow_reduced": {
         "name": "Min. Vorlauf reduziert{module_suffix}"
+      },
+      "hk60_holiday_start": {
+        "name": "Ferienbeginn{module_suffix}"
+      },
+      "hk60_holiday_end": {
+        "name": "Ferienende{module_suffix}"
       }
     },
     "select": {

@@ -183,7 +183,7 @@ class SmartGuardApiClient:
                 raise SmartGuardInvalidResponseError("invalid boolean value")
             return value
         numeric: float | int
-        if datapoint.kind in ("enum", "counter"):
+        if datapoint.kind in ("enum", "counter", "timestamp"):
             if isinstance(value, bool) or not isinstance(value, int):
                 raise SmartGuardInvalidResponseError("invalid integer value")
             numeric = value

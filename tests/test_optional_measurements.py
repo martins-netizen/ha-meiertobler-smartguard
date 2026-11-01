@@ -52,6 +52,8 @@ EXTRA_VALUES = {
     "hk60_design_flow_temperature": 39.0,
     "hk60_minimum_flow_normal": 23.0,
     "hk60_minimum_flow_reduced": 17.0,
+    "hk60_holiday_start": 1893499200,  # Synthetic 2030 fixture; not a real absence.
+    "hk60_holiday_end": 1893585600,
 }
 
 
@@ -109,6 +111,8 @@ async def test_enabled_optional_modules_use_documented_read_only_paths() -> None
         "1/2/datapoints/5222",
         "1/2/datapoints/5223",
         "1/2/datapoints/5225",
+        "1/2/datapoints/5226",
+        "1/2/datapoints/5227",
         "config",
         "datapoints/1115",
         "datapoints/2703",
@@ -275,7 +279,7 @@ async def test_optional_entities_appear_recover_and_unload(
             entity.config_entry_id == config_entry.entry_id
             for entity in registry.entities.values()
         )
-        == 37
+        == 39
     )
     mock_api["set_mode"].assert_not_awaited()
 

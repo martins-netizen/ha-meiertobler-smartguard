@@ -7,6 +7,11 @@ uses stable semantic versions for release candidates and published releases.
 
 ### Added
 
+- Two optional read-only HK60 holiday start/end timestamp sensors. Positive
+  whole Unix seconds are exposed as timezone-aware UTC values, with local
+  display handled by Home Assistant. Missing, invalid or unconfirmed zero
+  values remain unavailable; no holiday-active state or write is inferred.
+  Downloaded diagnostics redact both reported holiday times.
 - Four optional read-only HK60 heating-curve diagnostics: heating temperature
   boost, design flow and minimum normal/reduced flow settings. The boost is a
   temperature difference in kelvin, not an absolute temperature. These settings

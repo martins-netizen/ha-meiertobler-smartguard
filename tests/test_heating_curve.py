@@ -30,12 +30,12 @@ async def test_four_exact_gets_share_the_existing_hk60_config() -> None:
     session = RoutedSession()
     data = await SmartGuardApiClient(TEST_HOST, session).async_read_all("654321")
     paths = [urlsplit(url).path for url in session.urls]
-    assert len(session.calls) == 42
+    assert len(session.calls) == 44
     assert paths.count(f"{PREFIX}/1/2/config") == 1
     for key, point in POINTS.items():
         assert paths.count(f"{PREFIX}/1/2/datapoints/{point}") == 1
         assert data[key] == EXTRA_VALUES[key]
-    assert not any(path.endswith(f"/{point}") for path in paths for point in (5226, 5227, 5241))
+    assert not any(path.endswith(f"/{point}") for path in paths for point in (5241,))
     assert all(method == "GET" for method, _, _ in session.calls)
 
 

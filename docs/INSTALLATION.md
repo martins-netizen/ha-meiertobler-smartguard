@@ -69,6 +69,12 @@ Select the previous published version in HACS or restore a verified backup,
 then restart. Additional entities introduced by the newer version may stop
 providing data. Keep the existing config entry and settings when rolling back.
 
+Changing integration files does **not** undo a holiday period already stored
+in the gateway. Before the first holiday write, retain the previous complete
+period. After a partial or interrupted write, inspect both dates and the mode
+directly in SmartGuard. Review and explicitly confirm any corrective change;
+do not assume that downgrading or removing the integration restores device data.
+
 ## Removal
 
 Remove the config entry under **Settings → Devices & services**. For a HACS

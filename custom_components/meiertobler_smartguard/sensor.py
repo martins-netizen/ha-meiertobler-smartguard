@@ -16,7 +16,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGuardValue
-from .const import DATA_POINTS, ENUM_STATES
+from .const import DATA_POINTS, ENUM_STATES, MODULE_LABEL_KEYS
 from .data import SmartGuardConfigEntry
 from .entity import SmartGuardEntity, async_add_optional_entities
 
@@ -72,7 +72,7 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        suggested_display_precision=2,
+        suggested_display_precision=1,
     ),
     *(
         SmartGuardSensorEntityDescription(
@@ -88,6 +88,54 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
 )
 
 OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            icon="mdi:label-outline",
+        )
+        for key in MODULE_LABEL_KEYS.values()
+    ),
+    SmartGuardSensorEntityDescription(
+        key="hk60_flow_target_temperature",
+        translation_key="hk60_flow_target_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        suggested_display_precision=1,
+    ),
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            suggested_display_precision=1,
+        )
+        for key in (
+            "hk60_design_outdoor_temperature",
+            "hk60_heating_on_temperature",
+            "hk60_heating_off_temperature",
+            "hk60_cooling_on_temperature",
+            "hk60_cooling_off_temperature",
+        )
+    ),
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            device_class=SensorDeviceClass.DURATION,
+            native_unit_of_measurement=UnitOfTime.HOURS,
+            suggested_display_precision=0,
+        )
+        for key in (
+            "hk60_heating_on_damping",
+            "hk60_heating_off_damping",
+            "hk60_cooling_on_damping",
+            "hk60_cooling_off_damping",
+        )
+    ),
     *(
         SmartGuardSensorEntityDescription(
             key=key,

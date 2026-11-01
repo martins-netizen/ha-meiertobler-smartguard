@@ -22,6 +22,11 @@ See [additional operating readings](OPERATING_READINGS.md) for the 0.5.0
 room targets, outdoor temperature, Smart Grid status, fault inputs and buffer
 heat request, including their separate availability and read-only semantics.
 
+The unreleased [HK60 flow target and limits](HK60_FLOW_AND_LIMITS.md) add the
+current flow target and nine controller parameters as optional sensors.
+Configured circuit/storage labels provide readable display names and diagnostic
+metadata while existing entity IDs and personal names remain intact.
+
 ## HK60 writes
 
 The allowlisted options are `auto`, `normal`, `reduced`, `frost_protection`,

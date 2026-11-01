@@ -13,7 +13,7 @@ EXPECTED_DEVICE_TYPE = "1001"
 DEFAULT_UPDATE_INTERVAL_SECONDS = 60
 DEFAULT_REQUEST_TIMEOUT_SECONDS = 10
 
-DataPointKind = Literal["temperature", "enum", "counter", "boolean"]
+DataPointKind = Literal["temperature", "duration", "enum", "counter", "boolean"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -77,7 +77,61 @@ OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     SmartGuardDataPoint("controller_priority1_fault", 1005, "boolean"),
     SmartGuardDataPoint("controller_priority2_fault", 1006, "boolean"),
     SmartGuardDataPoint("buffer_heating_request", 1004, "boolean", (2, 1)),
+    # HK60 UI bindings, confirmed by read-only API checks. The broad temperature
+    # bounds are plausibility guards; threshold/damping bounds match UI inputs.
+    SmartGuardDataPoint(
+        "hk60_flow_target_temperature", 52204, "temperature", (1, 2), -50, 125
+    ),
+    SmartGuardDataPoint(
+        "hk60_design_outdoor_temperature", 5221, "temperature", (1, 2), -60, 60
+    ),
+    SmartGuardDataPoint(
+        "hk60_heating_on_temperature", 5271, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint(
+        "hk60_heating_off_temperature", 5272, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint("hk60_heating_on_damping", 5273, "duration", (1, 2), 1, 48),
+    SmartGuardDataPoint("hk60_heating_off_damping", 5274, "duration", (1, 2), 1, 48),
+    SmartGuardDataPoint(
+        "hk60_cooling_on_temperature", 5276, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint(
+        "hk60_cooling_off_temperature", 5277, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint("hk60_cooling_on_damping", 5278, "duration", (1, 2), 1, 48),
+    SmartGuardDataPoint("hk60_cooling_off_damping", 5279, "duration", (1, 2), 1, 48),
 )
+
+# Labels are metadata from /config, never numeric datapoints or identifiers.
+MODULE_LABEL_KEYS: dict[tuple[int, int] | None, str] = {
+    None: "controller_label",
+    (1, 1): "hk50_label",
+    (1, 2): "hk60_label",
+    (1, 3): "hk70_label",
+    (2, 1): "buffer_label",
+    (3, 1): "dhw_label",
+}
+MODULE_LABEL_DEFAULT_NAMES: dict[str, tuple[str, str]] = {
+    "controller_label": ("", ""),
+    "hk50_label": ("HK50", "HK50"),
+    "hk60_label": ("HK60", "HK60"),
+    "hk70_label": ("HK70", "HK70"),
+    "buffer_label": ("Heating buffer", "Heizpuffer"),
+    "dhw_label": ("Hot water", "Warmwasser"),
+}
+ENTITY_MODULE_LABEL_KEYS: dict[str, str] = {
+    point.key: MODULE_LABEL_KEYS[point.subsystem_path]
+    for point in (*DATA_POINTS, *OPTIONAL_DATA_POINTS)
+}
+ENTITY_MODULE_LABEL_KEYS.update(
+    {key: key for key in MODULE_LABEL_KEYS.values()}
+)
+ENTITY_MODULE_LABEL_KEYS["hk60_selected_mode_select"] = "hk60_label"
+LABEL_MODULE_IDS: dict[str, str] = {
+    key: "controller" if path is None else f"{path[0]}/{path[1]}"
+    for path, key in MODULE_LABEL_KEYS.items()
+}
 
 ENUM_STATES: dict[str, dict[int, str]] = {
     "hk60_operating_status": {

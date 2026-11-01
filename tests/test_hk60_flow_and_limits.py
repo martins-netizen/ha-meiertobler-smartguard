@@ -47,7 +47,7 @@ async def test_all_ten_hk60_fields_share_one_config_check_and_use_gets() -> None
         assert paths.count(f"{PREFIX}/1/2/datapoints/{point_id}") == 1
         assert data[key] == EXTRA_VALUES[key]
     assert paths.count(f"{PREFIX}/1/2/config") == 1
-    assert len(session.calls) == 36
+    assert len(session.calls) == 38
     assert all(method == "GET" for method, _, _ in session.calls)
 
 
@@ -196,6 +196,6 @@ async def test_hk60_names_use_native_translations(
     translations = await async_get_translations(hass, language, "entity", {DOMAIN})
     for key in HK60_IDS:
         assert translations[f"component.{DOMAIN}.entity.sensor.{key}.name"]
-    assert translations[f"component.{DOMAIN}.entity.sensor.hk60_flow_target_temperature.name"] == (
+    assert translations[f"component.{DOMAIN}.entity.sensor.hk60_flow_target_temperature.name"].format(module_prefix="HK60 ") == (
         "HK60 Vorlauf SOLL" if language == "de" else "HK60 flow target temperature"
     )

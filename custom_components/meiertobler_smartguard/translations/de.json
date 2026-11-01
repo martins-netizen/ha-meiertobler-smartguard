@@ -68,40 +68,40 @@
         "name": "Kondensator Austritt"
       },
       "hk60_flow_temperature": {
-        "name": "HK60 Vorlauf IST"
+        "name": "{module_prefix}Vorlauf IST"
       },
       "hk60_flow_target_temperature": {
-        "name": "HK60 Vorlauf SOLL"
+        "name": "{module_prefix}Vorlauf SOLL"
       },
       "hk60_design_outdoor_temperature": {
-        "name": "HK60 Auslegungstemperatur Heizen"
+        "name": "{module_prefix}Auslegungstemperatur Heizen"
       },
       "hk60_heating_on_temperature": {
-        "name": "HK60 Aussentemperatur Heizen ein"
+        "name": "{module_prefix}Aussentemperatur Heizen ein"
       },
       "hk60_heating_off_temperature": {
-        "name": "HK60 Aussentemperatur Heizen aus"
+        "name": "{module_prefix}Aussentemperatur Heizen aus"
       },
       "hk60_heating_on_damping": {
-        "name": "HK60 Dämpfung Heizen ein"
+        "name": "{module_prefix}Dämpfung Heizen ein"
       },
       "hk60_heating_off_damping": {
-        "name": "HK60 Dämpfung Heizen aus"
+        "name": "{module_prefix}Dämpfung Heizen aus"
       },
       "hk60_cooling_on_temperature": {
-        "name": "HK60 Aussentemperatur Kühlen ein"
+        "name": "{module_prefix}Aussentemperatur Kühlen ein"
       },
       "hk60_cooling_off_temperature": {
-        "name": "HK60 Aussentemperatur Kühlen aus"
+        "name": "{module_prefix}Aussentemperatur Kühlen aus"
       },
       "hk60_cooling_on_damping": {
-        "name": "HK60 Dämpfung Kühlen ein"
+        "name": "{module_prefix}Dämpfung Kühlen ein"
       },
       "hk60_cooling_off_damping": {
-        "name": "HK60 Dämpfung Kühlen aus"
+        "name": "{module_prefix}Dämpfung Kühlen aus"
       },
       "hk60_operating_status": {
-        "name": "HK60 Betriebsstatus",
+        "name": "{module_prefix}Betriebsstatus",
         "state": {
           "standby": "Standby",
           "heating": "Heizen",
@@ -109,7 +109,7 @@
         }
       },
       "hk60_selected_mode": {
-        "name": "HK60 Betriebsmoduswahl",
+        "name": "{module_prefix}Betriebsmoduswahl",
         "state": {
           "auto": "Auto",
           "normal": "Normal",
@@ -120,7 +120,7 @@
         }
       },
       "hk60_effective_mode": {
-        "name": "HK60 Betriebsmodus effektiv",
+        "name": "{module_prefix}Betriebsmodus effektiv",
         "state": {
           "normal": "Normal",
           "reduced": "Reduziert",
@@ -129,7 +129,7 @@
         }
       },
       "hk60_season_status": {
-        "name": "HK60 Saisonstatus",
+        "name": "{module_prefix}Saisonstatus",
         "state": {
           "transition": "Zwischensaison",
           "heating_season": "Heizsaison",
@@ -137,22 +137,22 @@
         }
       },
       "buffer_temperature": {
-        "name": "Heizpuffer IST"
+        "name": "{module_prefix}IST"
       },
       "dhw_temperature": {
-        "name": "Warmwasser IST"
+        "name": "{module_prefix}IST"
       },
       "buffer_heater_operating_hours": {
-        "name": "Heizpuffer Heizeinsatz Betriebsstunden"
+        "name": "{module_prefix}Heizeinsatz Betriebsstunden"
       },
       "dhw_heater_operating_hours": {
-        "name": "Warmwasser Heizeinsatz Betriebsstunden"
+        "name": "{module_prefix}Heizeinsatz Betriebsstunden"
       },
       "hk60_room_target_heating": {
-        "name": "HK60 Raum-Soll Heizen"
+        "name": "{module_prefix}Raum-Soll Heizen"
       },
       "hk60_room_target_cooling": {
-        "name": "HK60 Raum-Soll Kühlen"
+        "name": "{module_prefix}Raum-Soll Kühlen"
       },
       "controller_outdoor_temperature": {
         "name": "Regler Aussentemperatur"
@@ -166,11 +166,29 @@
           "eco": "Eco",
           "forced": "Erzwungen"
         }
+      },
+      "controller_label": {
+        "name": "Regler Bezeichnung"
+      },
+      "hk50_label": {
+        "name": "HK50 Bezeichnung"
+      },
+      "hk60_label": {
+        "name": "HK60 Bezeichnung"
+      },
+      "hk70_label": {
+        "name": "HK70 Bezeichnung"
+      },
+      "buffer_label": {
+        "name": "Heizpuffer Bezeichnung"
+      },
+      "dhw_label": {
+        "name": "Warmwasser Bezeichnung"
       }
     },
     "select": {
       "hk60_selected_mode": {
-        "name": "HK60 Betriebsmodus einstellen",
+        "name": "{module_prefix}Betriebsmodus einstellen",
         "state": {
           "auto": "Auto",
           "normal": "Normal",
@@ -183,10 +201,10 @@
     },
     "binary_sensor": {
       "buffer_heater_status": {
-        "name": "Heizpuffer Heizeinsatz Anzeige"
+        "name": "{module_prefix}Heizeinsatz Anzeige"
       },
       "dhw_heater_status": {
-        "name": "Warmwasser Heizeinsatz Anzeige"
+        "name": "{module_prefix}Heizeinsatz Anzeige"
       },
       "controller_generator_fault": {
         "name": "Störmeldung Wärmeerzeuger"
@@ -198,7 +216,7 @@
         "name": "Sammelstörung Priorität 2"
       },
       "buffer_heating_request": {
-        "name": "Heizpuffer Heizanforderung"
+        "name": "{module_prefix}Heizanforderung"
       }
     }
   },

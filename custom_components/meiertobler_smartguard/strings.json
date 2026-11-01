@@ -68,40 +68,40 @@
         "name": "Condenser outlet temperature"
       },
       "hk60_flow_temperature": {
-        "name": "HK60 flow temperature"
+        "name": "{module_prefix}flow temperature"
       },
       "hk60_flow_target_temperature": {
-        "name": "HK60 flow target temperature"
+        "name": "{module_prefix}flow target temperature"
       },
       "hk60_design_outdoor_temperature": {
-        "name": "HK60 heating design outdoor temperature"
+        "name": "{module_prefix}heating design outdoor temperature"
       },
       "hk60_heating_on_temperature": {
-        "name": "HK60 heating on outdoor threshold"
+        "name": "{module_prefix}heating on outdoor threshold"
       },
       "hk60_heating_off_temperature": {
-        "name": "HK60 heating off outdoor threshold"
+        "name": "{module_prefix}heating off outdoor threshold"
       },
       "hk60_heating_on_damping": {
-        "name": "HK60 heating on damping duration"
+        "name": "{module_prefix}heating on damping duration"
       },
       "hk60_heating_off_damping": {
-        "name": "HK60 heating off damping duration"
+        "name": "{module_prefix}heating off damping duration"
       },
       "hk60_cooling_on_temperature": {
-        "name": "HK60 cooling on outdoor threshold"
+        "name": "{module_prefix}cooling on outdoor threshold"
       },
       "hk60_cooling_off_temperature": {
-        "name": "HK60 cooling off outdoor threshold"
+        "name": "{module_prefix}cooling off outdoor threshold"
       },
       "hk60_cooling_on_damping": {
-        "name": "HK60 cooling on damping duration"
+        "name": "{module_prefix}cooling on damping duration"
       },
       "hk60_cooling_off_damping": {
-        "name": "HK60 cooling off damping duration"
+        "name": "{module_prefix}cooling off damping duration"
       },
       "hk60_operating_status": {
-        "name": "HK60 operating status",
+        "name": "{module_prefix}operating status",
         "state": {
           "standby": "Standby",
           "heating": "Heating",
@@ -109,7 +109,7 @@
         }
       },
       "hk60_selected_mode": {
-        "name": "HK60 selected operating mode",
+        "name": "{module_prefix}selected operating mode",
         "state": {
           "auto": "Auto",
           "normal": "Normal",
@@ -120,7 +120,7 @@
         }
       },
       "hk60_effective_mode": {
-        "name": "HK60 effective operating mode",
+        "name": "{module_prefix}effective operating mode",
         "state": {
           "normal": "Normal",
           "reduced": "Reduced",
@@ -129,7 +129,7 @@
         }
       },
       "hk60_season_status": {
-        "name": "HK60 season status",
+        "name": "{module_prefix}season status",
         "state": {
           "transition": "Transition season",
           "heating_season": "Heating season",
@@ -137,22 +137,22 @@
         }
       },
       "buffer_temperature": {
-        "name": "Heating buffer temperature"
+        "name": "{module_prefix}temperature"
       },
       "dhw_temperature": {
-        "name": "Hot water temperature"
+        "name": "{module_prefix}temperature"
       },
       "buffer_heater_operating_hours": {
-        "name": "Heating buffer heater operating hours"
+        "name": "{module_prefix}heater operating hours"
       },
       "dhw_heater_operating_hours": {
-        "name": "Hot water heater operating hours"
+        "name": "{module_prefix}heater operating hours"
       },
       "hk60_room_target_heating": {
-        "name": "HK60 room heating target"
+        "name": "{module_prefix}room heating target"
       },
       "hk60_room_target_cooling": {
-        "name": "HK60 room cooling target"
+        "name": "{module_prefix}room cooling target"
       },
       "controller_outdoor_temperature": {
         "name": "Controller outdoor temperature"
@@ -166,11 +166,29 @@
           "eco": "Eco",
           "forced": "Forced"
         }
+      },
+      "controller_label": {
+        "name": "Controller label"
+      },
+      "hk50_label": {
+        "name": "HK50 label"
+      },
+      "hk60_label": {
+        "name": "HK60 label"
+      },
+      "hk70_label": {
+        "name": "HK70 label"
+      },
+      "buffer_label": {
+        "name": "Heating buffer label"
+      },
+      "dhw_label": {
+        "name": "Hot water label"
       }
     },
     "select": {
       "hk60_selected_mode": {
-        "name": "HK60 operating mode control",
+        "name": "{module_prefix}operating mode control",
         "state": {
           "auto": "Auto",
           "normal": "Normal",
@@ -183,10 +201,10 @@
     },
     "binary_sensor": {
       "buffer_heater_status": {
-        "name": "Heating buffer heater indicator"
+        "name": "{module_prefix}heater indicator"
       },
       "dhw_heater_status": {
-        "name": "Hot water heater indicator"
+        "name": "{module_prefix}heater indicator"
       },
       "controller_generator_fault": {
         "name": "Heat generator fault input"
@@ -198,7 +216,7 @@
         "name": "Priority 2 collective fault input"
       },
       "buffer_heating_request": {
-        "name": "Heating buffer heat request"
+        "name": "{module_prefix}heat request"
       }
     }
   },

@@ -8,6 +8,7 @@ import json
 import logging
 import math
 import re
+import unicodedata
 from dataclasses import dataclass
 from typing import Any, Final, cast
 
@@ -20,11 +21,12 @@ from .const import (
     EXPECTED_DEVICE_TYPE,
     HK60_SELECTED_MODE_DATA_POINT,
     HK60_SELECTED_MODE_TO_VALUE,
+    MODULE_LABEL_KEYS,
     OPTIONAL_DATA_POINTS,
     SmartGuardDataPoint,
 )
 
-type SmartGuardValue = float | int | bool
+type SmartGuardValue = float | int | bool | str
 type SmartGuardSnapshot = dict[str, SmartGuardValue]
 _HOSTNAME_RE: Final = re.compile(
     r"(?=^.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*"
@@ -134,7 +136,7 @@ class SmartGuardApiClient:
         """Read enabled optional modules without failing the core update."""
         snapshot: SmartGuardSnapshot = {}
         for subsystem_path in dict.fromkeys(
-            point.subsystem_path for point in OPTIONAL_DATA_POINTS
+            (*[point.subsystem_path for point in OPTIONAL_DATA_POINTS], *MODULE_LABEL_KEYS)
         ):
             path = f"/api/v1/{EXPECTED_DEVICE_TYPE}/{serial_number}"
             if subsystem_path is not None:
@@ -149,6 +151,9 @@ class SmartGuardApiClient:
                 continue
             if config.get("enabled") is not True:
                 continue
+            label = normalize_module_label(config.get("label"))
+            if label is not None:
+                snapshot[MODULE_LABEL_KEYS[subsystem_path]] = label
             for datapoint in OPTIONAL_DATA_POINTS:
                 if datapoint.subsystem_path != subsystem_path:
                     continue
@@ -274,6 +279,15 @@ class SmartGuardApiClient:
         if not isinstance(payload, dict):
             raise SmartGuardInvalidResponseError("JSON object expected")
         return cast("dict[str, Any]", payload)
+
+
+def normalize_module_label(value: object) -> str | None:
+    """Accept bounded printable metadata without coercing or logging it."""
+    if not isinstance(value, str) or len(value) > 128:
+        return None
+    if any(unicodedata.category(character).startswith("C") for character in value):
+        return None
+    return value.strip() or None
 
 
 def _identifier(value: object) -> str | None:

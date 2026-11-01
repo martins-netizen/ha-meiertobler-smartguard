@@ -35,6 +35,8 @@ availability and interpretation.
 
 Development on `main` additionally includes ten optional
 [HK60 flow-target and threshold sensors](docs/HK60_FLOW_AND_LIMITS.md).
+Configured circuit/storage labels are used in display names and exposed as
+diagnostic label sensors, including label-only discovery for HK50 and HK70.
 This addition is **not yet released**; installation through HACS requires a
 future release. The published 0.5.0 entity count above remains unchanged.
 

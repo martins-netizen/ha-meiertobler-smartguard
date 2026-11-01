@@ -10,6 +10,10 @@ uses stable semantic versions for release candidates and published releases.
 - Ten optional read-only HK60 sensors: current flow target temperature,
   heating design outdoor temperature, heating/cooling outdoor thresholds and
   their on/off damping durations. Each value can fail and recover independently.
+- Configured circuit/storage labels in display names and module attributes,
+  plus up to six diagnostic label sensors for the controller, HK50/HK60/HK70,
+  buffer and hot water. Existing IDs and user names remain; free-text module
+  labels are redacted in integration diagnostics.
 - English/German names and one-decimal suggested precision for the flow target
   and existing actual flow temperature, preserving full numeric values and
   personal display settings. No new gateway controls.

@@ -52,8 +52,8 @@ class RoutedSession(FakeSession):
     def __init__(self) -> None:
         super().__init__([])
         self.routes: dict[str, FakeResponse | Exception] = {
-            PREFIX + suffix: FakeResponse(200, {"enabled": True, "label": "Private"})
-            for suffix in ("/config", "/1/2/config", "/2/1/config", "/3/1/config")
+            PREFIX + suffix: FakeResponse(200, {"enabled": True})
+            for suffix in ("/config", "/1/2/config", "/2/1/config", "/3/1/config", "/1/1/config", "/1/3/config")
         }
         values = {**TEST_SNAPSHOT, **EXTRA_VALUES}
         self.routes.update(
@@ -80,12 +80,12 @@ async def test_eight_new_readings_use_exact_get_paths_and_shared_module_config()
     snapshot = await SmartGuardApiClient(TEST_HOST, session).async_read_all("654321")
 
     assert all(snapshot[key] == EXTRA_VALUES[key] for key in NEW_PATHS)
-    assert len(session.calls) == 36
+    assert len(session.calls) == 38
     assert all(method == "GET" for method, _, _ in session.calls)
     paths = [urlsplit(url).path for url in session.urls]
     for suffix in NEW_PATHS.values():
         assert paths.count(PREFIX + suffix) == 1
-    for suffix in ("/config", "/1/2/config", "/2/1/config", "/3/1/config"):
+    for suffix in ("/config", "/1/2/config", "/2/1/config", "/3/1/config", "/1/1/config", "/1/3/config"):
         assert paths.count(PREFIX + suffix) == 1
     assert not any(
         path.endswith(suffix)

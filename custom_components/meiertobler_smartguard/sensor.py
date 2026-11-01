@@ -16,7 +16,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SmartGuardValue
-from .const import DATA_POINTS, ENUM_STATES
+from .const import DATA_POINTS, ENUM_STATES, MODULE_LABEL_KEYS
 from .data import SmartGuardConfigEntry
 from .entity import SmartGuardEntity, async_add_optional_entities
 
@@ -88,6 +88,15 @@ SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
 )
 
 OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
+    *(
+        SmartGuardSensorEntityDescription(
+            key=key,
+            translation_key=key,
+            entity_category=EntityCategory.DIAGNOSTIC,
+            icon="mdi:label-outline",
+        )
+        for key in MODULE_LABEL_KEYS.values()
+    ),
     SmartGuardSensorEntityDescription(
         key="hk60_flow_target_temperature",
         translation_key="hk60_flow_target_temperature",

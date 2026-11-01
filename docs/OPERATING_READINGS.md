@@ -62,8 +62,10 @@ binary sensors and the existing single HK60 mode select**.
 
 The unreleased [HK60 flow target and limits](HK60_FLOW_AND_LIMITS.md) add ten
 optional sensors. With that addition on `main`, the complete refresh uses
-**36 GET requests** and the entity count becomes **26 sensors, six binary
-sensors and one mode select**. Published 0.5.0 retains the counts above.
+**38 GET requests**, including two additional HK50/HK70 configuration reads for
+labels. It provides **26 numeric/enum sensors, six binary sensors and one mode
+select**, plus up to six diagnostic label sensors. Published 0.5.0 retains the
+counts above.
 
 ## Verified scope and limits
 

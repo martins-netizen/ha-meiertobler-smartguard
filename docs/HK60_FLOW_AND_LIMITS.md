@@ -53,11 +53,45 @@ sentinel are rejected. Neither an unsupported field nor its later recovery
 changes the existing HK60 mode select or night automation.
 
 The 60-second coordinated sequential polling interval is retained. With every
-supported module enabled and valid, a complete refresh uses **36 GET requests**:
-eight core readings, four shared configuration checks and 24 optional readings.
+supported module enabled and valid, a complete refresh uses **38 GET requests**:
+eight core readings, six configuration checks and 24 optional numeric readings.
 There are no per-entity network requests and no new gateway writes. This
 development version can provide **26 sensors, six binary sensors and one
-HK60 mode select**; unsupported readings can reduce that count.
+HK60 mode select**, plus up to six diagnostic label sensors (39 entities in
+total). Unsupported readings or missing labels can reduce that count.
+
+## Configured module names
+
+The module `/config` responses provide `label` and `enabled`, as described on
+page 9 of the manufacturer's
+[network and data-access documentation](https://dokumente.meiertobler.ch/files/product-assets/90355/lvxlo.pdf).
+Labels are read from the controller root, HK50 (`1/1`), HK60 (`1/2`), HK70
+(`1/3`), heating buffer (`2/1`) and hot-water storage (`3/1`). A module must
+report boolean `enabled: true` before its label is used.
+
+For example, a configured label **Floor heating** replaces the technical HK60
+prefix in display names, producing **Floor heating flow target temperature**.
+Storage entities use their corresponding configured labels. Technical module
+IDs remain in the `module_id` attribute, with the configured text in
+`module_name`. The labels are also separate diagnostic sensors, making the
+HK50/HK60/HK70 assignments visible even though numeric readings and mode control
+currently cover HK60 only. HK50/HK70 discovery reads their config only; it
+does not query their datapoints or create additional mode controls.
+
+Existing unique IDs, registered entity IDs, device assignment, custom names
+and precision overrides are preserved. A later label change updates the
+default display name without renaming existing IDs. Fresh installations may
+derive their initial entity IDs from their configured labels. Missing/invalid
+labels use the existing translated default names; existing label sensors
+become unavailable and can recover later. Numeric readings remain independent.
+Labels are plain text, trimmed and limited to 128 characters; non-text and
+control-character values are ignored. They are never used in endpoint paths.
+
+HK60, buffer, hot-water and controller labels reuse the four existing config
+reads. HK50/HK70 add **two config GETs**, giving the 38-request budget above.
+No raw label is logged by the API client. Free-text labels may be personal;
+integration diagnostics redact all six label fields while retaining validated
+numeric readings. This redaction does not remove labels from local HA names.
 
 ## Evidence and remaining verification
 

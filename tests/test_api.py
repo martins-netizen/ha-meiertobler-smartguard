@@ -106,7 +106,7 @@ class ApiClientTests(unittest.IsolatedAsyncioTestCase):
         session = FakeSession(
             [FakeResponse(200, identity)]
             + [FakeResponse(200, {"value": value}) for value in values]
-            + [FakeResponse(200, {"enabled": False}) for _ in range(4)]
+            + [FakeResponse(200, {"enabled": False}) for _ in range(6)]
         )
         client = SmartGuardApiClient("192.0.2.10", session)
 

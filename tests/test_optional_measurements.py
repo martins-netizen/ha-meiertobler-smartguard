@@ -16,6 +16,7 @@ from custom_components.meiertobler_smartguard.api import (
 from custom_components.meiertobler_smartguard.const import (
     DATA_POINTS,
     DOMAIN,
+    MODULE_LABEL_KEYS,
     OPTIONAL_DATA_POINTS,
 )
 
@@ -59,7 +60,7 @@ def _core_responses() -> list[FakeResponse]:
 async def test_enabled_optional_modules_use_documented_read_only_paths() -> None:
     """Optional values retain their exact types and never invoke a write."""
     responses = _core_responses()
-    for subsystem in ((2, 1), (3, 1), (1, 2), None):
+    for subsystem in ((2, 1), (3, 1), (1, 2), None, (1, 1), (1, 3)):
         responses.append(FakeResponse(200, {"enabled": True, "label": "Private label"}))
         responses.extend(
             FakeResponse(200, {"value": EXTRA_VALUES[point.key]})
@@ -71,7 +72,7 @@ async def test_enabled_optional_modules_use_documented_read_only_paths() -> None
 
     snapshot = await client.async_read_all("654321")
 
-    assert snapshot == {**TEST_SNAPSHOT, **EXTRA_VALUES}
+    assert snapshot == {**TEST_SNAPSHOT, **EXTRA_VALUES, **{key: "Private label" for key in MODULE_LABEL_KEYS.values()}}
     assert snapshot["buffer_heater_status"] is False
     assert type(snapshot["buffer_heater_operating_hours"]) is int
     assert all(method == "GET" for method, _, _ in session.calls)
@@ -85,6 +86,8 @@ async def test_enabled_optional_modules_use_documented_read_only_paths() -> None
         "3/1/datapoints/1001",
         "3/1/datapoints/4191",
         "3/1/datapoints/4192",
+        "1/1/config",
+        "1/3/config",
         "1/2/config",
         "1/2/datapoints/5201",
         "1/2/datapoints/5202",
@@ -115,12 +118,12 @@ async def test_disabled_or_unconfirmed_modules_are_not_polled(
 ) -> None:
     """Only the actual boolean true can enable optional module reads."""
     session = FakeSession(
-        _core_responses() + [FakeResponse(200, config) for _ in range(4)]
+        _core_responses() + [FakeResponse(200, config) for _ in range(6)]
     )
     client = SmartGuardApiClient("192.0.2.10", session)
 
     assert await client.async_read_all("654321") == TEST_SNAPSHOT
-    assert len(session.urls) == 12
+    assert len(session.urls) == 14
 
 
 async def test_missing_and_transient_optional_modules_retry_on_next_update() -> None:
@@ -128,11 +131,11 @@ async def test_missing_and_transient_optional_modules_retry_on_next_update() -> 
     session = FakeSession(
         _core_responses()
         + [FakeResponse(404, None), TimeoutError()]
-        + [FakeResponse(200, {"enabled": False}) for _ in range(2)]
+        + [FakeResponse(200, {"enabled": False}) for _ in range(4)]
         + _core_responses()
         + [FakeResponse(200, {"enabled": True})]
         + [FakeResponse(200, {"value": value}) for value in (30.0, False, 0, False)]
-        + [FakeResponse(200, {"enabled": False}) for _ in range(3)]
+        + [FakeResponse(200, {"enabled": False}) for _ in range(5)]
     )
     client = SmartGuardApiClient("192.0.2.10", session)
 
@@ -153,7 +156,7 @@ async def test_one_missing_optional_value_does_not_hide_other_readings() -> None
             FakeResponse(200, {"value": False}),
             FakeResponse(200, {"value": 0}),
             FakeResponse(200, {"value": False}),
-            *[FakeResponse(200, {"enabled": False}) for _ in range(3)],
+            *[FakeResponse(200, {"enabled": False}) for _ in range(5)],
         ]
     )
     snapshot = await SmartGuardApiClient("192.0.2.10", session).async_read_all("654321")

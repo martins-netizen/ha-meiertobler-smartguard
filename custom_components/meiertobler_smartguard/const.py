@@ -103,6 +103,36 @@ OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     SmartGuardDataPoint("hk60_cooling_off_damping", 5279, "duration", (1, 2), 1, 48),
 )
 
+# Labels are metadata from /config, never numeric datapoints or identifiers.
+MODULE_LABEL_KEYS: dict[tuple[int, int] | None, str] = {
+    None: "controller_label",
+    (1, 1): "hk50_label",
+    (1, 2): "hk60_label",
+    (1, 3): "hk70_label",
+    (2, 1): "buffer_label",
+    (3, 1): "dhw_label",
+}
+MODULE_LABEL_DEFAULT_NAMES: dict[str, tuple[str, str]] = {
+    "controller_label": ("", ""),
+    "hk50_label": ("HK50", "HK50"),
+    "hk60_label": ("HK60", "HK60"),
+    "hk70_label": ("HK70", "HK70"),
+    "buffer_label": ("Heating buffer", "Heizpuffer"),
+    "dhw_label": ("Hot water", "Warmwasser"),
+}
+ENTITY_MODULE_LABEL_KEYS: dict[str, str] = {
+    point.key: MODULE_LABEL_KEYS[point.subsystem_path]
+    for point in (*DATA_POINTS, *OPTIONAL_DATA_POINTS)
+}
+ENTITY_MODULE_LABEL_KEYS.update(
+    {key: key for key in MODULE_LABEL_KEYS.values()}
+)
+ENTITY_MODULE_LABEL_KEYS["hk60_selected_mode_select"] = "hk60_label"
+LABEL_MODULE_IDS: dict[str, str] = {
+    key: "controller" if path is None else f"{path[0]}/{path[1]}"
+    for path, key in MODULE_LABEL_KEYS.items()
+}
+
 ENUM_STATES: dict[str, dict[int, str]] = {
     "hk60_operating_status": {
         0: "standby",

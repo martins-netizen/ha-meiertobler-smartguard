@@ -1,11 +1,12 @@
 # Release notes: 0.6.0
 
-Status: release candidate
+Status: published release
 
-This candidate is **not yet published**. The annotated `v0.6.0` tag, tagged
-Release Gate and full GitHub release are pending. Check
-[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
-for available downloads. A live HACS update follows publication.
+[Version 0.6.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.6.0)
+was published as a full stable release on **2026-11-01 at 11:03:54 UTC**.
+The annotated `v0.6.0` tag, tagged Release Gate and both verified assets are
+complete. The separate live HACS update and configured-name acceptance remain
+pending; the latest confirmed installation is still 0.5.0.
 
 ## Changes since 0.5.0
 
@@ -60,7 +61,7 @@ redacted in downloaded integration diagnostics; review files before sharing.
 - To roll back, select published **0.5.0** in HACS and restart. New entities may
   become unavailable; preserve the config entry and existing automations.
 
-## Validation and pending publication
+## Validation and publication record
 
 The reviewed feature passed synthetic API, entity, translation, lifecycle and
 diagnostic tests. Separate read-only field observations confirmed the flow-target
@@ -73,11 +74,34 @@ coverage** (530 statements / 94 branches). Repository validation, Ruff, strict
 MyPy (14 files) and dependency consistency passed. Two independent deterministic
 ZIP builds agreed and all 19 members matched source bytes. These are local
 candidate results, distinct from the pending publication and live HACS test.
-Quality, Hassfest, HACS and SonarCloud are required on the PR head and merged
-main before tagging.
-The tagged Release Gate repeats the build and validations but never publishes
-automatically. Publication verifies the gate artifact, checksum and both uploaded
-assets. The [release checklist](RELEASE_CHECKLIST.md) records these separate steps.
+Release PR [#38](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/38)
+passed Quality, Hassfest, HACS and SonarCloud on head
+`34977068c4562da900e7d3aafcec1a65a41febd3` and after its squash merge as
+`1b64e1e83e49a70b21fc025de09ee62eac6ec924`. The exact
+[main Validate run](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41298470481)
+and [tagged Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41299829242)
+completed successfully. Annotated tag object
+`5da0707fc126e241555fcc8ca70e94eeb7964809` targets that same merged source.
+
+The first publisher run stopped on a network error after creating the correct
+tag. Its successful rerun reused that tag, verified the completed gate, compared
+all 19 ZIP members with source, downloaded both uploaded assets again and
+published explicitly. The read-only tag workflow did not publish automatically.
+Release ID: `430524927`; no draft or prerelease. Integration tree:
+`30e4259ab3e87365c93de02a6380b185859fb9f0`.
+
+### Release files and integrity
+
+- `meiertobler_smartguard-0.6.0.zip`: **39,421 bytes**, 19 integration files;
+  SHA-256 `339623147f11bb719da3894f44804ed2c64700ec999154444490fbfb7419e520`.
+- `meiertobler_smartguard-0.6.0.zip.sha256`: **99 bytes**, containing the exact
+  ZIP digest and filename; the checksum file's own SHA-256 is
+  `7bfa167f07490e36d064c4522bffde89196bcb3e8bedb2e2e529fd1b52c543a4`.
+
+The immutable tagged notes describe the candidate before publication. These
+current notes and the public GitHub release record its subsequent completion.
+HACS uses the tagged source rather than the attached manual ZIP. The
+[release checklist](RELEASE_CHECKLIST.md) retains the distinct live-upgrade step.
 
 ## Known limitations
 

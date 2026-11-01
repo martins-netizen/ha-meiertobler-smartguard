@@ -13,7 +13,7 @@ EXPECTED_DEVICE_TYPE = "1001"
 DEFAULT_UPDATE_INTERVAL_SECONDS = 60
 DEFAULT_REQUEST_TIMEOUT_SECONDS = 10
 
-DataPointKind = Literal["temperature", "enum", "counter", "boolean"]
+DataPointKind = Literal["temperature", "duration", "enum", "counter", "boolean"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -77,6 +77,30 @@ OPTIONAL_DATA_POINTS: tuple[SmartGuardDataPoint, ...] = (
     SmartGuardDataPoint("controller_priority1_fault", 1005, "boolean"),
     SmartGuardDataPoint("controller_priority2_fault", 1006, "boolean"),
     SmartGuardDataPoint("buffer_heating_request", 1004, "boolean", (2, 1)),
+    # HK60 UI bindings, confirmed by read-only API checks. The broad temperature
+    # bounds are plausibility guards; threshold/damping bounds match UI inputs.
+    SmartGuardDataPoint(
+        "hk60_flow_target_temperature", 52204, "temperature", (1, 2), -50, 125
+    ),
+    SmartGuardDataPoint(
+        "hk60_design_outdoor_temperature", 5221, "temperature", (1, 2), -60, 60
+    ),
+    SmartGuardDataPoint(
+        "hk60_heating_on_temperature", 5271, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint(
+        "hk60_heating_off_temperature", 5272, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint("hk60_heating_on_damping", 5273, "duration", (1, 2), 1, 48),
+    SmartGuardDataPoint("hk60_heating_off_damping", 5274, "duration", (1, 2), 1, 48),
+    SmartGuardDataPoint(
+        "hk60_cooling_on_temperature", 5276, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint(
+        "hk60_cooling_off_temperature", 5277, "temperature", (1, 2), 5, 30
+    ),
+    SmartGuardDataPoint("hk60_cooling_on_damping", 5278, "duration", (1, 2), 1, 48),
+    SmartGuardDataPoint("hk60_cooling_off_damping", 5279, "duration", (1, 2), 1, 48),
 )
 
 ENUM_STATES: dict[str, dict[int, str]] = {

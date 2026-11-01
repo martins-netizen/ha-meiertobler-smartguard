@@ -5,6 +5,15 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+### Added
+
+- Ten optional read-only HK60 sensors: current flow target temperature,
+  heating design outdoor temperature, heating/cooling outdoor thresholds and
+  their on/off damping durations. Each value can fail and recover independently.
+- English/German names and one-decimal suggested precision for the flow target
+  and existing actual flow temperature, preserving full numeric values and
+  personal display settings. No new gateway controls.
+
 ## [0.5.0] - 2026-10-30
 
 Published release; see [release notes](docs/RELEASE_NOTES_0.5.0.md) for the

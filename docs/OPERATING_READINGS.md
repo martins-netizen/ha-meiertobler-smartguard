@@ -54,11 +54,16 @@ module or datapoint failures do not block the original readings. Subsequent
 updates retry and can recover or discover readings without a new config entry.
 
 The coordinator retains the 60-second interval and sequential requests. With
-all optional modules enabled, one complete refresh performs **26 GET requests**:
+all optional modules enabled, the **0.5.0** refresh performs **26 GET requests**:
 eight original readings, four module configuration checks and 14 optional
 readings. There are no per-entity network requests or new gateway writes.
 With all readings available, the combined entity count is **16 sensors, six
 binary sensors and the existing single HK60 mode select**.
+
+The unreleased [HK60 flow target and limits](HK60_FLOW_AND_LIMITS.md) add ten
+optional sensors. With that addition on `main`, the complete refresh uses
+**36 GET requests** and the entity count becomes **26 sensors, six binary
+sensors and one mode select**. Published 0.5.0 retains the counts above.
 
 ## Verified scope and limits
 

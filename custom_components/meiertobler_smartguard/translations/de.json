@@ -70,6 +70,36 @@
       "hk60_flow_temperature": {
         "name": "HK60 Vorlauf IST"
       },
+      "hk60_flow_target_temperature": {
+        "name": "HK60 Vorlauf SOLL"
+      },
+      "hk60_design_outdoor_temperature": {
+        "name": "HK60 Auslegungstemperatur Heizen"
+      },
+      "hk60_heating_on_temperature": {
+        "name": "HK60 Aussentemperatur Heizen ein"
+      },
+      "hk60_heating_off_temperature": {
+        "name": "HK60 Aussentemperatur Heizen aus"
+      },
+      "hk60_heating_on_damping": {
+        "name": "HK60 Dämpfung Heizen ein"
+      },
+      "hk60_heating_off_damping": {
+        "name": "HK60 Dämpfung Heizen aus"
+      },
+      "hk60_cooling_on_temperature": {
+        "name": "HK60 Aussentemperatur Kühlen ein"
+      },
+      "hk60_cooling_off_temperature": {
+        "name": "HK60 Aussentemperatur Kühlen aus"
+      },
+      "hk60_cooling_on_damping": {
+        "name": "HK60 Dämpfung Kühlen ein"
+      },
+      "hk60_cooling_off_damping": {
+        "name": "HK60 Dämpfung Kühlen aus"
+      },
       "hk60_operating_status": {
         "name": "HK60 Betriebsstatus",
         "state": {

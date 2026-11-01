@@ -70,6 +70,36 @@
       "hk60_flow_temperature": {
         "name": "HK60 flow temperature"
       },
+      "hk60_flow_target_temperature": {
+        "name": "HK60 flow target temperature"
+      },
+      "hk60_design_outdoor_temperature": {
+        "name": "HK60 heating design outdoor temperature"
+      },
+      "hk60_heating_on_temperature": {
+        "name": "HK60 heating on outdoor threshold"
+      },
+      "hk60_heating_off_temperature": {
+        "name": "HK60 heating off outdoor threshold"
+      },
+      "hk60_heating_on_damping": {
+        "name": "HK60 heating on damping duration"
+      },
+      "hk60_heating_off_damping": {
+        "name": "HK60 heating off damping duration"
+      },
+      "hk60_cooling_on_temperature": {
+        "name": "HK60 cooling on outdoor threshold"
+      },
+      "hk60_cooling_off_temperature": {
+        "name": "HK60 cooling off outdoor threshold"
+      },
+      "hk60_cooling_on_damping": {
+        "name": "HK60 cooling on damping duration"
+      },
+      "hk60_cooling_off_damping": {
+        "name": "HK60 cooling off damping duration"
+      },
       "hk60_operating_status": {
         "name": "HK60 operating status",
         "state": {

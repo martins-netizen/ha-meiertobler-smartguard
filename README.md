@@ -33,6 +33,11 @@ or energy. This integration adds no heater controls or editable temperature
 setpoints. See the [operating readings guide](docs/OPERATING_READINGS.md) for
 availability and interpretation.
 
+Development on `main` additionally includes ten optional
+[HK60 flow-target and threshold sensors](docs/HK60_FLOW_AND_LIMITS.md).
+This addition is **not yet released**; installation through HACS requires a
+future release. The published 0.5.0 entity count above remains unchanged.
+
 ## Installation
 
 ### New installation with HACS

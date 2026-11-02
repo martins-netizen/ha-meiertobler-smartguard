@@ -43,6 +43,13 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
+## Prepared patch: 0.7.1
+
+The `main` release candidate prepares a holiday-editor fix and catalogue
+category metadata. **0.7.1 is not yet published**; the latest stable HACS
+release remains **0.7.0**. See the [0.7.1 candidate notes](docs/RELEASE_NOTES_0.7.1.md).
+After publication, update the existing HACS entry and restart Home Assistant.
+
 ## New in 0.7.0
 
 Version 0.7.0 adds shorter HK60 measurement names, four read-only

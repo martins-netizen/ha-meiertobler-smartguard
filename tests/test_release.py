@@ -47,8 +47,8 @@ def _write_versions(
 
 def test_current_release_version_and_tag() -> None:
     """The repository version is stable and matches its prospective tag."""
-    assert read_version() == "0.7.0"
-    assert verify_tag("v0.7.0") == "0.7.0"
+    assert read_version() == "0.7.1"
+    assert verify_tag("v0.7.1") == "0.7.1"
 
 
 @pytest.mark.parametrize(

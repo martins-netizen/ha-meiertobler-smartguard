@@ -5,6 +5,21 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+## [0.7.1] - Unreleased
+
+Release candidate; not yet published. See [0.7.1 candidate notes](docs/RELEASE_NOTES_0.7.1.md).
+
+### Fixed
+
+- Format prefilled holiday dates with the space separator expected by Home
+  Assistant's datetime selector. Editing a time no longer duplicates it or
+  prevents the review-and-confirm step.
+
+### Changed
+
+- Classify SmartGuard under heat pumps and air conditioning in integration
+  catalogue metadata, resolving the HACS missing-category warning.
+
 ## [0.7.0] - 2026-11-02
 
 Published stable release. Tag, tagged Release Gate and assets are verified;

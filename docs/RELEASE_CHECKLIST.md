@@ -4,6 +4,22 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
+## Prepared 0.7.1 holiday-editor patch
+
+Status: **release candidate; not yet published**. The latest stable HACS release
+remains 0.7.0. See [0.7.1 candidate notes](RELEASE_NOTES_0.7.1.md).
+
+- [x] Retain reviewed holiday-selector and category fixes from PRs #47 and #48.
+- [x] Align manifest, project and root lock-file versions at 0.7.1.
+- [x] Prepare candidate notes and unchanged 45-entity maximum.
+- [ ] Pass four release-PR checks and merge after owner approval.
+- [ ] Verify all four checks on the actual merged source.
+- [ ] Create the annotated v0.7.1 tag and verify its tagged Release Gate.
+- [ ] Build and verify both release assets against the tagged source.
+- [ ] Publish the stable full GitHub release explicitly.
+- [ ] Update through HACS, restart and check editing both suggested dates/times.
+- [ ] Keep physical holiday-period acceptance as a separate confirmed test.
+
 ## Published 0.7.0 holiday editor and diagnostics
 
 Status: **published on 2026-11-02 at 05:42:07 UTC** as the stable latest release.

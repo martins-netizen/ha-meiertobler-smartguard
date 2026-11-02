@@ -23,6 +23,10 @@ registers metadata; it does not itself install integration files.
 
 ## Update
 
+**Prefer HACS for routine upgrades.** The manual ZIP is an alternative;
+private dashboard helpers do not update the integration. Install the published
+HACS update and restart HA before applying a dashboard that needs new entities.
+
 Keep a verified Home Assistant backup and the previous known-good version.
 Open the existing HACS entry, select **Update**, restart Home Assistant and
 check entity availability. Keep the existing config entry, entity IDs and
@@ -39,6 +43,16 @@ Missing optional modules do not block the original heat-pump and HK60 entities.
 An integration update does not re-import blueprints or replace saved
 automations. Before separately re-importing the night-heating blueprint, review
 its [two-helper setup and ownership rules](AUTOMATION_EXAMPLES.md).
+
+## Enter holiday dates
+
+The dashboard timestamp entities are read-only. Open **Settings → Devices &
+services → Meier Tobler SmartGuard**, then use the **Configure gear beside the
+existing gateway entry**. The three-dot **Reconfigure** action changes the host;
+it does not open the holiday editor. Choose both dates, review the old/new and
+intermediate periods, and explicitly confirm. Opening the editor writes nothing.
+If the gear is missing immediately after updating files, restart HA to load the
+new flow. Keep the existing config entry.
 
 ## Manual installation
 

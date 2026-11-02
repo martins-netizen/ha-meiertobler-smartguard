@@ -19,8 +19,8 @@ The graphic is an illustrative feature overview, not a live installation screens
   selected/effective mode and season. Optional room targets, outdoor
   thresholds, design outdoor temperature and damping durations are read-only
   displays of controller settings.
-- **Configured names:** circuit/storage labels replace technical prefixes in
-  display names; diagnostic label sensors show the configured module assignments.
+- **Configured names:** keep short measurement-first names and show circuit/storage
+  assignments separately; diagnostic label sensors show the configured labels.
   Numeric readings and mode control continue to cover HK60 only.
 - **Controller:** outdoor temperature, Smart Grid status and three fault inputs.
 - **Mode control:** Auto, Normal, Reduced, Frost protection, Heating and Cooling.
@@ -31,12 +31,11 @@ The graphic is an illustrative feature overview, not a live installation screens
   gateway-address reconfiguration, actionable configuration repairs and redacted
   diagnostics.
 
-The features above describe **0.6.0**. Check
-[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
-for published downloads; candidate status is recorded in the versioned notes.
-With every supported module and reading available, this version can provide
-**26 numeric/enum sensors, up to six diagnostic label sensors, six binary
-sensors and one mode select** (39 entities in total).
+The latest stable release is **[0.7.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.0)**,
+published on 2026-11-02. Prefer the existing **HACS** entry for installation
+and updates. With every supported module and reading available, it provides
+**32 numeric/enum/timestamp sensors, six diagnostic label sensors, six binary
+sensors and one mode select** (45 entities).
 
 Heater indicators and heat requests report gateway status; they do not measure
 electrical power or energy. This integration adds no heater controls or editable
@@ -44,9 +43,9 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
-## Next version: 0.7.0 candidate
+## New in 0.7.0
 
-The 0.7.0 candidate adds shorter HK60 measurement names, four read-only
+Version 0.7.0 adds shorter HK60 measurement names, four read-only
 [heating-curve diagnostics](docs/HK60_HEATING_CURVE.md), two holiday timestamp
 sensors and a guided [holiday period editor](docs/HOLIDAY_MODE_PLAN.md).
 With all supported modules and readings available, it provides **32
@@ -59,9 +58,9 @@ partial or uncertain results without automatic retry or blind rollback.
 Physical holiday operation still needs acceptance; the lighting presence
 simulation and >24-hour absence suggestion remain separate HA work.
 
-**0.7.0 is a candidate, not yet published.** The latest published stable release
-remains 0.6.0. See the [0.7.0 candidate notes](docs/RELEASE_NOTES_0.7.0.md) for
-scope, validation and the remaining release steps. Existing entity IDs,
+The annotated tag, tagged Release Gate and both release assets are verified.
+See the [0.7.0 release notes](docs/RELEASE_NOTES_0.7.0.md) for scope, integrity
+and separate live holiday acceptance. Existing entity IDs,
 custom names and automations are preserved.
 
 ## Installation
@@ -88,12 +87,12 @@ automations are retained. If HACS does not show an available release, use
 See the [installation guide](docs/INSTALLATION.md) for custom-repository and
 manual installation, rollback and removal.
 
-### Holiday period editor (0.7.0 candidate)
+### Holiday period editor (0.7.0)
 
 A guided **Configure** dialog edits the complete HK60 holiday period, with a
 concrete warning and explicit confirmation before any write. The two dates are
 read back; partial or unknown outcomes stop without automatic retry or rollback.
-The current published release does not include this editor. Physical holiday
+The published 0.7.0 release includes this editor. Physical holiday
 operation and the separate HA presence-simulation binding still need acceptance.
 See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
 
@@ -133,7 +132,7 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release notes: [0.7.0 candidate](docs/RELEASE_NOTES_0.7.0.md),
+- Release notes: [0.7.0](docs/RELEASE_NOTES_0.7.0.md),
   [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
   [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
   [0.4.1](docs/RELEASE_NOTES_0.4.1.md),

@@ -1,8 +1,7 @@
 # HK60 heating-curve diagnostics
 
-Status: **included in the 0.7.0 release candidate, not yet published**. These
-four optional read-only settings extend the published 0.6.0 readings. See the
-[0.7.0 candidate notes](RELEASE_NOTES_0.7.0.md).
+Status: **published in 0.7.0**. These four optional read-only settings extend
+the 0.6.0 readings. See the [0.7.0 release notes](RELEASE_NOTES_0.7.0.md).
 
 | Reading | HK60 datapoint | Native unit | Accepted range |
 |---|---:|---|---|
@@ -34,13 +33,13 @@ typed or non-finite response affects only that value; subsequent valid data can
 restore it. Zero is a valid boost. Existing entity IDs and user names are retained.
 
 No additional module discovery or per-entity refresh is added. Together with
-the two holiday timestamp readings, the complete 0.7.0 candidate uses **44 GETs**
+the two holiday timestamp readings, the complete 0.7.0 release uses **44 GETs**
 per 60-second refresh: eight core values, six shared module configurations and
 30 optional numeric/boolean/timestamp values. Its maximum is **45 entities**:
 32 numeric/enum/timestamp sensors, six label sensors, six binary sensors and
 the existing HK60 mode select. Disabling a sensor alone does not change the poll.
 
-These four settings remain read-only. The candidate's separate confirmed
+These four settings remain read-only. The release's separate confirmed
 [holiday editor](HOLIDAY_MODE_PLAN.md) does not edit them. The exact controller
 curve, its filtering and a direct wind input have not been verified. The
 reported heating on/off damping settings do not establish a curve-averaging

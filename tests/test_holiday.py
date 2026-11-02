@@ -379,6 +379,51 @@ async def stage(hass, entry):
     return await hass.config_entries.options.async_configure(result["flow_id"], INPUT)
 
 
+@pytest.mark.parametrize(
+    "period",
+    [
+        OLD,
+        HolidayPeriod(
+            ts("2030-07-01T10:00:00+00:00"), ts("2030-07-10T10:00:00+00:00")
+        ),
+    ],
+)
+async def test_native_editor_suggestions_support_frontend_date_time_edits(
+    hass, config_entry, editor, period
+):
+    """Split and recombine the actual suggested values as HA's selector does."""
+    editor["read"].return_value = HolidayState(period, 0, "Floor heating")
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+    suggested = {
+        key.schema: key.description["suggested_value"]
+        for key in result["data_schema"].schema
+    }
+    for key, value in suggested.items():
+        date_part, time_part = value.split(" ")
+        assert datetime.strptime(date_part, "%Y-%m-%d").date().isoformat() == date_part
+        assert (
+            datetime.strptime(time_part, "%H:%M:%S").strftime("%H:%M:%S") == time_part
+        )
+        assert parse_holiday_timestamp(value, ZONE) == getattr(period, key)
+
+    changed = {
+        "start": f"{suggested['start'].split(' ')[0]} 14:00:00",
+        "end": f"{suggested['end'].split(' ')[0]} 04:00:00",
+    }
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], changed
+    )
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "confirm"
+    flow = hass.config_entries.options._progress[result["flow_id"]]
+    assert flow._requested == HolidayPeriod(
+        parse_holiday_timestamp(changed["start"], ZONE),
+        parse_holiday_timestamp(changed["end"], ZONE),
+    )
+    hass.config_entries.options.async_abort(result["flow_id"])
+    editor["write"].assert_not_awaited()
+
+
 @pytest.mark.parametrize("editor", [{}, {"retained": True}], indirect=True)
 async def test_native_editor_requires_explicit_confirmation_and_keeps_options_private(
     hass, config_entry, editor

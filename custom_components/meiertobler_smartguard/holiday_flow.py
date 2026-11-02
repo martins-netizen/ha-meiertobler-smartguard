@@ -99,11 +99,12 @@ class SmartGuardHolidayOptionsFlow(OptionsFlow):
                 self._expires = time.monotonic() + _CONFIRM_SECONDS
                 return await self.async_step_confirm()
         try:
+            # HA's DateTimeSelector splits its suggested value at a space.
             suggested = {
                 key: datetime.fromtimestamp(value, UTC)
                 .astimezone(self._zone)
                 .replace(tzinfo=None)
-                .isoformat()
+                .isoformat(sep=" ")
                 for key, value in (
                     ("start", self._source.period.start),
                     ("end", self._source.period.end),

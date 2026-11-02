@@ -5,10 +5,12 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-## [0.7.0] - 2026-11-01
+## [0.7.0] - 2026-11-02
 
-Release candidate, not yet published. See the
-[0.7.0 notes](docs/RELEASE_NOTES_0.7.0.md) for validation and acceptance limits.
+Published stable release. Tag, tagged Release Gate and assets are verified;
+see [0.7.0 notes](docs/RELEASE_NOTES_0.7.0.md). A post-release technical check
+confirmed all 21 installed files; HACS-path/UI and physical holiday acceptance
+are separate evidence.
 
 ### Added
 

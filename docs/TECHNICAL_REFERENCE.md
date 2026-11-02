@@ -27,10 +27,10 @@ current flow target and nine controller parameters as optional sensors.
 Configured circuit/storage labels provide readable display names and diagnostic
 metadata while existing entity IDs and personal names remain intact.
 
-The **0.7.0 candidate** adds four read-only heating-curve diagnostics and two
+The **0.7.0 release** adds four read-only heating-curve diagnostics and two
 holiday timestamps, with shorter HK60 measurement names. All optional readings
 available: **45 entities and 44 GETs** per complete refresh. See
-[candidate notes](RELEASE_NOTES_0.7.0.md) for publication status and scope.
+[release notes](RELEASE_NOTES_0.7.0.md) for publication status and scope.
 
 ## HK60 writes
 
@@ -40,7 +40,7 @@ for display. Each changed option is written to datapoint `5004`, read back
 immediately and followed by a coordinated refresh. A successful HTTP response
 alone does not confirm a write, and state is not changed optimistically.
 
-The candidate also offers a guided [whole-period holiday editor](HOLIDAY_MODE_PLAN.md).
+The release also offers a guided [whole-period holiday editor](HOLIDAY_MODE_PLAN.md).
 It writes only observed start/end points after explicit confirmation and fresh
 source checks, then reads the complete period back. There is no atomic gateway
 transaction; the exact intermediate period is shown before confirmation.

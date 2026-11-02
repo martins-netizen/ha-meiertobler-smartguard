@@ -1,11 +1,12 @@
 # Release notes: 0.7.0
 
-Status: release candidate
+Status: published release
 
-Version **0.7.0 is not yet published**. The latest stable GitHub/HACS release
-remains 0.6.0. An annotated `v0.7.0` tag, its successful read-only Release Gate
-and an explicit publication decision are still required. This document records
-candidate validation; installation and physical holiday acceptance are separate.
+Published on **2026-11-02 at 05:42:07 UTC** as the stable latest release.
+The annotated `v0.7.0` tag points to the reviewed release source. Prefer HACS
+for updates and restart Home Assistant. A separate technical report verified
+all **21 installed integration files** on 2026-11-02. The file check does not
+establish the download path or physical holiday operation.
 
 ## Changes since 0.6.0
 
@@ -90,22 +91,26 @@ all 20 other integration files are byte-identical to that source. No dependency,
 workflow, automation or runtime logic is changed by this version preparation.
 
 Two independent deterministic ZIP builds were identical. All **21 members**
-matched their source bytes. Local candidate files:
+matched their source bytes. Deterministic release files:
 
 - `meiertobler_smartguard-0.7.0.zip`: **48,745 bytes**;
   SHA-256 `a7532b182e3a639149a6a1c31a18cf0aded9942d6ccb485103194ea60b9d7e3f`.
 - `meiertobler_smartguard-0.7.0.zip.sha256`: **99 bytes**;
   own SHA-256 `79f02a97ff742d0fb68ec0156b48f6252a588041d097998d509d47479e49f2c3`.
 
-These are local candidate results, not a passed tagged gate, published assets
-or live installation evidence. The final tagged bundle must be checked again
-against the approved source before publication.
+The tagged Release Gate and public asset metadata confirm these sizes and
+digests. Source: `1cb5494caea9a6d8d6141d477bf3f49f5a84583d`; annotated tag
+object: `4ebe3d88bbadef551c605f6500a4643c85030d4c`. The
+[tagged Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41395371529)
+passed on this exact source. Both assets are in the [full release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.0).
+Earlier tags and assets remain unchanged.
 
 ## Publication and live acceptance
 
-The version PR, final main checks, annotated tag, tagged Release Gate and
-explicit publication are distinct steps in the [release checklist](RELEASE_CHECKLIST.md).
-No publication or live installation is claimed for this candidate. Keep the
+PR #44, four final-main checks, the annotated tag, tagged Release Gate and
+publication are complete; see the [release checklist](RELEASE_CHECKLIST.md).
+The separate installed-file check is recorded above; HACS-path, rendered editor
+and physical holiday acceptance remain separate. Keep the
 previous known-good installation and a verified backup. A physical holiday test
 requires a separately chosen, concretely confirmed period and reviewed return
 path; do not exercise writes automatically during release/install checks.

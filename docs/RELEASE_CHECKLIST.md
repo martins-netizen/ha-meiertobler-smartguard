@@ -4,26 +4,24 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-## Prepared 0.7.0 holiday editor and diagnostics candidate
+## Published 0.7.0 holiday editor and diagnostics
 
-Status: **release candidate, not yet published**. The current stable download
-remains 0.6.0. See [0.7.0 notes](RELEASE_NOTES_0.7.0.md).
+Status: **published on 2026-11-02 at 05:42:07 UTC** as the stable latest release.
+See [0.7.0 notes](RELEASE_NOTES_0.7.0.md). Prefer HACS for routine upgrades;
+the ZIP is a manual alternative and does not install personal dashboards.
 
-- [x] Retain merged naming, heating-curve, timestamp and editor PRs #40–#43.
-- [x] Align manifest, project and root lock-file versions at 0.7.0.
-- [x] Prepare user guidance, acceptance limits and device-state rollback notes.
-- [x] Validate the exact candidate and inspect two deterministic 21-file builds.
-- [ ] Review and merge the release PR after all four checks pass.
-- [ ] Verify the exact merged main, annotated `v0.7.0` tag and tagged Release Gate.
-- [ ] Inspect gated ZIP/checksum against the approved source and uploaded assets.
-- [ ] Explicitly publish the release; no automatic publication from the tag job.
-- [ ] Verify installation, entity/name preservation and optional readings on HA.
-- [ ] Accept a separately chosen, explicitly confirmed physical holiday test,
-      with previous dates retained and a reviewed corrective path.
+- [x] Retain reviewed naming, diagnostics, timestamps and editor PRs #40–#43.
+- [x] Align versions and validate deterministic 21-file builds.
+- [x] Merge release PR #44 and verify four final-main checks.
+- [x] Create annotated v0.7.0 on `1cb5494caea9a6d8d6141d477bf3f49f5a84583d`.
+- [x] Pass [Release Gate 41395371529](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41395371529).
+- [x] Confirm both assets and digests; publish the stable full release.
+- [x] Receive a separate technical comparison of all 21 installed files.
+- [ ] Confirm HACS-path and rendered options-editor/UI acceptance separately.
+- [ ] Accept a chosen physical holiday period and reviewed return path.
 
-Synthetic tests and source checks do not establish live holiday operation or the
-meaning of the displayed K reduction. The independent presence-simulation plan
-and >24-hour absence suggestion are not installed by this release.
+File installation does not prove active holiday heating or the K reduction's
+reference. Presence-simulation coupling remains separate HA work.
 
 ## Published 0.6.0 flow-target and configured-name release
 

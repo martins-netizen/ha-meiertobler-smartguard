@@ -4,21 +4,31 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-## Prepared 0.7.1 holiday-editor patch
+## Published 0.7.1 holiday-editor patch
 
-Status: **release candidate; not yet published**. The latest stable HACS release
-remains 0.7.0. See [0.7.1 candidate notes](RELEASE_NOTES_0.7.1.md).
+Status: **published on 2026-11-02 at 21:47:25 UTC** as the stable latest release.
+See [0.7.1 release notes](RELEASE_NOTES_0.7.1.md) for the exact source and assets.
 
 - [x] Retain reviewed holiday-selector and category fixes from PRs #47 and #48.
 - [x] Align manifest, project and root lock-file versions at 0.7.1.
-- [x] Prepare candidate notes and unchanged 45-entity maximum.
-- [ ] Pass four release-PR checks and merge after owner approval.
-- [ ] Verify all four checks on the actual merged source.
-- [ ] Create the annotated v0.7.1 tag and verify its tagged Release Gate.
-- [ ] Build and verify both release assets against the tagged source.
-- [ ] Publish the stable full GitHub release explicitly.
-- [ ] Update through HACS, restart and check editing both suggested dates/times.
-- [ ] Keep physical holiday-period acceptance as a separate confirmed test.
+- [x] Prepare version-specific notes and unchanged 45-entity maximum.
+- [x] Pass four release-PR checks and merge PR #49 after owner approval.
+- [x] Verify Quality, Hassfest, HACS and SonarCloud on the actual merged source
+      `93be8e6ad95f12eadbbb6a0c3a88820a4ec320e5`.
+- [x] Create the annotated v0.7.1 tag and pass
+      [Release Gate 41531211956](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41531211956).
+- [x] Record the publication's 21-file source comparison and both verified assets.
+- [x] Publish the stable full GitHub release explicitly.
+- [x] Receive a separate field report on 2026-11-03: HACS installed/latest
+      v0.7.1, update state off.
+- [ ] Confirm native editor date/time rendering in the browser separately.
+- [ ] Keep physical holiday-period acceptance and return path as a separate
+      concretely confirmed test.
+
+The HACS field report does not claim a new independent file audit or physical
+holiday operation. Private dashboards and presence simulation remain separate
+Home Assistant configuration. This record requires no additional device write,
+restart, tag or release. Existing tags and assets are preserved.
 
 ## Published 0.7.0 holiday editor and diagnostics
 

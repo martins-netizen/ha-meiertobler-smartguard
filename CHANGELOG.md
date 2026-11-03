@@ -5,9 +5,12 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-## [0.7.1] - Unreleased
+## [0.7.1] - 2026-11-02
 
-Release candidate; not yet published. See [0.7.1 candidate notes](docs/RELEASE_NOTES_0.7.1.md).
+Published stable release; see [0.7.1 release notes](docs/RELEASE_NOTES_0.7.1.md)
+for the source, tagged Release Gate and asset checksums. A separate maintainer
+field report on 2026-11-03 confirms HACS installed/latest 0.7.1. Physical
+holiday operation and native editor browser acceptance remain separate.
 
 ### Fixed
 

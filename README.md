@@ -31,7 +31,7 @@ The graphic is an illustrative feature overview, not a live installation screens
   gateway-address reconfiguration, actionable configuration repairs and redacted
   diagnostics.
 
-The latest stable release is **[0.7.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.0)**,
+The latest stable release is **[0.7.1](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.1)**,
 published on 2026-11-02. Prefer the existing **HACS** entry for installation
 and updates. With every supported module and reading available, it provides
 **32 numeric/enum/timestamp sensors, six diagnostic label sensors, six binary
@@ -43,12 +43,16 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
-## Prepared patch: 0.7.1
+## New in 0.7.1
 
-The `main` release candidate prepares a holiday-editor fix and catalogue
-category metadata. **0.7.1 is not yet published**; the latest stable HACS
-release remains **0.7.0**. See the [0.7.1 candidate notes](docs/RELEASE_NOTES_0.7.1.md).
-After publication, update the existing HACS entry and restart Home Assistant.
+Version 0.7.1 fixes prefilled dates in the native holiday editor and adds the
+integration catalogue category. It was published on **2026-11-02**. Update the
+existing HACS entry and restart Home Assistant; keep the existing config entry
+and entity IDs. See the [0.7.1 release notes](docs/RELEASE_NOTES_0.7.1.md).
+
+The maintainer's separate field report on 2026-11-03 confirms HACS installed
+and latest versions of 0.7.1. Physical holiday operation remains a separate
+acceptance step.
 
 ## New in 0.7.0
 
@@ -94,13 +98,14 @@ automations are retained. If HACS does not show an available release, use
 See the [installation guide](docs/INSTALLATION.md) for custom-repository and
 manual installation, rollback and removal.
 
-### Holiday period editor (0.7.0)
+### Holiday period editor
 
 A guided **Configure** dialog edits the complete HK60 holiday period, with a
 concrete warning and explicit confirmation before any write. The two dates are
 read back; partial or unknown outcomes stop without automatic retry or rollback.
-The published 0.7.0 release includes this editor. Physical holiday
-operation and the separate HA presence-simulation binding still need acceptance.
+The editor was introduced in 0.7.0; version 0.7.1 fixes date prefilling.
+Physical holiday operation still needs separate acceptance; lighting presence
+simulation is configured separately in Home Assistant.
 See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
 
 ## Compatibility and security
@@ -139,7 +144,8 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release notes: [0.7.0](docs/RELEASE_NOTES_0.7.0.md),
+- Release notes: [0.7.1](docs/RELEASE_NOTES_0.7.1.md),
+  [0.7.0](docs/RELEASE_NOTES_0.7.0.md),
   [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
   [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
   [0.4.1](docs/RELEASE_NOTES_0.4.1.md),

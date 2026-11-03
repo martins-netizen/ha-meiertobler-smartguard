@@ -1,11 +1,11 @@
 # Release notes: 0.7.1
 
-Status: release candidate
+Status: published release
 
-Version 0.7.1 is not yet published. The latest stable HACS release remains
-[0.7.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.0).
-The annotated `v0.7.1` tag, its successful Release Gate, verified assets and
-explicit stable full-release publication remain separate steps.
+Published on **2026-11-02 at 21:47:25 UTC** as the stable latest release.
+The annotated `v0.7.1` tag points to the reviewed source below. Prefer the
+existing HACS entry for updates, restart Home Assistant and retain the config
+entry and entity IDs.
 
 ## Fixes since 0.7.0
 
@@ -26,7 +26,7 @@ identity/source checks, DST handling and write readback remain in place.
 - No runtime dependency or polling-interval change.
 - With all supported modules/readings: **32 numeric/enum/timestamp sensors,
   six label sensors, six binary sensors and one mode select** (45 entities).
-- After publication, prefer updating the existing **HACS** entry and restart
+- Prefer updating the existing **HACS** entry and restart
   Home Assistant. Keep the config entry and registered entity IDs. Reopen the
   Configure dialog and verify both date/time fields before saving a period.
 - The release changes no personal dashboard, automation, helper or heating
@@ -36,11 +36,36 @@ A displayed or read-back date pair does not prove physical holiday heating.
 A real period change and its return path still require separate acceptance;
 lighting presence-simulation coupling remains separate HA work.
 
-## Validation and remaining publication steps
+## Validation and publication evidence
 
-The two reviewed fixes are merged on main with four successful checks. The
-versioned release candidate must pass Quality, Hassfest, HACS and SonarCloud.
-After approval, verify the actual merged commit, create the annotated tag,
-wait for that tag's Release Gate, and compare both uploaded/downloaded assets
-with the source before publishing the stable full release. Record the final
-source, gate and checksums after publication, without rewriting previous tags.
+Reviewed source: `93be8e6ad95f12eadbbb6a0c3a88820a4ec320e5`.
+Quality, Hassfest, HACS and SonarCloud passed on that exact main commit.
+The annotated `v0.7.1` tag object is
+`e9c4db1603d7e966ee4b00b090275712b5c20cfb`.
+Its [tagged Release Gate](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/41531211956)
+completed successfully on the same source. The
+[full stable release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.1)
+is published with both assets:
+
+- `meiertobler_smartguard-0.7.1.zip`: **48,813 bytes**;
+  SHA-256 `930f6fbc170897930cf400582cc387de25c437f40477bb32e0608ff81d56d16e`.
+- `meiertobler_smartguard-0.7.1.zip.sha256`: **99 bytes**;
+  own SHA-256 `cdebde5ff6ce2d52047fa1fbe31a2764754c31751ba3ec56148b661d4f166130`.
+
+The publication record reports byte comparison of all **21 integration files**
+with that source and verification of both downloaded assets. The public release
+metadata confirms the sizes and digests above. This documentation update does
+not repeat the download audit or change tags, release assets or runtime files.
+
+## Separate HACS and live acceptance
+
+A separate maintainer field report on **2026-11-03** reports the existing HACS
+entry as installed **v0.7.1**, latest **v0.7.1**, update state **off**.
+This establishes HACS distribution status on that installation; it is not a
+new independent byte audit, native editor browser test or physical holiday test.
+
+Native editor date/time rendering and a chosen physical holiday period with
+its return path remain separate acceptance items. The successful private HA
+presence-simulation dashboard is separate configuration, outside this release.
+No physical write, new holiday plan or extra restart is required merely to
+complete this publication record.

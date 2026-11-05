@@ -32,8 +32,8 @@ The graphic is an illustrative feature overview, not a live installation screens
   diagnostics.
 
 The latest stable release is **[0.7.1](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.1)**,
-published on 2026-11-02. Prefer the existing **HACS** entry for installation
-and updates. With every supported module and reading available, it provides
+published on 2026-11-02. Use **Settings → Marketplace** on HA 2026.11+
+(HACS on older HA) for installation and updates. With every supported module and reading available, it provides
 **32 numeric/enum/timestamp sensors, six diagnostic label sensors, six binary
 sensors and one mode select** (45 entities).
 
@@ -47,7 +47,7 @@ configured names and interpretation.
 
 Version 0.7.1 fixes prefilled dates in the native holiday editor and adds the
 integration catalogue category. It was published on **2026-11-02**. Update the
-existing HACS entry and restart Home Assistant; keep the existing config entry
+existing Marketplace/HACS entry and restart Home Assistant; keep the existing config entry
 and entity IDs. See the [0.7.1 release notes](docs/RELEASE_NOTES_0.7.1.md).
 
 The maintainer's separate field report on 2026-11-03 confirms HACS installed
@@ -76,24 +76,35 @@ custom names and automations are preserved.
 
 ## Installation
 
-### New installation with HACS
+<a id="new-installation-with-hacs"></a>
 
-1. Open **HACS** and search for **Meier Tobler SmartGuard**.
-2. Download the latest stable release and restart Home Assistant.
-3. Open **Settings → Devices & services → Add integration**.
-4. Select **Meier Tobler SmartGuard** and enter the gateway hostname or IP address.
+### New installation
 
-Enter the host only, without a URL scheme, port, path or credentials.
-The integration is included in the default HACS catalogue.
+1. On **HA 2026.11+**, open **Settings → Marketplace** and acknowledge the
+   community-code notice if prompted. Search for **Meier Tobler SmartGuard**
+   and verify **martins-netizen/ha-meiertobler-smartguard**.
+2. Install the latest stable release. Marketplace opens setup; a first install
+   of an integration not previously loaded does not normally require a restart.
+3. If setup does not open, use **Settings → Devices & services → Add integration**
+   and select **Meier Tobler SmartGuard**.
+4. Enter the gateway hostname or IP address, without a scheme, port, path or
+   credentials. Keep the gateway on a trusted local network.
+
+On **older HA**, install through **HACS**, restart HA, then add the integration
+under **Settings → Devices & services**. The project is in the default catalogue.
+HA 2026.11 migrates existing HACS installations automatically; do not reinstall
+HACS or recreate the SmartGuard entry.
 
 ### Update an existing installation
 
-1. Open the existing **Meier Tobler SmartGuard** HACS entry and select **Update**.
-2. Restart Home Assistant, then check that your entities are available.
+1. On HA 2026.11+, install the offered update under **Settings → Updates**.
+   On older HA, open the existing SmartGuard **HACS** entry and choose **Update**.
+2. Restart Home Assistant (Marketplace provides a repair notice), then check
+   entity availability. Updates still require a restart.
 
-Keep the existing integration and config entry. Your entity IDs, settings and
-automations are retained. If HACS does not show an available release, use
-**Update information** and check again.
+Keep the existing integration/config entry, entity IDs, settings and automations.
+If an older HACS entry does not offer the release, use **Update information**.
+Refreshing metadata does not install files.
 
 See the [installation guide](docs/INSTALLATION.md) for custom-repository and
 manual installation, rollback and removal.
@@ -166,10 +177,7 @@ nur angezeigt; sie sind hier nicht einstellbar.
 Die HK60-Betriebsmoduswahl wird nach jeder Änderung unmittelbar zurückgelesen.
 Heizeinsatz-Anzeigen sind keine elektrische Leistungs- oder Energiemessung.
 
-**Installation:** In HACS nach **Meier Tobler SmartGuard** suchen, die aktuelle
-stabile Version herunterladen und Home Assistant neu starten. Bei der ersten
-Installation die Integration unter **Einstellungen → Geräte & Dienste**
-hinzufügen. Bei einem Update bleibt die bestehende Einrichtung erhalten.
+**Installation:** [Marketplace (HA 2026.11+) / HACS (older HA)](#new-installation).
 Benötigt werden SmartGuard-Gerätetyp `1001` und Home Assistant **ab 2026.9.0**.
 Die ungeschützte lokale HTTP-API gehört ausschliesslich in ein vertrauenswürdiges
 lokales Netzwerk. Unabhängiges Community-Projekt ohne Herstellerunterstützung.

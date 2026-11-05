@@ -4,6 +4,12 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
+**Distribution UI (5 November 2026):** Use **Settings → Marketplace** on
+HA 2026.11+ and HACS on older HA; see [current installation steps](INSTALLATION.md).
+Record which UI/HA version was actually tested. Existing HACS field reports
+below remain historical evidence, not proof of a Marketplace installation test.
+Technical `hacs.json`, catalogue and HACS validation names remain unchanged.
+
 ## Published 0.7.1 holiday-editor patch
 
 Status: **published on 2026-11-02 at 21:47:25 UTC** as the stable latest release.

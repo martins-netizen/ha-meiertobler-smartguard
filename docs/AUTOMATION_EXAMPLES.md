@@ -127,7 +127,7 @@ return retains existing ownership. Inspect the automation trace.
 The guided German form changes labels and input grouping only. Existing input
 keys, selectors, defaults, conditions and actions remain the same as the
 ownership-aware version. Saved inputs remain compatible. Re-import from the
-Blueprints menu to receive the form update; a HACS integration update does not
+Blueprints menu to receive the form update; a Marketplace/HACS integration update does not
 update a separately imported blueprint. Review the inputs after re-importing.
 
 The new blueprint requires the **separate ownership helper**. Older copies
@@ -138,7 +138,7 @@ inputs/YAML and resolve any active night override. Re-import, edit the existing
 automation, select the new helper and review every input before enabling it.
 The new required input is not migrated automatically.
 
-HACS updates the integration, not this separate blueprint. The URL on `main`
+Marketplace/HACS updates the integration, not this separate blueprint. The URL on `main`
 supplies the corrected blueprint after the reviewed change is merged. Older
 tagged URLs retain their older contents.
 

@@ -7,7 +7,6 @@ from unittest.mock import AsyncMock
 import pytest
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.api import (
     SmartGuardApiClient,
@@ -19,6 +18,7 @@ from custom_components.meiertobler_smartguard.const import (
     MODULE_LABEL_KEYS,
     OPTIONAL_DATA_POINTS,
 )
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import TEST_GLOBAL_DEVICE_ID, TEST_SNAPSHOT
 from .test_api import FakeResponse, FakeSession

@@ -73,13 +73,15 @@ export are in `docs/images`; absolute public image URLs work in the HACS view.
 
 ## Development checks
 
-Use Python 3.14 and the pinned, hash-checked CI dependencies described in
-[CONTRIBUTING.md](../CONTRIBUTING.md). Run from the repository root:
+Use Python 3.14.10 or a later 3.14 patch and the pinned, hash-checked CI dependencies
+described in [CONTRIBUTING.md](../CONTRIBUTING.md). CI runs the entire suite in two
+isolated environments: the current HA release and the advertised 2026.9.0 minimum.
+The protected Quality check requires both. Run from the repository root:
 
 ```bash
 python3 scripts/validate.py
 python3 scripts/release.py check
-python3 scripts/release.py verify-tag --tag v0.7.0
+python3 scripts/release.py verify-tag --tag v0.7.1
 python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
 python3 -m mypy \
@@ -87,6 +89,7 @@ python3 -m mypy \
   scripts/release.py \
   tests/test_release.py
 python3 -m pytest -q \
+  --disable-socket --allow-hosts=127.0.0.1,::1 \
   --cov=custom_components/meiertobler_smartguard \
   --cov-report=term-missing \
   --cov-fail-under=95

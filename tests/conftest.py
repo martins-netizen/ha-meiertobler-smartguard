@@ -6,10 +6,10 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from homeassistant.core import HomeAssistant
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.api import SmartGuardIdentity
 from custom_components.meiertobler_smartguard.const import CONF_HOST, DOMAIN, MODEL
+from tests.ha_helpers import MockConfigEntry
 
 TEST_HOST = "192.0.2.10"
 TEST_GLOBAL_DEVICE_ID = "global-123"
@@ -34,6 +34,12 @@ TEST_SNAPSHOT = {
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
     """Enable loading integrations from custom_components."""
+
+
+@pytest.fixture
+def hass_config_dir(hass_tmp_config_dir: str) -> str:
+    """Keep writable HA test configuration outside the source checkout."""
+    return hass_tmp_config_dir
 
 
 @pytest.fixture

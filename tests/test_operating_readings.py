@@ -11,7 +11,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.translation import async_get_translations
 from homeassistant.helpers.update_coordinator import UpdateFailed
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.api import SmartGuardApiClient
 from custom_components.meiertobler_smartguard.const import (
@@ -23,6 +22,7 @@ from custom_components.meiertobler_smartguard.const import (
 from custom_components.meiertobler_smartguard.diagnostics import (
     async_get_config_entry_diagnostics,
 )
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import TEST_GLOBAL_DEVICE_ID, TEST_HOST, TEST_SNAPSHOT
 from .test_api import FakeResponse, FakeSession

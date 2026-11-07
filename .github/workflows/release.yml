@@ -76,6 +76,7 @@ jobs:
       - name: Run tests
         run: >-
           python -m pytest -q
+          --disable-socket --allow-hosts=127.0.0.1,::1
           --cov=custom_components/meiertobler_smartguard
           --cov-report=term-missing
           --cov-fail-under=95

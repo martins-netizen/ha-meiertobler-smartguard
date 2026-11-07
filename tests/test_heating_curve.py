@@ -8,10 +8,10 @@ from urllib.parse import urlsplit
 import pytest
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.api import SmartGuardApiClient
 from custom_components.meiertobler_smartguard.const import DOMAIN
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import TEST_GLOBAL_DEVICE_ID, TEST_HOST, TEST_SNAPSHOT
 from .test_api import FakeResponse

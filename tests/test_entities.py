@@ -7,7 +7,6 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.api import (
     SmartGuardApiClient,
@@ -29,6 +28,7 @@ from custom_components.meiertobler_smartguard.sensor import (
 from custom_components.meiertobler_smartguard.sensor import (
     async_setup_entry as async_setup_sensor,
 )
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import TEST_IDENTITY, TEST_SERIAL_NUMBER, TEST_SNAPSHOT
 

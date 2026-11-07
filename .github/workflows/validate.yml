@@ -17,9 +17,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality:
-    name: Quality
+  compatibility:
+    name: Tests (${{ matrix.label }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Current HA
+            requirements: ci
+          - label: Minimum HA
+            requirements: ci-minimum
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -34,7 +42,7 @@ jobs:
           cache: pip
           cache-dependency-path: |
             .github/requirements-build.txt
-            .github/requirements-ci.txt
+            .github/requirements-${{ matrix.requirements }}.txt
 
       - name: Install pinned build tools
         run: >-
@@ -48,7 +56,7 @@ jobs:
         run: >-
           python -m pip install --disable-pip-version-check
           --require-hashes --only-binary=:all: --no-binary=mock-open,pyric
-          --no-build-isolation --no-deps -r .github/requirements-ci.txt
+          --no-build-isolation --no-deps -r .github/requirements-${{ matrix.requirements }}.txt
 
       - name: Check installed dependency consistency
         run: python -m pip check
@@ -57,9 +65,11 @@ jobs:
         run: python scripts/validate.py
 
       - name: Run Ruff
+        if: matrix.requirements == 'ci'
         run: python -m ruff check .
 
       - name: Run strict MyPy checks
+        if: matrix.requirements == 'ci'
         run: >-
           python -m mypy
           custom_components/meiertobler_smartguard
@@ -69,9 +79,22 @@ jobs:
       - name: Run tests
         run: >-
           python -m pytest -q
+          --disable-socket --allow-hosts=127.0.0.1,::1
           --cov=custom_components/meiertobler_smartguard
           --cov-report=term-missing
           --cov-fail-under=95
+
+  # Retain the protected check name and require every compatibility job.
+  quality:
+    name: Quality
+    needs: compatibility
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every compatibility environment to pass
+        env:
+          COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
+        run: test "$COMPATIBILITY_RESULT" = success
 
   hassfest:
     name: Hassfest

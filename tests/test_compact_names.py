@@ -10,13 +10,13 @@ import pytest
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.const import DOMAIN, MODEL
 from custom_components.meiertobler_smartguard.diagnostics import (
     async_get_config_entry_diagnostics,
 )
 from custom_components.meiertobler_smartguard.entity import _circuit_display_name
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import TEST_GLOBAL_DEVICE_ID, TEST_SNAPSHOT
 from .test_module_labels import LABELS

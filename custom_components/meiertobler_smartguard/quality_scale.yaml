@@ -63,8 +63,8 @@ rules:
   entity-category: done
   entity-device-class: done
   entity-disabled-by-default:
-    status: todo
-    comment: Optional diagnostic operating-hour counters are enabled by default; review their defaults without changing existing installations.
+    status: done
+    comment: Diagnostic operating-hour counters default to disabled for new registry entries; existing activation choices and entity IDs are preserved.
   entity-translations: done
   exception-translations: done
   icon-translations:

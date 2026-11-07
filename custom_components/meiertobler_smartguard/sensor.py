@@ -230,6 +230,7 @@ OPTIONAL_SENSOR_DESCRIPTIONS: tuple[SmartGuardSensorEntityDescription, ...] = (
             state_class=SensorStateClass.TOTAL_INCREASING,
             native_unit_of_measurement=UnitOfTime.HOURS,
             entity_category=EntityCategory.DIAGNOSTIC,
+            entity_registry_enabled_default=False,
             suggested_display_precision=0,
         )
         for key in ("buffer_heater_operating_hours", "dhw_heater_operating_hours")

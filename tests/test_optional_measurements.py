@@ -257,6 +257,13 @@ async def test_optional_entities_appear_recover_and_unload(
     await hass.async_block_till_done()
     ids = {key: entity_id(key) for key in EXTRA_VALUES}
     assert all(ids.values())
+    for key in ("buffer_heater_operating_hours", "dhw_heater_operating_hours"):
+        assert registry.async_get(ids[key]).disabled_by is er.RegistryEntryDisabler.INTEGRATION
+        registry.async_update_entity(ids[key], disabled_by=None)
+    mock_api["read_all"].return_value = {**TEST_SNAPSHOT, **EXTRA_VALUES}
+    assert await hass.config_entries.async_reload(config_entry.entry_id)
+    await hass.async_block_till_done()
+    coordinator = config_entry.runtime_data.coordinator
     assert hass.states.get(ids["buffer_heater_status"]).state == "off"
     assert hass.states.get(ids["dhw_heater_status"]).state == "on"
     hours = hass.states.get(ids["buffer_heater_operating_hours"])

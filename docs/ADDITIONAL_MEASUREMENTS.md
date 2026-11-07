@@ -24,8 +24,8 @@ defines the module configuration format on page 9 and the values on pages
 ## Availability and interpretation
 
 Each update reads the module's `/config` endpoint. Only `enabled: true` enables
-its additional GET requests. Entities appear after the first valid reading,
-including when a module becomes available after startup.
+its additional GET requests. Entities are registered after the first valid
+reading, including when a module becomes available after startup.
 
 A missing, malformed or temporarily inaccessible optional reading makes its
 existing entity unavailable. Other readings continue to update. Temperatures
@@ -35,6 +35,21 @@ are rejected. A boolean false and an operating-hour count of zero remain valid.
 The heater indicators are the statuses reported by SmartGuard. They do not
 measure the physical ASKOHEAT devices' electrical power or energy consumption.
 This extension adds no heater controls or setpoint changes.
+
+## Default activation in the next release
+
+The development source makes the two diagnostic heater operating-hour counters
+disabled by default when first registered. They remain available under
+**Settings → Devices & services → Entities**: include disabled entities in the
+filter, open the counter and enable it when needed. Temperatures and heater
+indicators keep their existing defaults.
+
+This default applies only to newly created entity-registry entries. Existing
+enabled counters stay enabled; disabled counters, custom entity IDs and names
+retain their saved choices, including after an integration reload. No registry
+migration is performed. The reading of SmartGuard datapoints is unchanged.
+Published 0.7.1 retains its original defaults; this adjustment is for a future
+release.
 
 ## Verification before release
 

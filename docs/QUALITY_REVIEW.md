@@ -1,8 +1,8 @@
 # Blueprint and quality evidence review
 
-Reviewed against the published 0.4.1 source and the repository's current
-integration/blueprint implementation, including the prepared 0.5.0 source.
-The rule statuses below are maintained
+This guide retains the original blueprint assessment and its historical
+validation evidence, followed by the current quality follow-ups.
+The rule statuses for the current source branch are maintained
 in [quality_scale.yaml](../custom_components/meiertobler_smartguard/quality_scale.yaml).
 
 ## Blueprint findings and correction
@@ -37,7 +37,7 @@ a new manual intention, and no startup/reconnection catch-up is provided.
 The automated tests are in [test_blueprint.py](../tests/test_blueprint.py).
 They neither contact a gateway nor alter the maintainer's Home Assistant.
 
-Local validation used Python 3.14.8 and the hash-pinned CI environment with
+The original blueprint validation used Python 3.14.8 and the hash-pinned CI environment with
 Home Assistant 2026.9.3: **155 tests and 26 subtests passed**, including 30
 blueprint cases; integration statement/branch coverage remains **100%**.
 The manual-heating regression test fails against the original blueprint and
@@ -52,14 +52,36 @@ repository dependencies and CI MyPy command were not changed.
 | --- | --- |
 | `reauthentication-flow` | Exempt: the verified local HTTP API does not authenticate integration requests; remove the obsolete 0.3.0 qualifier |
 | `docs-examples` | Todo: automated import/execution evidence is now present; keep the previously required UI/import and production migration confirmation open |
-| `entity-disabled-by-default` | Todo: optional diagnostic operating-hour counters are enabled by default; the old exemption for only the original functional core is no longer accurate |
+| `entity-disabled-by-default` | Done in the development source for the next release: newly registered diagnostic operating-hour counters default to disabled; existing registry choices are preserved |
 | `discovery` | Todo: no reliable local discovery mechanism verified |
 | `repair-issues` | Done in the 0.5.0 source: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
 
-This review does not disable existing entities, change integration defaults,
-add discovery, or change a release/tag. Other existing checklist entries
-are retained; this is a focused blueprint/evidence review, not a new audit of
-every rule. Future default changes need a separate behavior/migration review.
+Other existing checklist entries are retained. This is a focused review rather
+than a new audit of every rule. The operating-hour counter default review is
+documented below; the remaining blueprint UI and discovery work stays open.
+
+## Operating-hour counter defaults for the next release
+
+Only the heating-buffer and domestic-hot-water heater operating-hour counters
+set `entity_registry_enabled_default=False`. Operational temperatures, heater
+indicators and the other entities retain their defaults. Both counters remain
+diagnostic, read-only, total-increasing sensors measured in hours.
+
+[Native HA registry tests](../tests/test_entity_defaults.py) cover initial and
+late discovery, explicit user activation, existing enabled/user-disabled/
+integration-disabled entries, custom IDs and names, and integration reload.
+The established optional-measurement value/recovery test explicitly enables
+the counters through the entity registry and reloads the integration; separate
+default tests retain the normal defaults. No existing registry entry is migrated
+or rewritten by the integration.
+The published 0.7.1 release keeps its previous defaults until a future release
+contains this change.
+
+Counter-default validation used Python 3.14.10 with HA 2026.11.0 and HA 2026.9.0:
+each complete suite passed **448 tests and 26 subtests**, with **100%** integration
+statement/branch coverage. Repository validation, Ruff and strict MyPy passed.
+The local MyPy run used a process-local CPU-affinity lookup fallback for this
+host's PID namespace; its strict options and the normal CI command were retained.
 
 ## Actionable configuration repairs in the 0.5.0 source
 

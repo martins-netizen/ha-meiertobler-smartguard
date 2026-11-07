@@ -25,6 +25,9 @@ updates:
       time: "04:47"
       timezone: Europe/Zurich
     open-pull-requests-limit: 5
+    # The legacy fixture package is frozen with the advertised HA minimum.
+    ignore:
+      - dependency-name: pytest-homeassistant-custom-component
     groups:
       python-ci:
         patterns:

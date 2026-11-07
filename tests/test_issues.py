@@ -13,7 +13,6 @@ from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.translation import async_get_translations
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.api import (
     SmartGuardConnectionError,
@@ -26,6 +25,7 @@ from custom_components.meiertobler_smartguard.const import DOMAIN
 from custom_components.meiertobler_smartguard.issues import (
     async_create_configuration_issue,
 )
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import (
     TEST_GLOBAL_DEVICE_ID,

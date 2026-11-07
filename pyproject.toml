@@ -24,7 +24,9 @@ warn_unreachable = true
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-addopts = "--strict-markers --strict-config"
+asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]
+addopts = "--strict-markers --strict-config -p no:respx"
 testpaths = ["tests"]
 
 [tool.coverage.run]

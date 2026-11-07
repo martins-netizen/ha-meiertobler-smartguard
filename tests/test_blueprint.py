@@ -21,11 +21,12 @@ from homeassistant.core import HomeAssistant, ServiceCall, State
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.setup import async_setup_component
 from homeassistant.util.yaml import load_yaml_dict
-from pytest_homeassistant_custom_component.common import (
+
+from tests.ha_helpers import (
+    AiohttpClientMocker,
     async_fire_time_changed,
     mock_restore_cache,
 )
-from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClientMocker
 
 ROOT = Path(__file__).resolve().parents[1]
 BLUEPRINT_PATH = (

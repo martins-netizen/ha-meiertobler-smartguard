@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from homeassistant.components.diagnostics import REDACTED
 from homeassistant.core import HomeAssistant
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard.const import CONF_HOST
 from custom_components.meiertobler_smartguard.diagnostics import (
     async_get_config_entry_diagnostics,
 )
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import (
     TEST_GLOBAL_DEVICE_ID,

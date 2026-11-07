@@ -9,7 +9,6 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.meiertobler_smartguard import (
     _async_update_listener,
@@ -18,6 +17,7 @@ from custom_components.meiertobler_smartguard import (
 )
 from custom_components.meiertobler_smartguard.api import SmartGuardConnectionError
 from custom_components.meiertobler_smartguard.const import CONF_HOST
+from tests.ha_helpers import MockConfigEntry
 
 from .conftest import (
     TEST_GLOBAL_DEVICE_ID,

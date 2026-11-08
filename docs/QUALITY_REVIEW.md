@@ -7,12 +7,13 @@ in [quality_scale.yaml](../custom_components/meiertobler_smartguard/quality_scal
 
 ## Current development and release scope
 
-The latest stable release is **0.7.1**. Development CI now runs the complete
-suite on **HA 2026.11.0 and HA 2026.9.0**, with both required by Quality
+Use [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for stable downloads. Development CI runs the complete suite on **HA 2026.11.0 and HA 2026.9.0**, with both required by Quality
 ([PR #52](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/52)).
 The diagnostic counter defaults were merged separately
 ([PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53))
-and remain unreleased. Historical test counts and environments below belong
+and are included in the 0.7.2 source. See its
+[preparation record](RELEASE_NOTES_0.7.2.md) for scope and publication gates. Historical test counts and environments below belong
 to their named checks; they do not describe every later commit or prove a
 physical heating result.
 
@@ -63,7 +64,7 @@ repository dependencies and CI MyPy command were not changed.
 | --- | --- |
 | `reauthentication-flow` | Exempt: the verified local HTTP API does not authenticate integration requests; remove the obsolete 0.3.0 qualifier |
 | `docs-examples` | Todo: automated import/execution evidence is now present; keep the previously required UI/import and production migration confirmation open |
-| `entity-disabled-by-default` | Done in the development source for the next release: newly registered diagnostic operating-hour counters default to disabled; existing registry choices are preserved |
+| `entity-disabled-by-default` | Done in the 0.7.2 source: newly registered diagnostic operating-hour counters default to disabled; existing registry choices are preserved |
 | `discovery` | Todo: no reliable local discovery mechanism verified |
 | `repair-issues` | Done since published 0.5.0: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
 
@@ -71,7 +72,7 @@ Other existing checklist entries are retained. This is a focused review rather
 than a new audit of every rule. The operating-hour counter default review is
 documented below; the remaining blueprint UI and discovery work stays open.
 
-## Operating-hour counter defaults for the next release
+## Operating-hour counter defaults from 0.7.2
 
 Only the heating-buffer and domestic-hot-water heater operating-hour counters
 set `entity_registry_enabled_default=False`. Operational temperatures, heater
@@ -85,8 +86,7 @@ The established optional-measurement value/recovery test explicitly enables
 the counters through the entity registry and reloads the integration; separate
 default tests retain the normal defaults. No existing registry entry is migrated
 or rewritten by the integration.
-The published 0.7.1 release keeps its previous defaults until a future release
-contains this change.
+Version 0.7.1 keeps its previous defaults; the change applies from 0.7.2.
 
 Counter-default validation used Python 3.14.10 with HA 2026.11.0 and HA 2026.9.0:
 each complete suite passed **448 tests and 26 subtests**, with **100%** integration
@@ -115,7 +115,7 @@ transient failures, reconfiguration, unchanged entity IDs, multiple entries,
 removal and privacy. Both existing EN/DE catalogs contain issue and setup-error
 translations. This is automated evidence; no rendered repair UI, live gateway
 fault or productive installation is claimed by these tests. The repairs are
-included in the current stable 0.7.1 release; see the
+included in versions from 0.5.0; see the
 [0.5.0 notes](RELEASE_NOTES_0.5.0.md) for their original publication record.
 
 ## Reference contracts

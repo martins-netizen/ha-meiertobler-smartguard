@@ -32,11 +32,12 @@ holiday timestamps, with shorter HK60 measurement names. All optional readings
 available: **45 entities and 44 GETs** per complete refresh. See
 [release notes](RELEASE_NOTES_0.7.0.md) for publication status and scope.
 
-The latest stable release is [0.7.1](RELEASE_NOTES_0.7.1.md), which fixes holiday
-date prefilling without changing this entity set or polling. On `main`, the
-two heater operating-hour counters default to disabled for new registry
-entries; this is [unreleased](../CHANGELOG.md#unreleased). Existing registry
-choices are retained, and disabling an entity does not stop its coordinated read.
+The [0.7.1 release](RELEASE_NOTES_0.7.1.md) fixes holiday date prefilling without
+changing this entity set or polling. From 0.7.2, the two heater operating-hour
+counters default to disabled for new registry entries. Existing registry choices
+are retained, and disabling an entity does not stop its coordinated read.
+Use [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for publication status, separately from the [0.7.2 preparation record](RELEASE_NOTES_0.7.2.md).
 
 ## HK60 writes
 
@@ -73,6 +74,8 @@ Tags and assets are not moved or silently replaced after publication.
 Keep the README useful across the tag/publication boundary: link to Releases
 for availability instead of embedding temporary candidate/publication claims.
 Candidate status belongs in versioned release notes and the release checklist.
+The Marketplace reads documentation at the installed version, as explained in
+the [installation guide](INSTALLATION.md#documentation-in-the-marketplace).
 The image in the README is an illustrative overview using the existing community
 icon, not a screenshot or a manufacturer product image. Its SVG source and PNG
 export are in `docs/images`; absolute public image URLs work in the HACS view.
@@ -98,7 +101,7 @@ run in the current environment. From the repository root:
 ```bash
 python3 scripts/validate.py
 python3 scripts/release.py check
-python3 scripts/release.py verify-tag --tag v0.7.1
+python3 scripts/release.py verify-tag --tag v0.7.2
 python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
 python3 -m mypy \
@@ -116,8 +119,8 @@ Run the complete suite for release-status changes, including release-note tests.
 The `verify-tag` command above checks the tag name against the working-tree
 version only. The tagged Release Gate separately verifies the annotated tag,
 exact commit and `main` ancestry. Building the development tree with unchanged
-version metadata does not reproduce or publish the existing 0.7.1 release;
-use its [published integrity record](RELEASE_NOTES_0.7.1.md) for that download.
+version metadata does not reproduce or publish an existing release. Use each
+published release's own integrity record and assets for its download.
 Synthetic candidate cases use fixed text independently of the current release
 notes. CI requires at least 95 percent statement and branch coverage. The suite
 covers setup, unload/reload, config flow, coordinator, API/write verification,

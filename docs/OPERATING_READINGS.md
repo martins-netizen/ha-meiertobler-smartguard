@@ -2,8 +2,7 @@
 
 [Back to the overview](../README.md)
 
-Included in published releases since **0.5.0**, including the current stable
-**0.7.1**. See the [0.5.0 release notes](RELEASE_NOTES_0.5.0.md)
+Included in published releases since **0.5.0**, and retained in later versions. See the [0.5.0 release notes](RELEASE_NOTES_0.5.0.md)
 and [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
 for the historical publication record and available downloads. These eight
 entities are read-only and add no temperature controls.
@@ -70,10 +69,10 @@ unsupported readings and missing labels reduce them. See the
 [0.6.0 notes](RELEASE_NOTES_0.6.0.md) for publication status. The 0.5.0 counts
 above remain its historical record.
 
-The current 0.7.1 release also includes four heating-curve diagnostics and two
+Versions from 0.7.0 also include four heating-curve diagnostics and two
 holiday timestamps: up to **45 supported entities and 44 GET requests** per
 refresh. See the [technical reference](TECHNICAL_REFERENCE.md#core-readings)
-for the complete count and the separate unreleased counter defaults.
+for the complete count and version-specific counter defaults.
 
 ## Verified scope and limits
 

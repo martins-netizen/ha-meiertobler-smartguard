@@ -3,7 +3,7 @@
 [Back to the overview](../README.md) · [Operating readings](OPERATING_READINGS.md)
 
 Included since published **0.6.0**: ten optional read-only HK60 sensors and
-configured module names, retained in the current stable **0.7.1**.
+configured module names, retained in later versions.
 See the [versioned release notes](RELEASE_NOTES_0.6.0.md) and
 [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
 for the publication record. No editable temperature or duration controls are added.
@@ -70,7 +70,7 @@ version can provide **26 numeric/enum sensors, six binary sensors and one
 HK60 mode select**, plus up to six diagnostic label sensors (39 entities in
 total). Unsupported readings or missing labels can reduce that count.
 
-These are historical 0.6.0 totals. The current 0.7.1 release also includes
+These are historical 0.6.0 totals. Versions from 0.7.0 also include
 heating-curve and holiday readings, for up to **45 supported entities and
 44 GET requests** per refresh. See the [technical reference](TECHNICAL_REFERENCE.md).
 

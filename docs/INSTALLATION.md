@@ -61,9 +61,10 @@ Optional storage and [operating entities](OPERATING_READINGS.md) appear after
 their first valid readings. Operating-hour counters are diagnostic entities.
 Missing optional modules do not block the original heat-pump and HK60 entities.
 
-The latest stable release is **0.7.1**. The counter-default change on `main`
-is for a future release: newly registered counters will default to disabled,
-while saved activation, IDs and names are retained. See
+Check [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for the current stable version. From 0.7.2, newly registered diagnostic counters
+default to disabled, while saved activation, IDs and names are retained.
+Version 0.7.1 retains its original defaults. See
 [counter activation](ADDITIONAL_MEASUREMENTS.md#default-activation-in-the-next-release)
 for the entity filter and enable action. A disabled counter is different from
 an enabled entity whose gateway reading is unavailable; entity activation does
@@ -72,6 +73,22 @@ not change the coordinated gateway poll.
 An integration update does not re-import blueprints or replace saved automations.
 Before separately re-importing the night-heating blueprint, review its
 [two-helper setup and ownership rules](AUTOMATION_EXAMPLES.md).
+
+## Documentation in the Marketplace
+
+For an installed integration, HA 2026.11 reads the repository README at its
+installed version or commit. For an uninstalled repository it uses the offered
+version. A later README commit on the default branch does not change either
+versioned file. Refreshing repository information therefore cannot replace an
+old README inside an unchanged release tag.
+
+Use the repository's GitHub overview for the newest development documentation.
+To receive newer documentation in the Marketplace, install a newer published
+integration release and follow its normal restart instruction. Publication
+alone does not change an already installed version. Existing tags and assets
+are retained; they are not rewritten to refresh documentation.
+
+Source: [HA 2026.11 repository documentation selection](https://github.com/home-assistant/core/blob/2026.11.0/homeassistant/components/marketplace/repositories/base.py#L1899-L1931).
 
 ## Enter holiday dates
 

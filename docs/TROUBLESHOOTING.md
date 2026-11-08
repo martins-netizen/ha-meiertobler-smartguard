@@ -107,8 +107,8 @@ the corresponding storage module is available.
 
 ### Description
 
-The development source on `main` defaults the two diagnostic counters to
-disabled only when first registered. This change is not in published 0.7.1.
+From version 0.7.2, the two diagnostic counters default to disabled only when
+first registered. Version 0.7.1 retains its original defaults.
 An existing entity keeps its saved enabled or disabled state across an update
 or reload. Optional entities are registered only after their first valid
 reading; zero hours is valid.

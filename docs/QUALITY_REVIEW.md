@@ -5,6 +5,17 @@ validation evidence, followed by the current quality follow-ups.
 The rule statuses for the current source branch are maintained
 in [quality_scale.yaml](../custom_components/meiertobler_smartguard/quality_scale.yaml).
 
+## Current development and release scope
+
+The latest stable release is **0.7.1**. Development CI now runs the complete
+suite on **HA 2026.11.0 and HA 2026.9.0**, with both required by Quality
+([PR #52](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/52)).
+The diagnostic counter defaults were merged separately
+([PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53))
+and remain unreleased. Historical test counts and environments below belong
+to their named checks; they do not describe every later commit or prove a
+physical heating result.
+
 ## Blueprint findings and correction
 
 The earlier blueprint returned any selected `heating` mode to `auto` in the
@@ -54,7 +65,7 @@ repository dependencies and CI MyPy command were not changed.
 | `docs-examples` | Todo: automated import/execution evidence is now present; keep the previously required UI/import and production migration confirmation open |
 | `entity-disabled-by-default` | Done in the development source for the next release: newly registered diagnostic operating-hour counters default to disabled; existing registry choices are preserved |
 | `discovery` | Todo: no reliable local discovery mechanism verified |
-| `repair-issues` | Done in the 0.5.0 source: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
+| `repair-issues` | Done since published 0.5.0: entry-specific notices for invalid saved hosts, unsupported devices and changed gateway identities; transient/ambiguous failures retain retries |
 
 Other existing checklist entries are retained. This is a focused review rather
 than a new audit of every rule. The operating-hour counter default review is
@@ -83,7 +94,7 @@ statement/branch coverage. Repository validation, Ruff and strict MyPy passed.
 The local MyPy run used a process-local CPU-affinity lookup fallback for this
 host's PID namespace; its strict options and the normal CI command were retained.
 
-## Actionable configuration repairs in the 0.5.0 source
+## Actionable configuration repairs since 0.5.0
 
 Existing entries stop setup and receive a translated repair when the saved
 host is invalid, the responding device is unsupported, or its global identity
@@ -103,8 +114,9 @@ keep normal retries without new repair notices.
 transient failures, reconfiguration, unchanged entity IDs, multiple entries,
 removal and privacy. Both existing EN/DE catalogs contain issue and setup-error
 translations. This is automated evidence; no rendered repair UI, live gateway
-fault or productive installation is claimed. The 0.4.1 release does not contain
-these changes; see the [0.5.0 notes](RELEASE_NOTES_0.5.0.md) for publication status.
+fault or productive installation is claimed by these tests. The repairs are
+included in the current stable 0.7.1 release; see the
+[0.5.0 notes](RELEASE_NOTES_0.5.0.md) for their original publication record.
 
 ## Reference contracts
 

@@ -6,10 +6,10 @@ identifier, or unreviewed diagnostics in an issue.
 
 ## Configuration repairs in 0.5.0 and later
 
-These notices are part of the 0.5.0 source and are not included in 0.4.1.
+These notices are included in published releases since 0.5.0, including 0.7.1.
 See [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
 for available downloads and the [release notes](RELEASE_NOTES_0.5.0.md) for
-publication status.
+the historical publication record.
 
 After loading an existing entry, **Settings > System > Repairs** explains an
 invalid saved host, a confirmed unsupported device, or a different SmartGuard
@@ -97,6 +97,34 @@ fails. The integration retries automatically on the next 60-second update.
    sharing. The integration redacts the configured host, global device
    identifier, and serial number, but the user remains responsible for checking
    the complete file.
+
+## A diagnostic operating-hour counter is missing
+
+### Symptom
+
+A heater operating-hour counter is absent from the usual entity list while
+the corresponding storage module is available.
+
+### Description
+
+The development source on `main` defaults the two diagnostic counters to
+disabled only when first registered. This change is not in published 0.7.1.
+An existing entity keeps its saved enabled or disabled state across an update
+or reload. Optional entities are registered only after their first valid
+reading; zero hours is valid.
+
+### Resolution
+
+1. Check the installed release before attributing the state to a new default.
+2. Open **Settings → Devices & services → Entities** and include disabled
+   entities in the filter. Open the counter and enable it if needed.
+3. If it has never been registered, check that the module is enabled and the
+   gateway supplies a valid reading; allow a complete refresh interval.
+4. If the enabled entity shows `unavailable`, follow the connectivity and
+   optional-reading checks above. Disabling a counter alone does not stop the
+   coordinated gateway poll.
+
+See [storage readings and defaults](ADDITIONAL_MEASUREMENTS.md).
 
 ## A selected operating mode is rejected or changes back
 

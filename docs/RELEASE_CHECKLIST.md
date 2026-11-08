@@ -10,6 +10,24 @@ Record which UI/HA version was actually tested. Existing HACS field reports
 below remain historical evidence, not proof of a Marketplace installation test.
 Technical `hacs.json`, catalogue and HACS validation names remain unchanged.
 
+## Development changes after 0.7.1
+
+The latest stable download remains **0.7.1**. The following changes are merged
+on `main`; they do not change the existing tag, release assets or installation.
+See the [unreleased changelog](../CHANGELOG.md#unreleased).
+
+| Change | Source and status | Publication effect |
+| --- | --- | --- |
+| HA compatibility tests | [PR #52](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/52), merged: full suites on HA 2026.11.0 and minimum HA 2026.9.0, both required by Quality | Development CI only; no new release |
+| Diagnostic operating-hour defaults | [PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53), merged: only newly registered counters default to disabled; saved activation, IDs and names are retained | Unreleased runtime change for a future version; 0.7.1 keeps its original defaults |
+| Installation and guide updates | Marketplace on HA 2026.11+, HACS on older HA; stable/source scope and developer commands clarified | Documentation only; no integration download or HA restart |
+
+Before publishing any future version, prepare its own version metadata, tagged
+validation, release notes and verified assets. An unchanged manifest version
+on the development branch does not make that branch the published 0.7.1 source.
+Private dashboards, calendars, presence simulation and adaptive preheating
+remain separate Home Assistant configuration, outside this release checklist.
+
 ## Published 0.7.1 holiday-editor patch
 
 Status: **published on 2026-11-02 at 21:47:25 UTC** as the stable latest release.

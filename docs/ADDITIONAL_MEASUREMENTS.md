@@ -36,9 +36,11 @@ The heater indicators are the statuses reported by SmartGuard. They do not
 measure the physical ASKOHEAT devices' electrical power or energy consumption.
 This extension adds no heater controls or setpoint changes.
 
-## Default activation in the next release
+<a id="default-activation-in-the-next-release"></a>
 
-The development source makes the two diagnostic heater operating-hour counters
+## Counter activation by version
+
+From version 0.7.2, the two diagnostic heater operating-hour counters are
 disabled by default when first registered. They remain available under
 **Settings → Devices & services → Entities**: include disabled entities in the
 filter, open the counter and enable it when needed. Temperatures and heater
@@ -48,8 +50,9 @@ This default applies only to newly created entity-registry entries. Existing
 enabled counters stay enabled; disabled counters, custom entity IDs and names
 retain their saved choices, including after an integration reload. No registry
 migration is performed. The reading of SmartGuard datapoints is unchanged.
-Published 0.7.1 retains its original defaults; this adjustment is for a future
-release.
+Version 0.7.1 retains its original defaults. Check
+[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for published versions; development changes alone do not update an installation.
 
 ## Verification before release
 

@@ -10,16 +10,40 @@ Record which UI/HA version was actually tested. Existing HACS field reports
 below remain historical evidence, not proof of a Marketplace installation test.
 Technical `hacs.json`, catalogue and HACS validation names remain unchanged.
 
-## Development changes after 0.7.1
+## 0.7.2 preparation: versioned Marketplace documentation
 
-The latest stable download remains **0.7.1**. The following changes are merged
-on `main`; they do not change the existing tag, release assets or installation.
-See the [unreleased changelog](../CHANGELOG.md#unreleased).
+At this source-preparation checkpoint, 0.7.2 is not yet published. The installed
+0.7.1 tag contains its original candidate-era README; Marketplace reads that
+versioned file, so default-branch documentation merges cannot refresh it.
+See [0.7.2 preparation notes](RELEASE_NOTES_0.7.2.md).
+
+- [x] Retain the reviewed main implementation from PRs #52, #53 and #54.
+- [x] Align manifest, project, root lock and release assertions at 0.7.2.
+- [x] Remove temporary publication claims from the README; document versioned
+      Marketplace selection and counter defaults from 0.7.2.
+- [ ] Complete PR checks on the exact 0.7.2 head and merge with explicit approval.
+- [ ] Confirm all actual merge checks on the selected source.
+- [ ] After separate publication authorization, create the annotated v0.7.2 tag,
+      pass its Release Gate, and verify the integration ZIP and checksum assets.
+- [ ] Publish and independently verify the full stable release and its assets.
+- [ ] Confirm the real integration update and Marketplace README separately.
+
+Earlier tags and assets remain unchanged. The only runtime behavior difference
+from 0.7.1 is the already reviewed default for two newly registered diagnostic
+counters. Existing registry choices are retained; no heater or holiday command
+is introduced. Publication and installation remain separate steps.
+
+## Changes prepared after 0.7.1
+
+The following changes were merged after 0.7.1 and are included in the 0.7.2
+source preparation. They do not rewrite the existing 0.7.1 tag, assets or
+installation. Check [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for current availability and the [changelog](../CHANGELOG.md) for version scope.
 
 | Change | Source and status | Publication effect |
 | --- | --- | --- |
 | HA compatibility tests | [PR #52](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/52), merged: full suites on HA 2026.11.0 and minimum HA 2026.9.0, both required by Quality | Development CI only; no new release |
-| Diagnostic operating-hour defaults | [PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53), merged: only newly registered counters default to disabled; saved activation, IDs and names are retained | Unreleased runtime change for a future version; 0.7.1 keeps its original defaults |
+| Diagnostic operating-hour defaults | [PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53), merged: only newly registered counters default to disabled; saved activation, IDs and names are retained | Included from 0.7.2; 0.7.1 keeps its original defaults |
 | Installation and guide updates | Marketplace on HA 2026.11+, HACS on older HA; stable/source scope and developer commands clarified | Documentation only; no integration download or HA restart |
 
 Before publishing any future version, prepare its own version metadata, tagged

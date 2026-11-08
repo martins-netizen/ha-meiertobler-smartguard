@@ -5,8 +5,12 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
-Changes on `main` since the published 0.7.1 tag. No new release or version has
-been published for these changes.
+## [0.7.2] - 2026-11-08
+
+Source-preparation record; publication is a separate gated step. See the
+[0.7.2 preparation notes](docs/RELEASE_NOTES_0.7.2.md) and
+[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for current availability.
 
 ### Changed
 
@@ -23,6 +27,9 @@ been published for these changes.
   HACS route for older HA.
 - Distinguish the stable release, development changes and separate Home
   Assistant orchestration; refresh the user and development guides.
+- Keep the README valid across publication by linking to the current release
+  instead of embedding temporary candidate or latest-version claims. Explain
+  that Marketplace documentation comes from the installed version.
 
 ## [0.7.1] - 2026-11-02
 

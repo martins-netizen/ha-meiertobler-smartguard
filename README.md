@@ -45,19 +45,28 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
-## Release status
+<a id="release-status"></a>
 
-| Scope | Current status |
-| --- | --- |
-| Latest stable download | **[0.7.1](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.1)**, published on 2026-11-02. Fixes prefilled holiday dates and the integration catalogue category. |
-| Development tests on `main` | Complete suites for **HA 2026.11.0** and the supported minimum **HA 2026.9.0**; both must pass the protected Quality check. |
-| Unreleased change on `main` | The two diagnostic heater operating-hour counters default to disabled only when first registered. Existing activation, IDs and names are preserved. Published 0.7.1 retains its original defaults. |
+## Downloads and entity defaults
+
+Use **[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)**
+for the current stable version and available downloads. The release badge above
+follows that published status automatically.
+
+From version **0.7.2**, the two diagnostic heater operating-hour counters default
+to disabled only when first registered. Existing activation, IDs and names are
+preserved. Earlier releases, including 0.7.1, retain their original defaults.
+Development CI runs complete suites for **HA 2026.11.0** and the supported
+minimum **HA 2026.9.0**; both must pass the protected Quality check.
 
 Install and update through **Settings → Marketplace** on HA 2026.11+
 (HACS on older HA). Keep the existing integration entry and entity IDs.
 The [changelog](CHANGELOG.md) separates changes on `main` from published releases;
 the [storage guide](docs/ADDITIONAL_MEASUREMENTS.md#default-activation-in-the-next-release)
-explains counter activation. A documentation or CI change does not publish an update.
+explains counter activation. The Marketplace displays the README from the
+installed version, so documentation on GitHub's default branch can be newer.
+Install a newer published release to receive its documentation; see the
+[version-specific documentation guidance](docs/INSTALLATION.md#documentation-in-the-marketplace).
 
 The holiday editor stores the HK60 start/end dates after explicit confirmation.
 Physical holiday operation still needs separate acceptance. Lighting presence
@@ -147,7 +156,8 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release notes: [0.7.1](docs/RELEASE_NOTES_0.7.1.md),
+- Release records: [0.7.2](docs/RELEASE_NOTES_0.7.2.md),
+  [0.7.1](docs/RELEASE_NOTES_0.7.1.md),
   [0.7.0](docs/RELEASE_NOTES_0.7.0.md),
   [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
   [0.5.0](docs/RELEASE_NOTES_0.5.0.md),
@@ -172,9 +182,11 @@ Ferienbeginn und -ende lassen sich über den geführten HK60-Ferieneditor mit
 ausdrücklicher Bestätigung ändern. Kalender, Dashboards, Anwesenheitssimulation
 und adaptives Vorheizen gehören zur separaten Home-Assistant-Konfiguration.
 
-**Stand:** Stabile Version **0.7.1**; die auf `main` bereits geänderte
-Standardaktivierung neuer Diagnosezähler ist noch nicht veröffentlicht.
-Bestehende Aktivierungen, Namen und IDs bleiben erhalten.
+**Verfügbare Versionen:** [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest).
+Ab 0.7.2 sind neu registrierte Diagnose-Betriebsstundenzähler standardmässig aus;
+bestehende Aktivierungen, Namen und IDs bleiben erhalten. Der Marktplatz zeigt
+die README der installierten Version; eine neuere GitHub-Dokumentation erscheint
+dort nach dem entsprechenden Integrationsupdate.
 
 **Installation:** [Marketplace (HA 2026.11+) / HACS (older HA)](#new-installation).
 Benötigt werden SmartGuard-Gerätetyp `1001` und Home Assistant **ab 2026.9.0**.

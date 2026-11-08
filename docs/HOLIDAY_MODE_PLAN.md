@@ -1,8 +1,7 @@
 # HK60 holiday editor and separate presence-simulation plan
 
 Status: **two read-only timestamp sensors and a confirmed whole-period editor
-published in 0.7.0**, with date-prefilling fixed in the current stable
-**0.7.1**. See the [release notes](RELEASE_NOTES_0.7.1.md).
+published in 0.7.0**, with date-prefilling fixed since **0.7.1**. See the [release notes](RELEASE_NOTES_0.7.1.md).
 Successful date readback confirms stored values; physical holiday operation
 and heating effect remain separate live acceptance.
 

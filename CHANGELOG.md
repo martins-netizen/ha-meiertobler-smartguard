@@ -5,6 +5,25 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+Changes on `main` since the published 0.7.1 tag. No new release or version has
+been published for these changes.
+
+### Changed
+
+- Default the two diagnostic heater operating-hour counters to disabled only
+  for newly created entity-registry entries. Preserve existing activation,
+  custom IDs and names; storage readings and gateway polling remain unchanged.
+- Run the complete suite on HA 2026.11.0 and the supported minimum HA 2026.9.0
+  in isolated, hash-pinned environments. The protected Quality check requires
+  both. Use the official `pytest-homeassistant` plugin for current HA.
+
+### Documentation
+
+- Document Marketplace installation and updates on HA 2026.11+, retaining the
+  HACS route for older HA.
+- Distinguish the stable release, development changes and separate Home
+  Assistant orchestration; refresh the user and development guides.
+
 ## [0.7.1] - 2026-11-02
 
 Published stable release; see [0.7.1 release notes](docs/RELEASE_NOTES_0.7.1.md)

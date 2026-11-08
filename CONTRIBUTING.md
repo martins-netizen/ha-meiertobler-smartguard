@@ -8,7 +8,8 @@ requires the Quality, Hassfest, and HACS checks.
 Before opening a pull request:
 
 1. run `python3 scripts/validate.py`;
-2. run Ruff, MyPy, and the test suite as documented in `README.md`;
+2. run Ruff, MyPy, and both complete test suites as documented in the
+   [development checks](docs/TECHNICAL_REFERENCE.md#development-checks);
 3. verify that no private installation data are present;
 4. describe any security impact in the pull-request template.
 
@@ -29,6 +30,15 @@ package, pinned to Home Assistant 2026.11.0. The retired
 `tests/ha_helpers.py` provides shared helper imports; both environments run the
 complete integration and blueprint test suite with the same coverage threshold.
 The protected **Quality** check succeeds only when both environments succeed.
+
+| Environment | Home Assistant | Requirements | Pytest plugin |
+| --- | --- | --- | --- |
+| Current HA | 2026.11.0 | `.github/requirements-ci.txt` | `pytest-homeassistant` |
+| Minimum HA | 2026.9.0 | `.github/requirements-ci-minimum.txt` | `pytest-homeassistant-custom-component` |
+
+This matrix describes development CI on `main`. Historical release notes retain
+the environment used for their tagged source; changing CI does not publish a
+new integration version.
 
 `.github/requirements-ci.txt` is compiled from `requirements-ci.in` by uv.
 `requirements-ci-minimum.txt` is compiled separately from

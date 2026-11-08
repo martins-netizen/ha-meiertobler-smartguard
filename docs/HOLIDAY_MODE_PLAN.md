@@ -1,11 +1,18 @@
-# Scheduled holidays, heating and presence simulation
+# HK60 holiday editor and separate presence-simulation plan
 
 Status: **two read-only timestamp sensors and a confirmed whole-period editor
-published in 0.7.0**. See the [release notes](RELEASE_NOTES_0.7.0.md).
-Physical holiday writes and their heating effect still require explicit live
-acceptance. Presence-simulation coupling remains **design only**.
+published in 0.7.0**, with date-prefilling fixed in the current stable
+**0.7.1**. See the [release notes](RELEASE_NOTES_0.7.1.md).
+Successful date readback confirms stored values; physical holiday operation
+and heating effect remain separate live acceptance.
 
-## Current read-only stage
+This repository supplies the SmartGuard sensors and confirmed editor. The
+orchestration proposal below does not add lighting presence simulation, absence
+tracking, a calendar, a dashboard or adaptive preheating to the integration.
+Installation-specific Home Assistant configuration is separate and is not a
+published SmartGuard feature or a gateway-acceptance record.
+
+## Read-only holiday sensors
 
 The existing enabled HK60 module contributes two optional diagnostic sensors:
 
@@ -95,7 +102,15 @@ status, the reference of the displayed K reduction or correct heating behavior.
 The first physical test needs a separately chosen and confirmed concrete period
 with previous values retained and a reviewed return path.
 
-## A period can be planned independently
+## Separate Home Assistant orchestration proposal
+
+The following sections describe a separate design, not behavior implemented by
+this integration. The reported SmartGuard end is the controller's stored holiday
+end; it is not necessarily a person's actual return time. Any external logic
+that brings heating forward must keep those two times distinct and retain its
+own confirmed plan and ownership checks.
+
+### A period can be planned independently
 
 A user must be able to choose a holiday start and end at any time, including
 before departure and without a preceding 24-hour absence. One confirmed period
@@ -119,7 +134,7 @@ silently cancelled. An earlier return should offer early termination for
 confirmation. The normal end already forms part of the previously confirmed
 period; gateway activation/restoration semantics still need verification.
 
-## Long absence is an additional suggestion
+### Long absence is an additional suggestion
 
 Track continuous, reliably known absence of all selected people separately
 from the light simulation. After a configurable threshold (initial proposal:
@@ -137,7 +152,7 @@ Ask for an intended end time; never invent an unlimited or repeatedly extended
 period. Do not overwrite an existing manual SmartGuard schedule. Suggestions
 and early-return messages do not themselves authorize physical changes.
 
-## Verify the gateway contract first
+### Verify the gateway contract first
 
 The supplied frontend references start `5226`, end `5227` and holiday field
 `5241`. Its circuit block is a template; use the installation's verified active

@@ -61,6 +61,14 @@ Optional storage and [operating entities](OPERATING_READINGS.md) appear after
 their first valid readings. Operating-hour counters are diagnostic entities.
 Missing optional modules do not block the original heat-pump and HK60 entities.
 
+The latest stable release is **0.7.1**. The counter-default change on `main`
+is for a future release: newly registered counters will default to disabled,
+while saved activation, IDs and names are retained. See
+[counter activation](ADDITIONAL_MEASUREMENTS.md#default-activation-in-the-next-release)
+for the entity filter and enable action. A disabled counter is different from
+an enabled entity whose gateway reading is unavailable; entity activation does
+not change the coordinated gateway poll.
+
 An integration update does not re-import blueprints or replace saved automations.
 Before separately re-importing the night-heating blueprint, review its
 [two-helper setup and ownership rules](AUTOMATION_EXAMPLES.md).

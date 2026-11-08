@@ -2,10 +2,11 @@
 
 [Back to the overview](../README.md) · [Operating readings](OPERATING_READINGS.md)
 
-Introduced in **0.6.0**: ten optional read-only HK60 sensors and configured
-module names. See the [versioned release notes](RELEASE_NOTES_0.6.0.md) and
+Included since published **0.6.0**: ten optional read-only HK60 sensors and
+configured module names, retained in the current stable **0.7.1**.
+See the [versioned release notes](RELEASE_NOTES_0.6.0.md) and
 [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases)
-for publication status. No editable temperature or duration controls are added.
+for the publication record. No editable temperature or duration controls are added.
 
 ## Readings and interpretation
 
@@ -60,13 +61,18 @@ Boolean temperatures, numeric strings, non-finite values and the −273.15 °C
 sentinel are rejected. Neither an unsupported field nor its later recovery
 changes the existing HK60 mode select or night automation.
 
-The 60-second coordinated sequential polling interval is retained. With every
-supported module enabled and valid, a complete refresh uses **38 GET requests**:
+The 60-second coordinated sequential polling interval is retained. In the
+**0.6.0 release**, with every supported module enabled and valid, a complete
+refresh uses **38 GET requests**:
 eight core readings, six configuration checks and 24 optional numeric readings.
 There are no per-entity network requests and no new gateway writes. This
 version can provide **26 numeric/enum sensors, six binary sensors and one
 HK60 mode select**, plus up to six diagnostic label sensors (39 entities in
 total). Unsupported readings or missing labels can reduce that count.
+
+These are historical 0.6.0 totals. The current 0.7.1 release also includes
+heating-curve and holiday readings, for up to **45 supported entities and
+44 GET requests** per refresh. See the [technical reference](TECHNICAL_REFERENCE.md).
 
 ## Configured module names
 
@@ -95,9 +101,9 @@ become unavailable and can recover later. Numeric readings remain independent.
 Labels are plain text, trimmed and limited to 128 characters; non-text and
 control-character values are ignored. They are never used in endpoint paths.
 
-### Shorter names in the 0.7.0 candidate
+### Shorter names since 0.7.0
 
-This **0.7.0 candidate naming refinement** puts the measurement first and keeps
+The naming refinement **published in 0.7.0** puts the measurement first and keeps
 only a short circuit suffix, such as **Flow target · HK60** or
 **Heating on threshold · HK60**. Long configured circuit labels no longer
 hide the measurement in narrow device views. German examples are **Vorlauf
@@ -117,8 +123,8 @@ no logical device migration or automation rewrite is performed. A later
 label change updates module metadata while the short HK60 measurement names
 stay readable. Integration diagnostics still redact every free-text label.
 The naming refinement itself adds no requests or gateway writes. The full
-[0.7.0 candidate](RELEASE_NOTES_0.7.0.md) separately adds heating-curve/holiday
-readings and confirmed holiday editing; published 0.6.0 remains unchanged.
+[0.7.0 release](RELEASE_NOTES_0.7.0.md) separately adds heating-curve/holiday
+readings and confirmed holiday editing; the historical 0.6.0 tag is unchanged.
 
 HK60, buffer, hot-water and controller labels reuse the four existing config
 reads. HK50/HK70 add **two config GETs**, giving the 38-request budget above.
@@ -145,9 +151,11 @@ Automated tests use synthetic values to cover exact GET paths, shared config,
 range/type rejection, independent failures/recovery, late discovery, native
 units/state classes, translations, IDs and customizations after reload, and
 diagnostics without extra I/O. Those tests and the endpoint reads do not claim
-installation or rendered-UI acceptance of this new integration source.
+installation or rendered-UI acceptance by themselves. Versioned release notes
+retain the corresponding publication and field-verification records.
 
-Storage electric-heater targets/hysteresis, holiday schedules and further
-module controls are outside this addition. A UI save button alone does not
-establish safe write support. The only gateway write remains the existing
-verified HK60 operating-mode selection (`5004`).
+Storage electric-heater targets/hysteresis and further module controls remain
+outside this integration. A UI save button alone does not establish safe write
+support. Supported writes are the verified HK60 operating-mode selection
+(`5004`) and the separately confirmed [whole-period holiday editor](HOLIDAY_MODE_PLAN.md)
+for `5226`/`5227`. The temperature and damping sensors in this guide remain read-only.

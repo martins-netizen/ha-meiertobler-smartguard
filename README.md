@@ -7,8 +7,9 @@
 [![Validation](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/workflows/validate.yml)
 
 Connect **Meier Tobler SmartGuard 2.0** to **Home Assistant** over your local
-network. Monitor your heat pump and storage temperatures, and select the
-operating mode of the HK60 heating circuit. No cloud account is needed.
+network. Monitor your heat pump and storage temperatures, select the
+operating mode of the HK60 heating circuit and edit its holiday period through
+a guided confirmation dialog. No cloud account is needed.
 
 The graphic is an illustrative feature overview, not a live installation screenshot.
 
@@ -25,17 +26,18 @@ The graphic is an illustrative feature overview, not a live installation screens
 - **Controller:** outdoor temperature, Smart Grid status and three fault inputs.
 - **Mode control:** Auto, Normal, Reduced, Frost protection, Heating and Cooling.
   Every write is immediately read back; an unconfirmed change reports an error.
+- **HK60 holidays:** two read-only date sensors and a whole-period editor with
+  explicit confirmation, source checks and readback of both dates.
 - **Optional storage:** heating-buffer and hot-water temperatures, reported
   heater indicators, diagnostic operating-hour counters and buffer heat request.
 - **Local operation:** one coordinated poll every 60 seconds, UI setup,
   gateway-address reconfiguration, actionable configuration repairs and redacted
   diagnostics.
 
-The latest stable release is **[0.7.1](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.1)**,
-published on 2026-11-02. Use **Settings → Marketplace** on HA 2026.11+
-(HACS on older HA) for installation and updates. With every supported module and reading available, it provides
+With every supported module and reading available, the integration supports
 **32 numeric/enum/timestamp sensors, six diagnostic label sensors, six binary
-sensors and one mode select** (45 entities).
+sensors and one mode select** (45 entities). This is the supported maximum;
+module availability and saved entity activation determine what you see.
 
 Heater indicators and heat requests report gateway status; they do not measure
 electrical power or energy. This integration adds no heater controls or editable
@@ -43,36 +45,24 @@ temperature setpoints. See the [operating readings guide](docs/OPERATING_READING
 and [HK60 target and limits guide](docs/HK60_FLOW_AND_LIMITS.md) for availability,
 configured names and interpretation.
 
-## New in 0.7.1
+## Release status
 
-Version 0.7.1 fixes prefilled dates in the native holiday editor and adds the
-integration catalogue category. It was published on **2026-11-02**. Update the
-existing Marketplace/HACS entry and restart Home Assistant; keep the existing config entry
-and entity IDs. See the [0.7.1 release notes](docs/RELEASE_NOTES_0.7.1.md).
+| Scope | Current status |
+| --- | --- |
+| Latest stable download | **[0.7.1](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.1)**, published on 2026-11-02. Fixes prefilled holiday dates and the integration catalogue category. |
+| Development tests on `main` | Complete suites for **HA 2026.11.0** and the supported minimum **HA 2026.9.0**; both must pass the protected Quality check. |
+| Unreleased change on `main` | The two diagnostic heater operating-hour counters default to disabled only when first registered. Existing activation, IDs and names are preserved. Published 0.7.1 retains its original defaults. |
 
-The maintainer's separate field report on 2026-11-03 confirms HACS installed
-and latest versions of 0.7.1. Physical holiday operation remains a separate
-acceptance step.
+Install and update through **Settings → Marketplace** on HA 2026.11+
+(HACS on older HA). Keep the existing integration entry and entity IDs.
+The [changelog](CHANGELOG.md) separates changes on `main` from published releases;
+the [storage guide](docs/ADDITIONAL_MEASUREMENTS.md#default-activation-in-the-next-release)
+explains counter activation. A documentation or CI change does not publish an update.
 
-## New in 0.7.0
-
-Version 0.7.0 adds shorter HK60 measurement names, four read-only
-[heating-curve diagnostics](docs/HK60_HEATING_CURVE.md), two holiday timestamp
-sensors and a guided [holiday period editor](docs/HOLIDAY_MODE_PLAN.md).
-With all supported modules and readings available, it provides **32
-numeric/enum/timestamp sensors, six label sensors, six binary sensors and one
-mode select** (45 entities), using up to 44 GETs per refresh.
-
-The editor shows the previous, requested and temporary intermediate periods
-and requires explicit confirmation. It reads both dates back and stops after
-partial or uncertain results without automatic retry or blind rollback.
-Physical holiday operation still needs acceptance; the lighting presence
-simulation and >24-hour absence suggestion remain separate HA work.
-
-The annotated tag, tagged Release Gate and both release assets are verified.
-See the [0.7.0 release notes](docs/RELEASE_NOTES_0.7.0.md) for scope, integrity
-and separate live holiday acceptance. Existing entity IDs,
-custom names and automations are preserved.
+The holiday editor stores the HK60 start/end dates after explicit confirmation.
+Physical holiday operation still needs separate acceptance. Lighting presence
+simulation, absence tracking, calendars, dashboards and adaptive preheating are
+separate Home Assistant configuration; they are not supplied by this integration.
 
 ## Installation
 
@@ -122,6 +112,8 @@ See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
 ## Compatibility and security
 
 - **Home Assistant 2026.9.0 or newer.**
+- Development CI tests the complete suite on **2026.11.0** and **2026.9.0**;
+  see the [development checks](docs/TECHNICAL_REFERENCE.md#development-checks).
 - **SmartGuard 2.0, device type `1001`.** HK60 must be enabled for its entities.
 - Storage and additional operating readings are optional. Unsupported or
   unavailable optional readings do not block the original entities.
@@ -176,6 +168,13 @@ machen die Anzeigen verständlicher; bestehende Entity-IDs bleiben erhalten. Sol
 nur angezeigt; sie sind hier nicht einstellbar.
 Die HK60-Betriebsmoduswahl wird nach jeder Änderung unmittelbar zurückgelesen.
 Heizeinsatz-Anzeigen sind keine elektrische Leistungs- oder Energiemessung.
+Ferienbeginn und -ende lassen sich über den geführten HK60-Ferieneditor mit
+ausdrücklicher Bestätigung ändern. Kalender, Dashboards, Anwesenheitssimulation
+und adaptives Vorheizen gehören zur separaten Home-Assistant-Konfiguration.
+
+**Stand:** Stabile Version **0.7.1**; die auf `main` bereits geänderte
+Standardaktivierung neuer Diagnosezähler ist noch nicht veröffentlicht.
+Bestehende Aktivierungen, Namen und IDs bleiben erhalten.
 
 **Installation:** [Marketplace (HA 2026.11+) / HACS (older HA)](#new-installation).
 Benötigt werden SmartGuard-Gerätetyp `1001` und Home Assistant **ab 2026.9.0**.

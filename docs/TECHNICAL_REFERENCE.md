@@ -32,6 +32,12 @@ holiday timestamps, with shorter HK60 measurement names. All optional readings
 available: **45 entities and 44 GETs** per complete refresh. See
 [release notes](RELEASE_NOTES_0.7.0.md) for publication status and scope.
 
+The latest stable release is [0.7.1](RELEASE_NOTES_0.7.1.md), which fixes holiday
+date prefilling without changing this entity set or polling. On `main`, the
+two heater operating-hour counters default to disabled for new registry
+entries; this is [unreleased](../CHANGELOG.md#unreleased). Existing registry
+choices are retained, and disabling an entity does not stop its coordinated read.
+
 ## HK60 writes
 
 The allowlisted options are `auto`, `normal`, `reduced`, `frost_protection`,
@@ -74,9 +80,20 @@ export are in `docs/images`; absolute public image URLs work in the HACS view.
 ## Development checks
 
 Use Python 3.14.10 or a later 3.14 patch and the pinned, hash-checked CI dependencies
-described in [CONTRIBUTING.md](../CONTRIBUTING.md). CI runs the entire suite in two
-isolated environments: the current HA release and the advertised 2026.9.0 minimum.
-The protected Quality check requires both. Run from the repository root:
+described in [CONTRIBUTING.md](../CONTRIBUTING.md#ci-dependency-updates).
+
+| Environment | Home Assistant | Requirements | Pytest plugin |
+| --- | --- | --- | --- |
+| Current HA | 2026.11.0 | `.github/requirements-ci.txt` | `pytest-homeassistant` |
+| Minimum HA | 2026.9.0 | `.github/requirements-ci-minimum.txt` | `pytest-homeassistant-custom-component` |
+
+Install each dependency set in its own virtual environment, using the pinned
+build tools and hash-checked install flags from the contribution guide. Do not
+install both plugins together or update the minimum baseline as part of a
+routine current-environment dependency update. Run `python3 -m pip check`,
+repository validation and the complete test suite in each environment.
+The protected Quality check requires both environments; Ruff and strict MyPy
+run in the current environment. From the repository root:
 
 ```bash
 python3 scripts/validate.py
@@ -96,6 +113,11 @@ python3 -m pytest -q \
 ```
 
 Run the complete suite for release-status changes, including release-note tests.
+The `verify-tag` command above checks the tag name against the working-tree
+version only. The tagged Release Gate separately verifies the annotated tag,
+exact commit and `main` ancestry. Building the development tree with unchanged
+version metadata does not reproduce or publish the existing 0.7.1 release;
+use its [published integrity record](RELEASE_NOTES_0.7.1.md) for that download.
 Synthetic candidate cases use fixed text independently of the current release
 notes. CI requires at least 95 percent statement and branch coverage. The suite
 covers setup, unload/reload, config flow, coordinator, API/write verification,

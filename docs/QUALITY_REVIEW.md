@@ -5,6 +5,15 @@ validation evidence, followed by the current quality follow-ups.
 The rule statuses for the current source branch are maintained
 in [quality_scale.yaml](../custom_components/meiertobler_smartguard/quality_scale.yaml).
 
+## Quality-scale scope
+
+This is a custom integration outside Home Assistant Core. Its rule checklist
+is a self-assessment and a development guide; it is not an official Gold award
+or certification. Open `todo` rules remain work to do. Official tier changes
+for Core integrations require a reviewed pull request and Core-team approval;
+see the [tier definitions](https://contributors.home-assistant.io/core/quality-scale/tiers/)
+and [review process](https://contributors.home-assistant.io/core/quality-scale/raise-tier/).
+
 ## Current development and release scope
 
 Use [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)

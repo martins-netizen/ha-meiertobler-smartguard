@@ -16,7 +16,7 @@ updates:
       - dependencies
       - github-actions
 
-  # Preserve uv's --universal and --python-version options when compiling.
+  # Resolve native uv.lock updates within the reviewed HA fixture constraint.
   - package-ecosystem: uv
     directory: "/.github"
     schedule:
@@ -25,6 +25,7 @@ updates:
       time: "04:47"
       timezone: Europe/Zurich
     open-pull-requests-limit: 5
+    versioning-strategy: lockfile-only
     groups:
       python-ci:
         patterns:

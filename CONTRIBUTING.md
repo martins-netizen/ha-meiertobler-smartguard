@@ -32,34 +32,56 @@ test suite. Keep the HA and fixture versions aligned with `hacs.json`. If the
 development target later moves ahead of the advertised minimum, test both
 supported baselines in separate environments.
 
-`.github/requirements-ci.txt` is compiled from `requirements-ci.in` by uv. Its
-header records `--universal` and the Python version used for resolution.
-Dependabot uses the `uv` ecosystem for `/.github`, which preserves these
-options. Keep this updater and the universal header so tool updates retain
-the macOS/Windows dependencies and environment markers. Retain
-`--generate-hashes` as well: CI rejects packages without their recorded SHA-256
-hashes. Existing dependency versions must remain unchanged when adding hashes.
+The canonical validation project is [`.github/pyproject.toml`](.github/pyproject.toml)
+and its universal [`.github/uv.lock`](.github/uv.lock). The `ci` group contains
+the fixture and the tools used directly by this repository; the `build` group
+contains the preinstalled build tools. HA supplies the compatible versions of
+pytest, pytest-asyncio, aiohttp, yarl and uv through its dependency graph.
+Security constraints retain the certifi, multidict and uv minimums.
 
-Both CI workflows install wheels by default. The source-build exception is
+Dependabot uses native uv lockfile updates with `versioning-strategy:
+lockfile-only`. Weekly update PRs stay inside the reviewed manifest constraints;
+the exact HA fixture pin therefore changes only with a coordinated baseline
+review. Alerts remain enabled and no dependency is ignored. A security fix that
+requires relaxing an HA pin needs a reviewed HA/fixture baseline change; this
+policy cannot make an incompatible version safe to install.
+
+Validate and Release Gate install uv through the full-SHA-pinned official
+`setup-uv` action, reading its exact version from the CI lock. They export the
+`build` and `ci` groups with `uv export --locked --offline` into runner-temporary
+requirements files. Exported requirements include hashes and platform markers.
+No second requirements lockfile is committed or independently maintained.
+
+Creating a lock after changing constraints needs registry access for every
+supported platform, even on a different host OS. Do not force this resolution
+offline. Once the canonical lock is current, CI consumes it offline; regression
+tests verify those exports with an empty uv cache.
+
+Both workflows install wheels by default. The source-build exception is
 `pyric`, whose pinned version provides a source archive. It must match the
-hashes in the requirements file. Builds use `--no-build-isolation` and `--no-deps`, so
+exported SHA-256 hashes. Builds use `--no-build-isolation` and `--no-deps`, so
 pip does not automatically fetch additional build tools or dependencies.
-`requirements-build.txt`, compiled from `requirements-build.in`, pins and hashes
-the build tools installed first. `pip check` verifies the final dependency set.
+The build group is installed first, and `pip check` verifies the final set.
 Review the source-build exception whenever the pyric pin changes.
 
-For a manual Ruff update, use the command recorded in the requirements header
-with `--upgrade-package ruff==<new-version>` added. Review the dependency diff
-and run the usual checks; unrelated versions should stay pinned.
+For a focused tool update, use `uv lock --directory .github --upgrade-package
+ruff` (or the relevant package). Review the lock diff and run the usual checks;
+unrelated versions should stay pinned. Use `uv lock --directory .github --check`
+to verify manifest/lock consistency. Do not run `uv sync` from the repository
+root: the root project and root `uv.lock` retain integration release metadata.
+
+For local installation, export both groups with the flags from
+[Validate](.github/workflows/validate.yml), choose a temporary output directory,
+and use the same hash-checking pip commands in a Python virtual environment.
 
 Both workflows require Python **3.14.10 or a later 3.14 patch** and check for
 the latest available patch, including when an older runner cache exists. The
 dependency inputs require at least **pip 26.2.2** and **certifi 2026.10.19**.
-The current environment and the external lockfile compiler require **uv 0.13.4**
+The current environment and lockfile tooling require **uv 0.13.4**
 or newer following the
 [Python security guidance for the eMudhra incident](https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576).
-The HA 2026.11.0 environment requires uv 0.13.6 and the lock input requires
-multidict 6.9.1 or newer. Use the pinned, hash-checked pip install commands from
+The HA 2026.11.0 environment requires uv 0.13.6 and the CI project constrains
+multidict to 6.9.1 or newer. Use the pinned, hash-checked pip install commands from
 [Validate](.github/workflows/validate.yml) in a virtual environment.
 Run `python -m pip check` before the tests. The suite allows socket connections
 only to the local test server.

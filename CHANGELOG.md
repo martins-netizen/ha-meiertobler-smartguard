@@ -11,6 +11,10 @@ uses stable semantic versions for release candidates and published releases.
   a SmartGuard release with this requirement. SmartGuard 0.7.2 supports HA
   2026.9 and 2026.10.
 
+- Maintain CI and Release Gate dependencies in one native uv project and
+  universal lockfile. Resolve routine updates within the reviewed HA fixture
+  constraint, retaining hash-checked installs and the pyric-only build exception.
+
 ### Security
 
 - Use a Core baseline with updated Pillow, aiohttp, PyJWT, cryptography and uv

@@ -3,6 +3,11 @@
 from __future__ import annotations
 
 import json
+import os
+import shutil
+import subprocess
+import sys
+import tomllib
 from importlib.metadata import version
 from pathlib import Path
 
@@ -16,13 +21,50 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture(scope="module")
-def ci_requirements() -> list[Requirement]:
-    """Read the same resolved requirements installed by the CI workflows."""
+def exported_requirements(tmp_path_factory: pytest.TempPathFactory) -> dict[str, str]:
+    """CI must export the canonical lock offline without a warmed uv cache."""
+    uv = shutil.which("uv")
+    assert uv is not None, "The validation environment must supply uv"
+    outputs = {}
+    for group in ("ci", "build"):
+        output = tmp_path_factory.mktemp("ci-exports") / f"{group}.txt"
+        subprocess.run(
+            [
+                uv,
+                "export",
+                "--directory",
+                str(ROOT / ".github"),
+                "--locked",
+                "--offline",
+                "--python",
+                sys.executable,
+                "--no-python-downloads",
+                "--only-group",
+                group,
+                "--no-emit-project",
+                "--format",
+                "requirements.txt",
+                "--output-file",
+                str(output),
+            ],
+            env={
+                **os.environ,
+                "UV_CACHE_DIR": str(tmp_path_factory.mktemp("uv-empty-cache")),
+            },
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        outputs[group] = output.read_text(encoding="utf-8")
+    return outputs
+
+
+@pytest.fixture(scope="module")
+def ci_requirements(exported_requirements: dict[str, str]) -> list[Requirement]:
+    """Read the resolved CI group rather than a second committed lockfile."""
     return [
         Requirement(line.removesuffix(" \\"))
-        for line in (ROOT / ".github" / "requirements-ci.txt")
-        .read_text(encoding="utf-8")
-        .splitlines()
+        for line in exported_requirements["ci"].splitlines()
         if line and not line.startswith(("#", " "))
     ]
 
@@ -60,8 +102,8 @@ def test_ci_requirements_preserve_platform_dependencies(
                 "win32": "Windows",
             }[platform],
             "python_version": "3.14",
-            "python_full_version": "3.14.2",
-            "implementation_version": "3.14.2",
+            "python_full_version": "3.14.10",
+            "implementation_version": "3.14.10",
         }
     )
     selected = {
@@ -74,11 +116,11 @@ def test_ci_requirements_preserve_platform_dependencies(
 
 
 @pytest.mark.parametrize("name", ["ci", "build"])
-def test_requirements_pin_and_hash_every_package(name: str) -> None:
+def test_requirements_pin_and_hash_every_package(
+    name: str, exported_requirements: dict[str, str]
+) -> None:
     """No dependency can bypass exact version and archive-integrity checks."""
-    text = (ROOT / ".github" / f"requirements-{name}.txt").read_text(encoding="utf-8")
-    assert "--generate-hashes" in text.splitlines()[1]
-    assert "--universal" in text.splitlines()[1]
+    text = exported_requirements[name]
     requirements = [
         line
         for line in text.replace("\\\n", "").splitlines()
@@ -110,13 +152,21 @@ def test_ci_installation_enforces_hashes_and_source_allowlist(workflow: str) -> 
     for command in installs:
         assert "--require-hashes" in command
         assert "--only-binary=:all:" in command
-    assert "-r .github/requirements-build.txt" in installs[0]
+    assert '-r "$RUNNER_TEMP/smartguard-build.txt"' in installs[0]
     assert "--no-binary" not in installs[0]
-    assert "-r .github/requirements-ci.txt" in installs[1]
+    assert '-r "$RUNNER_TEMP/smartguard-ci.txt"' in installs[1]
     assert "--no-binary=pyric" in installs[1].split()
     assert "--no-build-isolation" in installs[1]
     assert "--no-deps" in installs[1]
     assert any(step.get("run") == "python -m pip check" for step in steps)
+    exports = [step["run"] for step in steps if "uv export" in step.get("run", "")]
+    assert len(exports) == 1
+    assert exports[0].count("--locked --offline") == 2
+    assert "--only-group build" in exports[0]
+    assert "--only-group ci" in exports[0]
+    assert "--no-hashes" not in exports[0]
+    setup = next(step for step in steps if "setup-uv@" in step.get("uses", ""))
+    assert setup["with"]["version-file"] == ".github/uv.lock"
 
 
 def test_home_assistant_lock_matches_minimum_and_fixture(
@@ -141,6 +191,26 @@ def test_home_assistant_lock_matches_minimum_and_fixture(
     blueprint = load_yaml_dict(blueprint_path)
     assert blueprint["blueprint"]["homeassistant"]["min_version"] == minimum
     assert version("homeassistant") == version("pytest-homeassistant")
+
+
+def test_updater_keeps_the_coordinated_home_assistant_baseline() -> None:
+    """Routine updates must honor HA's constraints without hiding alerts."""
+    project = tomllib.loads((ROOT / ".github/pyproject.toml").read_text())
+    minimum = json.loads((ROOT / "hacs.json").read_text())["homeassistant"]
+    ci = [Requirement(raw) for raw in project["dependency-groups"]["ci"]]
+    fixture = next(req for req in ci if req.name == "pytest-homeassistant")
+    assert str(fixture.specifier) == f"=={minimum}"
+    assert not {"pytest", "pytest-asyncio", "uv", "aiohttp", "yarl"} & {
+        req.name for req in ci
+    }
+    updates = yaml.safe_load((ROOT / ".github/dependabot.yml").read_text())["updates"]
+    python = next(item for item in updates if item["package-ecosystem"] == "uv")
+    assert python["directory"] == "/.github"
+    assert python["versioning-strategy"] == "lockfile-only"
+    assert not python.get("ignore")
+    assert python["open-pull-requests-limit"] > 0
+    assert not list((ROOT / ".github").glob("requirements-*.in"))
+    assert not list((ROOT / ".github").glob("requirements-*.txt"))
 
 
 def test_protected_quality_check_requires_compatibility() -> None:

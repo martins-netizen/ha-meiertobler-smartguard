@@ -1,0 +1,26 @@
+[project]
+name = "smartguard-validation"
+version = "0"
+requires-python = ">=3.14.10,<3.15"
+dependencies = []
+
+[dependency-groups]
+ci = [
+  "mypy",
+  "pip>=26.2.2",
+  "pytest-cov",
+  # Keep the fixture and advertised HA minimum aligned in a reviewed change.
+  "pytest-homeassistant==2026.11.0",
+  "ruff",
+]
+build = ["pip>=26.2.2", "setuptools", "wheel"]
+
+[tool.uv]
+package = false
+required-version = ">=0.13.4"
+# Security floors also apply to the dependencies supplied by the HA fixture.
+constraint-dependencies = [
+  "certifi>=2026.10.19",
+  "multidict>=6.9.1",
+  "uv>=0.13.4",
+]

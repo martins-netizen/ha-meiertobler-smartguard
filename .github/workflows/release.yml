@@ -29,23 +29,35 @@ jobs:
           python-version: ">=3.14.10 <3.15"
           check-latest: true
           cache: pip
-          cache-dependency-path: |
-            .github/requirements-build.txt
-            .github/requirements-ci.txt
+          cache-dependency-path: .github/uv.lock
+
+      - name: Set up locked uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version-file: .github/uv.lock
+          enable-cache: false
+
+      - name: Export hash-pinned validation dependencies
+        run: |
+          uv export --quiet --directory .github --locked --offline --only-group build \
+            --no-emit-project --format requirements.txt \
+            --output-file "$RUNNER_TEMP/smartguard-build.txt"
+          uv export --quiet --directory .github --locked --offline --only-group ci \
+            --no-emit-project --format requirements.txt \
+            --output-file "$RUNNER_TEMP/smartguard-ci.txt"
 
       - name: Install pinned build tools
         run: >-
           python -m pip install --disable-pip-version-check
           --require-hashes --only-binary=:all:
-          -r .github/requirements-build.txt
+          -r "$RUNNER_TEMP/smartguard-build.txt"
 
       - name: Install validation dependencies
-        # These two transitive test dependencies publish source archives only.
-        # Hashes and preinstalled build tools also cover their permitted builds.
+        # pyric publishes only a source archive. Its build uses pinned tools.
         run: >-
           python -m pip install --disable-pip-version-check
           --require-hashes --only-binary=:all: --no-binary=pyric
-          --no-build-isolation --no-deps -r .github/requirements-ci.txt
+          --no-build-isolation --no-deps -r "$RUNNER_TEMP/smartguard-ci.txt"
 
       - name: Check installed dependency consistency
         run: python -m pip check

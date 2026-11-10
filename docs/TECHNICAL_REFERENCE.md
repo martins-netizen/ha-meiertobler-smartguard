@@ -86,8 +86,10 @@ Use Python 3.14.10 or a later 3.14 patch and the pinned, hash-checked CI depende
 described in [CONTRIBUTING.md](../CONTRIBUTING.md#ci-dependency-updates).
 
 The current and minimum HA versions are both **2026.11.0**. Validate and the
-Release Gate use `.github/requirements-ci.txt` with the matching
-`pytest-homeassistant` package.
+Release Gate export the `ci` group from `.github/uv.lock` with the matching
+`pytest-homeassistant` package. Native lockfile updates respect the reviewed HA
+fixture pin. See the contribution guide for the update policy and hash-checked
+installation; the root `uv.lock` remains integration release metadata.
 
 Use a virtual environment with the pinned build tools and hash-checked install
 flags from the contribution guide. The protected Quality check requires

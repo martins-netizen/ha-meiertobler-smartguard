@@ -5,6 +5,19 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+### Changed
+
+- Require Home Assistant Core 2026.11.0 or newer. Update Core before installing
+  a SmartGuard release with this requirement. SmartGuard 0.7.2 supports HA
+  2026.9 and 2026.10.
+
+### Security
+
+- Use a Core baseline with updated Pillow, aiohttp, PyJWT, cryptography and uv
+  versions to address known vulnerabilities in the previously supported Core
+  releases.
+- Require multidict 6.9.1 or newer in CI and the Release Gate for CVE-2026-104874.
+
 ## [0.7.2] - 2026-11-08
 
 Source-preparation record; publication is a separate gated step. See the

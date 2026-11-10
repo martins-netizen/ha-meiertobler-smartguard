@@ -56,11 +56,9 @@ follows that published status automatically.
 From version **0.7.2**, the two diagnostic heater operating-hour counters default
 to disabled only when first registered. Existing activation, IDs and names are
 preserved. Earlier releases, including 0.7.1, retain their original defaults.
-Development CI runs complete suites for **HA 2026.11.0** and the supported
-minimum **HA 2026.9.0**; both must pass the protected Quality check.
-
-Install and update through **Settings → Marketplace** on HA 2026.11+
-(HACS on older HA). Keep the existing integration entry and entity IDs.
+Install and update through **Settings → Marketplace** on supported HA releases.
+On older HA, use HACS with the compatible SmartGuard release described under
+[Compatibility and security](#compatibility-and-security).
 The [changelog](CHANGELOG.md) separates changes on `main` from published releases;
 the [storage guide](docs/ADDITIONAL_MEASUREMENTS.md#default-activation-in-the-next-release)
 explains counter activation. The Marketplace displays the README from the
@@ -89,15 +87,16 @@ separate Home Assistant configuration; they are not supplied by this integration
 4. Enter the gateway hostname or IP address, without a scheme, port, path or
    credentials. Keep the gateway on a trusted local network.
 
-On **older HA**, install through **HACS**, restart HA, then add the integration
-under **Settings → Devices & services**. The project is in the default catalogue.
-HA 2026.11 migrates existing HACS installations automatically; do not reinstall
-HACS or recreate the SmartGuard entry.
+For **HA 2026.9 and 2026.10**, use SmartGuard **0.7.2** through HACS. Restart
+HA, then add the integration under **Settings → Devices & services**. The
+project is in the default catalogue. HA 2026.11 migrates existing HACS
+repositories to Marketplace.
 
 ### Update an existing installation
 
 1. On HA 2026.11+, install the offered update under **Settings → Updates**.
-   On older HA, open the existing SmartGuard **HACS** entry and choose **Update**.
+   On older HA, upgrade Core first to install a SmartGuard release with the
+   new minimum. Use the existing HACS entry for releases compatible with older HA.
 2. Restart Home Assistant (Marketplace provides a repair notice), then check
    entity availability. Updates still require a restart.
 
@@ -120,9 +119,12 @@ See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
 
 ## Compatibility and security
 
-- **Home Assistant 2026.9.0 or newer.**
-- Development CI tests the complete suite on **2026.11.0** and **2026.9.0**;
-  see the [development checks](docs/TECHNICAL_REFERENCE.md#development-checks).
+- **Home Assistant Core 2026.11.0 or newer** for this source tree. Earlier
+  supported Core releases shipped dependency versions with known vulnerabilities.
+  SmartGuard 0.7.2 supports HA 2026.9 and 2026.10. Update Core before installing
+  a SmartGuard release that requires 2026.11.0.
+- The protected Quality check requires the complete suite on the supported
+  minimum. See [development checks](docs/TECHNICAL_REFERENCE.md#development-checks).
 - **SmartGuard 2.0, device type `1001`.** HK60 must be enabled for its entities.
 - Storage and additional operating readings are optional. Unsupported or
   unavailable optional readings do not block the original entities.
@@ -188,7 +190,10 @@ bestehende Aktivierungen, Namen und IDs bleiben erhalten. Der Marktplatz zeigt
 die README der installierten Version; eine neuere GitHub-Dokumentation erscheint
 dort nach dem entsprechenden Integrationsupdate.
 
-**Installation:** [Marketplace (HA 2026.11+) / HACS (older HA)](#new-installation).
-Benötigt werden SmartGuard-Gerätetyp `1001` und Home Assistant **ab 2026.9.0**.
+**Installation über [Marketplace oder HACS](#new-installation).**
+Dieser Quellstand benötigt SmartGuard-Gerätetyp `1001` und Home Assistant Core
+**ab 2026.11.0**. Auf HA 2026.9 und 2026.10 ist SmartGuard 0.7.2 kompatibel.
+Aktualisiere zuerst Home Assistant, bevor du eine SmartGuard-Version mit der
+neuen Mindestanforderung installierst.
 Die ungeschützte lokale HTTP-API gehört ausschliesslich in ein vertrauenswürdiges
 lokales Netzwerk. Unabhängiges Community-Projekt ohne Herstellerunterstützung.

@@ -2,6 +2,11 @@
 
 [Back to the overview](../README.md)
 
+This source tree requires **Home Assistant Core 2026.11.0 or newer**. On HA
+2026.9 and 2026.10, use [SmartGuard 0.7.2](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.2).
+Update Home Assistant before installing a SmartGuard release that requires
+the newer Core baseline.
+
 <a id="install-with-hacs"></a>
 
 ## Install with Marketplace (HA 2026.11+)
@@ -25,7 +30,8 @@ repositories; do not reinstall HACS or recreate configured entries. See the
 
 1. Install HACS using its [official guide](https://www.hacs.xyz/docs/use/download/download/)
    if needed, then search for **Meier Tobler SmartGuard** and verify the owner.
-2. Download the latest stable release and restart Home Assistant.
+2. Select the latest compatible release for your HA version and restart Home
+   Assistant. SmartGuard 0.7.2 supports HA 2026.9 and 2026.10.
 3. Add the integration through **Settings → Devices & services** as above.
 
 ## Custom repository
@@ -50,8 +56,10 @@ HA backup and the previous known-good version.
 
 On HA 2026.11+, install the offered release under **Settings → Updates**, then
 restart using the repair notice. On older HA, open the existing HACS entry,
-select **Update** and restart. Check entity availability before applying a
-new dashboard. Keep the existing config entry, entity IDs and personal settings.
+select an update compatible with that HA version and restart. Update Core
+before installing a release with the new minimum. Check entity availability
+before applying a new dashboard. Keep the existing config entry, entity IDs and
+personal settings.
 
 If older HACS does not offer the release, select **Update information**.
 Refreshing metadata does not install anything. Updates to already loaded
@@ -102,7 +110,7 @@ new flow. Keep the existing config entry.
 
 ## Manual installation
 
-1. Open the [latest stable release](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest).
+1. Open the [release compatible with your HA version](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases).
 2. Download the attached `meiertobler_smartguard-<version>.zip` and its `.sha256`
    file. Verify the ZIP against the checksum for that same version.
 3. Extract it into the Home Assistant configuration directory, preserving

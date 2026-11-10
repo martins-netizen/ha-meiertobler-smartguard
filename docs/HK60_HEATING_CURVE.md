@@ -22,11 +22,9 @@ No measured room temperature or exact hydraulic/priority behavior is inferred.
 
 The boost uses Home Assistant's **temperature_delta** device class with native
 and suggested unit K. An override to Fahrenheit converts an interval without
-adding an absolute-temperature offset. This class is present in the declared
-minimum Core 2026.9.0. Development CI runs the complete suite against pinned
-Core 2026.11.0 and Core 2026.9.0; see the
-[development checks](TECHNICAL_REFERENCE.md#development-checks). The versioned
-release notes retain the original tagged validation environment.
+adding an absolute-temperature offset. The complete suite exercises this
+behavior on the current minimum Core 2026.11.0. See the
+[development checks](TECHNICAL_REFERENCE.md#development-checks).
 The four diagnostic sensors have no measurement or operating-hour state class.
 Full values are retained; suggested display precision is one decimal place.
 

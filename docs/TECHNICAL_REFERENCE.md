@@ -85,20 +85,17 @@ export are in `docs/images`; absolute public image URLs work in the HACS view.
 Use Python 3.14.10 or a later 3.14 patch and the pinned, hash-checked CI dependencies
 described in [CONTRIBUTING.md](../CONTRIBUTING.md#ci-dependency-updates).
 
-| Environment | Home Assistant | Requirements | Pytest plugin |
-| --- | --- | --- | --- |
-| Current HA | 2026.11.0 | `.github/requirements-ci.txt` | `pytest-homeassistant` |
-| Minimum HA | 2026.9.0 | `.github/requirements-ci-minimum.txt` | `pytest-homeassistant-custom-component` |
+The current and minimum HA versions are both **2026.11.0**. Validate and the
+Release Gate use `.github/requirements-ci.txt` with the matching
+`pytest-homeassistant` package.
 
-Install each dependency set in its own virtual environment, using the pinned
-build tools and hash-checked install flags from the contribution guide. Do not
-install both plugins together or update the minimum baseline as part of a
-routine current-environment dependency update. Run `python3 -m pip check`,
-repository validation and the complete test suite in each environment.
-The protected Quality check requires both environments; Ruff and strict MyPy
-run in the current environment. From the repository root:
+Use a virtual environment with the pinned build tools and hash-checked install
+flags from the contribution guide. The protected Quality check requires
+dependency consistency, repository validation, Ruff, strict MyPy and the
+complete test suite. From the repository root:
 
 ```bash
+python3 -m pip check
 python3 scripts/validate.py
 python3 scripts/release.py check
 python3 scripts/release.py verify-tag --tag v0.7.2

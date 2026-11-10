@@ -1,5 +1,7 @@
 aiohttp
 certifi>=2026.10.19
+# Patched version for CVE-2026-104874.
+multidict>=6.9.1
 mypy
 pip>=26.2.2
 pytest

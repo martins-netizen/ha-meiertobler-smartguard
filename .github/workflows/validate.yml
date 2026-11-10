@@ -18,16 +18,8 @@ concurrency:
 
 jobs:
   compatibility:
-    name: Tests (${{ matrix.label }})
+    name: Tests (Current HA)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - label: Current HA
-            requirements: ci
-          - label: Minimum HA
-            requirements: ci-minimum
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -42,7 +34,7 @@ jobs:
           cache: pip
           cache-dependency-path: |
             .github/requirements-build.txt
-            .github/requirements-${{ matrix.requirements }}.txt
+            .github/requirements-ci.txt
 
       - name: Install pinned build tools
         run: >-
@@ -51,12 +43,11 @@ jobs:
           -r .github/requirements-build.txt
 
       - name: Install validation dependencies
-        # These two transitive test dependencies publish source archives only.
-        # Hashes and preinstalled build tools also cover their permitted builds.
+        # pyric publishes only a source archive. Its build uses pinned tools.
         run: >-
           python -m pip install --disable-pip-version-check
-          --require-hashes --only-binary=:all: --no-binary=mock-open,pyric
-          --no-build-isolation --no-deps -r .github/requirements-${{ matrix.requirements }}.txt
+          --require-hashes --only-binary=:all: --no-binary=pyric
+          --no-build-isolation --no-deps -r .github/requirements-ci.txt
 
       - name: Check installed dependency consistency
         run: python -m pip check
@@ -65,11 +56,9 @@ jobs:
         run: python scripts/validate.py
 
       - name: Run Ruff
-        if: matrix.requirements == 'ci'
         run: python -m ruff check .
 
       - name: Run strict MyPy checks
-        if: matrix.requirements == 'ci'
         run: >-
           python -m mypy
           custom_components/meiertobler_smartguard
@@ -84,14 +73,14 @@ jobs:
           --cov-report=term-missing
           --cov-fail-under=95
 
-  # Retain the protected check name and require every compatibility job.
+  # Keep branch protection bound to the complete compatibility run.
   quality:
     name: Quality
     needs: compatibility
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Require every compatibility environment to pass
+      - name: Require compatibility tests to pass
         env:
           COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
         run: test "$COMPATIBILITY_RESULT" = success

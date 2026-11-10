@@ -8,8 +8,8 @@ in [quality_scale.yaml](../custom_components/meiertobler_smartguard/quality_scal
 ## Current development and release scope
 
 Use [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
-for stable downloads. Development CI runs the complete suite on **HA 2026.11.0 and HA 2026.9.0**, with both required by Quality
-([PR #52](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/52)).
+for stable downloads. The protected Quality check requires the complete suite
+on the current minimum **HA 2026.11.0**.
 The diagnostic counter defaults were merged separately
 ([PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53))
 and are included in the 0.7.2 source. See its

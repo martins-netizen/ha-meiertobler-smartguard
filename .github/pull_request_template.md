@@ -10,6 +10,7 @@ Describe the change and its user-visible effect.
 - [ ] Tests pass
 - [ ] Hassfest passes
 - [ ] HACS validation passes
+- [ ] README and affected guides reflect the change and its release scope
 
 ## Security impact
 

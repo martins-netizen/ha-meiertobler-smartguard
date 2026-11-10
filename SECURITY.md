@@ -3,6 +3,10 @@
 ## Supported versions
 
 Only the most recent published release is supported before version `1.0.0`.
+Each release declares its minimum Home Assistant Core version in `hacs.json`.
+Use a Core release with current security fixes. See the
+[installation and upgrade guide](docs/INSTALLATION.md) for the supported
+minimum and the upgrade order.
 
 ## Reporting a vulnerability
 
@@ -16,7 +20,7 @@ impact, and a minimal reproduction using synthetic data.
 
 ## Known transport limitation
 
-Version `0.3.0` uses the gateway's unauthenticated local HTTP REST API. Network
+SmartGuard uses the gateway's unauthenticated local HTTP REST API. Network
 segmentation and a restrictive firewall rule from Home Assistant to the gateway
 are required compensating controls. The API must never be exposed to the
 internet.

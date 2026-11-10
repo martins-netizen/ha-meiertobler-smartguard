@@ -4,29 +4,33 @@ This checklist separates technical release validation from publication and
 post-release distribution tests. Tagging and passing the Release Gate never
 publish automatically; the owner must make a separate publication decision.
 
-**Distribution UI (5 November 2026):** Use **Settings → Marketplace** on
-HA 2026.11+ and HACS on older HA; see [current installation steps](INSTALLATION.md).
-Record which UI/HA version was actually tested. Existing HACS field reports
-below remain historical evidence, not proof of a Marketplace installation test.
-Technical `hacs.json`, catalogue and HACS validation names remain unchanged.
+Use **Settings → Marketplace** on supported HA releases. For HA 2026.9 or
+2026.10, use HACS with the compatible 0.7.2 release. See the
+[installation and upgrade steps](INSTALLATION.md).
 
-## 0.7.2 preparation: versioned Marketplace documentation
+For each new release:
 
-At this source-preparation checkpoint, 0.7.2 is not yet published. The installed
-0.7.1 tag contains its original candidate-era README; Marketplace reads that
-versioned file, so default-branch documentation merges cannot refresh it.
-See [0.7.2 preparation notes](RELEASE_NOTES_0.7.2.md).
+- Verify that the advertised Core minimum in `hacs.json` has a complete,
+  passing test run with the matching Home Assistant fixture package.
+- Keep README, installation instructions and the changelog consistent with
+  the supported Core versions. Explain the upgrade path when the minimum rises.
+- Record the UI and HA version used for any distribution test.
+
+## Published 0.7.2 Marketplace documentation
+
+SmartGuard 0.7.2 was [published](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.2)
+on 2026-11-08 at 21:56:02 UTC. See the versioned
+[preparation record](RELEASE_NOTES_0.7.2.md) for source and scope.
 
 - [x] Retain the reviewed main implementation from PRs #52, #53 and #54.
 - [x] Align manifest, project, root lock and release assertions at 0.7.2.
 - [x] Remove temporary publication claims from the README; document versioned
       Marketplace selection and counter defaults from 0.7.2.
-- [ ] Complete PR checks on the exact 0.7.2 head and merge with explicit approval.
-- [ ] Confirm all actual merge checks on the selected source.
-- [ ] After separate publication authorization, create the annotated v0.7.2 tag,
-      pass its Release Gate, and verify the integration ZIP and checksum assets.
-- [ ] Publish and independently verify the full stable release and its assets.
-- [ ] Confirm the real integration update and Marketplace README separately.
+- [x] Pass PR and merge checks on the 0.7.2 source.
+- [x] Pass the annotated tag's Release Gate and verify the ZIP and checksum.
+- [x] Publish and verify the stable release and both assets.
+- [x] Confirm installation of 0.7.2 on the maintainer's Home Assistant.
+- [ ] Review the versioned 0.7.2 README in the Marketplace.
 
 Earlier tags and assets remain unchanged. The only runtime behavior difference
 from 0.7.1 is the already reviewed default for two newly registered diagnostic
@@ -47,8 +51,8 @@ for current availability and the [changelog](../CHANGELOG.md) for version scope.
 | Installation and guide updates | Marketplace on HA 2026.11+, HACS on older HA; stable/source scope and developer commands clarified | Documentation only; no integration download or HA restart |
 
 Before publishing any future version, prepare its own version metadata, tagged
-validation, release notes and verified assets. An unchanged manifest version
-on the development branch does not make that branch the published 0.7.1 source.
+validation, release notes and verified assets. Use the release tag to identify
+the published source.
 Private dashboards, calendars, presence simulation and adaptive preheating
 remain separate Home Assistant configuration, outside this release checklist.
 

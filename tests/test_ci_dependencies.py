@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import version
 from pathlib import Path
 
 import pytest
@@ -14,12 +14,12 @@ from packaging.requirements import Requirement
 ROOT = Path(__file__).resolve().parents[1]
 
 
-@pytest.fixture(scope="module", params=["ci", "ci-minimum"])
-def ci_requirements(request: pytest.FixtureRequest) -> list[Requirement]:
+@pytest.fixture(scope="module")
+def ci_requirements() -> list[Requirement]:
     """Read the same resolved requirements installed by the CI workflows."""
     return [
         Requirement(line.removesuffix(" \\"))
-        for line in (ROOT / ".github" / f"requirements-{request.param}.txt")
+        for line in (ROOT / ".github" / "requirements-ci.txt")
         .read_text(encoding="utf-8")
         .splitlines()
         if line and not line.startswith(("#", " "))
@@ -72,7 +72,7 @@ def test_ci_requirements_preserve_platform_dependencies(
     assert not excluded & selected
 
 
-@pytest.mark.parametrize("name", ["ci", "ci-minimum", "build"])
+@pytest.mark.parametrize("name", ["ci", "build"])
 def test_requirements_pin_and_hash_every_package(name: str) -> None:
     """No dependency can bypass exact version and archive-integrity checks."""
     text = (ROOT / ".github" / f"requirements-{name}.txt").read_text(encoding="utf-8")
@@ -99,7 +99,7 @@ def test_requirements_pin_and_hash_every_package(name: str) -> None:
 
 @pytest.mark.parametrize("workflow", ["validate", "release"])
 def test_ci_installation_enforces_hashes_and_source_allowlist(workflow: str) -> None:
-    """All installs enforce hashes; only two reviewed packages may build."""
+    """All installs enforce hashes and permit a build only for pyric."""
     data = yaml.safe_load(
         (ROOT / ".github/workflows" / f"{workflow}.yml").read_text(encoding="utf-8")
     )
@@ -111,31 +111,30 @@ def test_ci_installation_enforces_hashes_and_source_allowlist(workflow: str) -> 
         assert "--only-binary=:all:" in command
     assert "-r .github/requirements-build.txt" in installs[0]
     assert "--no-binary" not in installs[0]
-    requirements = (
-        "${{ matrix.requirements }}" if workflow == "validate" else "ci"
-    )
-    assert f"-r .github/requirements-{requirements}.txt" in installs[1]
-    assert "--no-binary=mock-open,pyric" in installs[1]
+    assert "-r .github/requirements-ci.txt" in installs[1]
+    assert "--no-binary=pyric" in installs[1].split()
     assert "--no-build-isolation" in installs[1]
     assert "--no-deps" in installs[1]
     assert any(step.get("run") == "python -m pip check" for step in steps)
 
 
-def test_installed_home_assistant_matches_fixture_package() -> None:
-    """Do not report a baseline test using a different installed HA release."""
+def test_home_assistant_lock_matches_minimum_and_fixture(
+    ci_requirements: list[Requirement],
+) -> None:
+    """Cover the advertised minimum and use matching fixtures for installed HA."""
     minimum = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))[
         "homeassistant"
     ]
-    try:
-        expected = version("pytest-homeassistant")
-    except PackageNotFoundError:
-        assert version("pytest-homeassistant-custom-component") == "0.13.363"
-        expected = minimum
-    assert version("homeassistant") == expected
+    pins = {
+        requirement.name: str(requirement.specifier)
+        for requirement in ci_requirements
+    }
+    assert pins["homeassistant"] == pins["pytest-homeassistant"] == f"=={minimum}"
+    assert version("homeassistant") == version("pytest-homeassistant")
 
 
-def test_protected_quality_check_requires_all_compatibility_jobs() -> None:
-    """A failed or cancelled matrix must never leave the protected check green."""
+def test_protected_quality_check_requires_compatibility() -> None:
+    """A failed or cancelled compatibility run must fail the protected check."""
     data = yaml.safe_load(
         (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
     )
@@ -147,10 +146,6 @@ def test_protected_quality_check_requires_all_compatibility_jobs() -> None:
     assert gate["env"]["COMPATIBILITY_RESULT"] == "${{ needs.compatibility.result }}"
     assert gate["run"] == 'test "$COMPATIBILITY_RESULT" = success'
     test_job = jobs["compatibility"]
-    assert test_job["strategy"]["fail-fast"] is False
-    assert {
-        entry["requirements"] for entry in test_job["strategy"]["matrix"]["include"]
-    } == {"ci", "ci-minimum"}
     assert any(
         "python -m pytest" in step.get("run", "")
         and "--cov-fail-under=95" in step["run"]

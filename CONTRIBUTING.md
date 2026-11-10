@@ -8,10 +8,12 @@ requires the Quality, Hassfest, and HACS checks.
 Before opening a pull request:
 
 1. run `python3 scripts/validate.py`;
-2. run Ruff, MyPy, and both complete test suites as documented in the
+2. run Ruff, MyPy, and the complete test suite as documented in the
    [development checks](docs/TECHNICAL_REFERENCE.md#development-checks);
-3. verify that no private installation data are present;
-4. describe any security impact in the pull-request template.
+3. update the README and affected guides with compatibility, upgrade steps, and
+   release scope when those change;
+4. verify that no private installation data are present;
+5. describe any security impact in the pull-request template.
 
 Do not include credentials, internal network details, real device identifiers,
 or exported diagnostics. Use synthetic identifiers and addresses from the
@@ -22,44 +24,29 @@ merged automatically.
 
 ## CI dependency updates
 
-The current test environment uses the official
+The CI and Release Gate environment uses the official
 [`pytest-homeassistant`](https://github.com/home-assistant/core/tree/2026.11.0/packages/pytest-homeassistant)
-package, pinned to Home Assistant 2026.11.0. The retired
-`pytest-homeassistant-custom-component` package is used only for the frozen
-2026.9.0 compatibility environment. Never install the two plugins together.
-`tests/ha_helpers.py` provides shared helper imports; both environments run the
-complete integration and blueprint test suite with the same coverage threshold.
-The protected **Quality** check succeeds only when both environments succeed.
+package, pinned with Home Assistant to the advertised minimum of **2026.11.0**.
+The protected **Quality** check requires the complete integration and blueprint
+test suite. Keep the HA and fixture versions aligned with `hacs.json`. If the
+development target later moves ahead of the advertised minimum, test both
+supported baselines in separate environments.
 
-| Environment | Home Assistant | Requirements | Pytest plugin |
-| --- | --- | --- | --- |
-| Current HA | 2026.11.0 | `.github/requirements-ci.txt` | `pytest-homeassistant` |
-| Minimum HA | 2026.9.0 | `.github/requirements-ci-minimum.txt` | `pytest-homeassistant-custom-component` |
-
-This matrix describes development CI on `main`. Historical release notes retain
-the environment used for their tagged source; changing CI does not publish a
-new integration version.
-
-`.github/requirements-ci.txt` is compiled from `requirements-ci.in` by uv.
-`requirements-ci-minimum.txt` is compiled separately from
-`requirements-ci-minimum.in`; its HA and fixture versions must stay aligned with
-the advertised minimum in `hacs.json`. Keep that baseline fixed during routine
-Dependabot updates.
-Its header records `--universal` and the Python version used for resolution.
+`.github/requirements-ci.txt` is compiled from `requirements-ci.in` by uv. Its
+header records `--universal` and the Python version used for resolution.
 Dependabot uses the `uv` ecosystem for `/.github`, which preserves these
 options. Keep this updater and the universal header so tool updates retain
 the macOS/Windows dependencies and environment markers. Retain
 `--generate-hashes` as well: CI rejects packages without their recorded SHA-256
 hashes. Existing dependency versions must remain unchanged when adding hashes.
 
-Both CI workflows install wheels by default. The only source-build exceptions
-are `mock-open` (minimum-version tests only) and `pyric`, whose pinned
-versions provide no wheels. Their source archives must match the hashes in
-the selected requirements file. Builds use `--no-build-isolation` and `--no-deps`, so
+Both CI workflows install wheels by default. The source-build exception is
+`pyric`, whose pinned version provides a source archive. It must match the
+hashes in the requirements file. Builds use `--no-build-isolation` and `--no-deps`, so
 pip does not automatically fetch additional build tools or dependencies.
 `requirements-build.txt`, compiled from `requirements-build.in`, pins and hashes
 the build tools installed first. `pip check` verifies the final dependency set.
-Review the source-build allowlist whenever these two dependencies change.
+Review the source-build exception whenever the pyric pin changes.
 
 For a manual Ruff update, use the command recorded in the requirements header
 with `--upgrade-package ruff==<new-version>` added. Review the dependency diff
@@ -71,18 +58,11 @@ dependency inputs require at least **pip 26.2.2** and **certifi 2026.10.19**.
 The current environment and the external lockfile compiler require **uv 0.13.4**
 or newer following the
 [Python security guidance for the eMudhra incident](https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576).
-The current HA 2026.11.0 environment requires uv 0.13.6. The isolated HA 2026.9.0
-compatibility environment retains HA's original uv 0.12.5 dependency, which is
-not invoked as a package installer or by the tests. Only hash-checked pip installs
-are used in either environment, and tests allow socket connections only to the
-local test server. Do not use the baseline environment for dependency updates.
-Keep the runtime, build-tool and test dependency sets consistent; do not bypass
-Home Assistant's dependency constraints. These development requirements do not
-update Python in an existing Home Assistant installation.
-
-Run the second environment in its own virtual environment using the same build
-tools and install flags, replacing `requirements-ci.txt` with
-`requirements-ci-minimum.txt`. `python -m pip check` must pass in both. Run tests:
+The HA 2026.11.0 environment requires uv 0.13.6 and the lock input requires
+multidict 6.9.1 or newer. Use the pinned, hash-checked pip install commands from
+[Validate](.github/workflows/validate.yml) in a virtual environment.
+Run `python -m pip check` before the tests. The suite allows socket connections
+only to the local test server.
 
 ```shell
 python -m pytest -q --disable-socket --allow-hosts=127.0.0.1,::1 \
@@ -90,12 +70,8 @@ python -m pytest -q --disable-socket --allow-hosts=127.0.0.1,::1 \
   --cov-report=term-missing --cov-fail-under=95
 ```
 
-Current and minimum HA tests must both pass before merging.
-
-Configuration forms use Home Assistant's probatio schema types, available in
-the supported Home Assistant 2026.9.0 baseline, to match the newer Home Assistant
-type contract. Keep the saved host suggestion covered when updating the test
-baseline.
+Configuration forms use Home Assistant's probatio schema types. Keep the saved
+host suggestion covered when updating the test baseline.
 
 ## Release candidates
 

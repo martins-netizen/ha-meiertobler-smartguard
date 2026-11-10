@@ -11,7 +11,7 @@ blueprint:
   domain: automation
   author: martins-netizen
   homeassistant:
-    min_version: 2026.9.0
+    min_version: 2026.11.0
   input:
     safeguards:
       name: 1. Zwei Helfer vorbereiten

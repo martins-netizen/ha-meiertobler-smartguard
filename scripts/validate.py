@@ -116,7 +116,7 @@ def validate_release_notes(version: str, release_notes: str) -> None:
         raise RuntimeError("Release notes must have one supported publication status")
 
 
-def _validate_documentation(version: str) -> None:
+def _validate_documentation(version: str, minimum_ha: str) -> None:
     """Validate user documentation and privacy-sensitive support surfaces."""
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for target in (
@@ -163,7 +163,7 @@ def _validate_documentation(version: str) -> None:
     blueprint = BLUEPRINT.read_text(encoding="utf-8")
     required_blueprint_fragments = (
         "domain: automation",
-        "min_version: 2026.9.0",
+        f"min_version: {minimum_ha}\n",
         "integration: meiertobler_smartguard",
         "id: select_heating",
         "id: return_auto",
@@ -280,7 +280,7 @@ def main() -> int:
     if not icon.startswith(b"\x89PNG\r\n\x1a\n"):
         raise RuntimeError("Brand icon is not a PNG file")
 
-    _validate_documentation(version)
+    _validate_documentation(version, hacs_manifest["homeassistant"])
 
     for workflow_path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
         workflow = workflow_path.read_text(encoding="utf-8")

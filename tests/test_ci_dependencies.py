@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from homeassistant.util.yaml import load_yaml_dict
 from packaging.markers import default_environment
 from packaging.requirements import Requirement
 
@@ -130,6 +131,15 @@ def test_home_assistant_lock_matches_minimum_and_fixture(
         for requirement in ci_requirements
     }
     assert pins["homeassistant"] == pins["pytest-homeassistant"] == f"=={minimum}"
+    blueprint_path = (
+        ROOT
+        / "blueprints"
+        / "automation"
+        / "martins_netizen"
+        / "smartguard_guarded_night_heating.yaml"
+    )
+    blueprint = load_yaml_dict(blueprint_path)
+    assert blueprint["blueprint"]["homeassistant"]["min_version"] == minimum
     assert version("homeassistant") == version("pytest-homeassistant")
 
 

@@ -18,5 +18,9 @@ class SmartGuardRuntimeData:
     coordinator: SmartGuardCoordinator
     identity: SmartGuardIdentity
 
+    def entity_unique_id(self, key: str) -> str:
+        """Return the registry identifier for this gateway and entity key."""
+        return f"{self.identity.global_device_id}_{key}"
+
 
 type SmartGuardConfigEntry = ConfigEntry[SmartGuardRuntimeData]

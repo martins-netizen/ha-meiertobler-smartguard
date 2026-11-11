@@ -66,9 +66,10 @@ class SmartGuardEntity(CoordinatorEntity[SmartGuardCoordinator]):
     _attr_has_entity_name = True
 
     def __init__(self, entry: SmartGuardConfigEntry, key: str) -> None:
-        super().__init__(entry.runtime_data.coordinator, context=key)
-        identity = entry.runtime_data.identity
-        self._attr_unique_id = f"{identity.global_device_id}_{key}"
+        runtime = entry.runtime_data
+        super().__init__(runtime.coordinator, context=key)
+        identity = runtime.identity
+        self._attr_unique_id = runtime.entity_unique_id(key)
         self._module_label_key = ENTITY_MODULE_LABEL_KEYS.get(key)
         self._update_module_name()
         self._attr_device_info = DeviceInfo(

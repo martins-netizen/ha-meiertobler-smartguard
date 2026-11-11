@@ -1,5 +1,17 @@
 {
   "title": "Meier Tobler SmartGuard",
+  "services": {
+    "get_write_capabilities": {
+      "name": "Schreibfunktionen abfragen",
+      "description": "Listet die verfügbaren SmartGuard-Steuerfunktionen des gewählten Gateways auf.",
+      "fields": {
+        "config_entry_id": {
+          "name": "SmartGuard-Gateway",
+          "description": "Das konfigurierte SmartGuard-Gateway, dessen Steuerfunktionen du abfragen möchtest."
+        }
+      }
+    }
+  },
   "config": {
     "step": {
       "user": {
@@ -37,6 +49,9 @@
     }
   },
   "exceptions": {
+    "write_capabilities_target_unavailable": {
+      "message": "Wähle ein geladenes SmartGuard-Gateway."
+    },
     "invalid_mode": {
       "message": "Der Betriebsmodus {option} wird nicht unterstützt."
     },

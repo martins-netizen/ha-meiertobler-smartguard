@@ -1,5 +1,17 @@
 {
   "title": "Meier Tobler SmartGuard",
+  "services": {
+    "get_write_capabilities": {
+      "name": "Get write capabilities",
+      "description": "List the available SmartGuard controls for the selected gateway.",
+      "fields": {
+        "config_entry_id": {
+          "name": "SmartGuard gateway",
+          "description": "The configured SmartGuard gateway whose controls you want to inspect."
+        }
+      }
+    }
+  },
   "config": {
     "step": {
       "user": {
@@ -37,6 +49,9 @@
     }
   },
   "exceptions": {
+    "write_capabilities_target_unavailable": {
+      "message": "Choose a loaded SmartGuard gateway."
+    },
     "invalid_mode": {
       "message": "The operating mode {option} is not supported."
     },

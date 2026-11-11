@@ -52,7 +52,15 @@ def test_automation_examples_use_guarded_current_syntax() -> None:
 def test_automation_example_yaml_is_valid() -> None:
     """Every automation example is a valid standalone YAML mapping."""
     examples = (ROOT / "docs" / "AUTOMATION_EXAMPLES.md").read_text(encoding="utf-8")
-    blocks = re.findall(r"```yaml\n(.*?)\n```", examples, flags=re.DOTALL)
+    catalogue_block, *blocks = re.findall(r"```yaml\n(.*?)\n```", examples, flags=re.DOTALL)
+    catalogue = yaml.safe_load(catalogue_block)
+    assert isinstance(catalogue, dict)
+    call, condition = catalogue["actions"]
+    assert call["action"] == "meiertobler_smartguard.get_write_capabilities"
+    assert "config_entry_id" in call["data"]
+    assert condition["condition"] == "template"
+    assert call["response_variable"] in condition["value_template"]
+    assert "hk60.operating_mode" in condition["value_template"]
     assert len(blocks) == 2
     for block in blocks:
         automation = yaml.safe_load(block)

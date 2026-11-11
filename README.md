@@ -47,6 +47,17 @@ configured names and interpretation.
 
 <a id="release-status"></a>
 
+## Capability discovery in development
+
+The source branch adds the read-only
+`meiertobler_smartguard.get_write_capabilities` action for automations to find
+the existing HK60 mode select, its options and its availability. It uses local
+Home Assistant state and read permissions; changing a mode still requires the
+standard select action and its control permission. See the
+[response and YAML example](docs/AUTOMATION_EXAMPLES.md#discover-write-capabilities).
+This action is not included in the published 0.7.2 release. The source baseline
+is Home Assistant Core 2026.11.0 or newer.
+
 ## Downloads and entity defaults
 
 Use **[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)**

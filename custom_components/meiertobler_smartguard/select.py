@@ -10,6 +10,7 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from .api import SmartGuardError, SmartGuardWriteVerificationError
 from .const import (
     DOMAIN,
+    HK60_MODE_SELECT_KEY,
     HK60_SELECTED_MODE_DATA_POINT,
     HK60_SELECTED_MODE_OPTIONS,
     HK60_SELECTED_MODE_TO_VALUE,
@@ -37,7 +38,7 @@ class SmartGuardModeSelect(SmartGuardEntity, SelectEntity):
     _attr_translation_key = "hk60_selected_mode"
 
     def __init__(self, entry: SmartGuardConfigEntry) -> None:
-        super().__init__(entry, "hk60_selected_mode_select")
+        super().__init__(entry, HK60_MODE_SELECT_KEY)
         self._attr_options = list(HK60_SELECTED_MODE_OPTIONS)
         self._client = entry.runtime_data.client
         self._serial_number = entry.runtime_data.identity.serial_number

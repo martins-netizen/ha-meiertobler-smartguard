@@ -43,6 +43,7 @@ class SmartGuardDataPoint:
         return f"{base}/datapoints/{self.datapoint_id}"
 
 
+HK60_MODE_SELECT_KEY = "hk60_selected_mode_select"
 HK60_SELECTED_MODE_DATA_POINT = SmartGuardDataPoint(
     "hk60_selected_mode",
     5004,
@@ -159,7 +160,7 @@ ENTITY_MODULE_LABEL_KEYS: dict[str, str] = {
 ENTITY_MODULE_LABEL_KEYS.update(
     {key: key for key in MODULE_LABEL_KEYS.values()}
 )
-ENTITY_MODULE_LABEL_KEYS["hk60_selected_mode_select"] = "hk60_label"
+ENTITY_MODULE_LABEL_KEYS[HK60_MODE_SELECT_KEY] = "hk60_label"
 LABEL_MODULE_IDS: dict[str, str] = {
     key: "controller" if path is None else f"{path[0]}/{path[1]}"
     for path, key in MODULE_LABEL_KEYS.items()

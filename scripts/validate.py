@@ -51,6 +51,8 @@ REQUIRED_FILES = (
     INTEGRATION / "entity.py",
     INTEGRATION / "select.py",
     INTEGRATION / "sensor.py",
+    INTEGRATION / "services.py",
+    INTEGRATION / "services.yaml",
     INTEGRATION / "brand" / "icon.png",
     INTEGRATION / "manifest.json",
     INTEGRATION / "quality_scale.yaml",

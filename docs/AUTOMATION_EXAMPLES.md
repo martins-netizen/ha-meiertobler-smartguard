@@ -5,6 +5,46 @@ Use the internal SmartGuard states in YAML: `auto`, `normal`, `reduced`,
 labels. Find the exact IDs under **Settings > Devices & services >
 Meier Tobler SmartGuard > Entities**.
 
+## Discover write capabilities
+
+This action belongs to the development source and requires HA Core 2026.11.0
+or newer. It is not part of the published SmartGuard 0.7.2 release. Check the
+release notes before using it with an installed version.
+
+Choose **Meier Tobler SmartGuard: Get write capabilities** in **Developer Tools
+> Actions** and select a configured gateway. In an automation, use the same
+action with a response variable.
+
+```yaml
+actions:
+  - action: meiertobler_smartguard.get_write_capabilities
+    data:
+      config_entry_id: REPLACE_WITH_SMARTGUARD_CONFIG_ENTRY_ID
+    response_variable: smartguard_capabilities
+  - condition: template
+    value_template: >-
+      {{ smartguard_capabilities.parameters.get('hk60.operating_mode', {}).get('available', false) }}
+```
+
+The action returns a `parameters` mapping. A registered and enabled HK60 mode
+select appears as `hk60.operating_mode`, with these fields.
+
+| Field | Meaning |
+| --- | --- |
+| `type` | `select` |
+| `available` | Whether Home Assistant currently has a valid mode state for the select |
+| `options` | The internal option values accepted by the select |
+| `action` | `select.select_option` |
+| `target` | The current entity ID of the select, including any custom name |
+| `value_field` | `option`, the field to pass to the select action |
+
+An absent or disabled select gives an empty `parameters` mapping. The lookup
+uses Home Assistant state, checks read access to the select for user calls and
+requires the selected SmartGuard entry to be loaded. To change mode, call the
+separate `select.select_option` action with the returned target and an explicit
+option. The select action checks control permissions and verifies a mode write
+against the gateway.
+
 ## Guarded night-heating blueprint
 
 The [repository blueprint](../blueprints/automation/martins_netizen/smartguard_guarded_night_heating.yaml)

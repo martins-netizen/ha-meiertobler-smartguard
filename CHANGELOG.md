@@ -5,6 +5,11 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+### Added
+
+- Add a read-only action that discovers the HK60 operating-mode select for a
+  chosen SmartGuard gateway, with its available options and current availability.
+
 ### Changed
 
 - Require Home Assistant Core 2026.11.0 or newer. Update Core before installing

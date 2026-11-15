@@ -23,6 +23,10 @@ for current availability; this record does not change an installed version.
   The relocation from `.github/` was followed by a real Dependabot update PR;
   the internal GitHub rejection rule remains unknown. Include the reviewed
   mypy 2.4.1, pip 26.3, Ruff 0.17.4 and ast-serialize 0.13.1 lock updates.
+- Require both full HA 2026.11.0/2026.11.1 suites, 100% statement and branch
+  coverage for every integration module, CodeQL and a fail-closed advisory
+  audit of the full universal lock. The same advisory audit runs daily.
+  Existing strict MyPy, Ruff, SonarCloud, Hassfest and HACS checks remain.
 - Separately require **multidict 6.9.1 or newer** in CI and the Release Gate for
   CVE-2026-104874. This is a validation-environment constraint; the integration
   does not install or override Home Assistant's runtime dependencies.
@@ -55,7 +59,7 @@ The [security policy](../SECURITY.md) and existing network restriction apply.
 - SmartGuard 2.0, device type `1001`; HK60 enabled for its entities.
 - Core **2026.11.0 or newer**. SmartGuard 0.7.2 remains compatible with Core
   2026.9/2026.10, as historical compatibility rather than a security-update
-  recommendation. The complete suite uses the matching HA 2026.11.0 fixture.
+  recommendation. Complete suites use matching HA 2026.11.0 and 2026.11.1 fixtures in separate environments.
 - Up to **45 entities** and **44 coordinated GETs** per 60-second refresh;
   the local catalogue adds neither an entity nor an additional gateway poll.
 - Once published, update the existing Marketplace entry and restart HA. Keep
@@ -75,17 +79,26 @@ gateway discovery are not established by this release preparation.
 Preparation starts from reviewed main
 `39a0af1a7b2960f383067f73e324246117b86867`, including merged PRs #56–#60.
 Relative to that source, only the manifest version changes inside the
-integration. All other integration files, the blueprint, `ci/` manifest/lock,
-workflow permissions, action pins, platform markers, hashes and quality gates
-must remain byte-identical. Root release metadata and the existing version
-assertions advance together; user and maintenance guides describe this scope.
+integration; the capability implementation from PR #56 is retained. Root
+release metadata and version assertions advance together. The CI change adds
+an explicitly exclusive current-fixture group to the native universal lock,
+strengthens coverage to 100% for all modules, requires CodeQL and complete
+advisory results through Quality, and repeats the audit daily. Preserve all
+previous package versions and archives while adding the reviewed current HA
+fixture. The blueprint, HA minimum and runtime write permissions are unchanged.
 
 Require repository/release validation, dependency consistency, Ruff, strict
-MyPy and the complete suite with statement/branch coverage. Require successful
-Tests (Current HA), Quality, Hassfest, HACS and SonarQube analysis on the exact
-PR head, then independently verify the actual merge checks. Known upstream
-deprecation warnings remain visible. The quality checklist remains a custom
-integration self-assessment, not official Gold certification.
+MyPy and both full suites with complete statement/branch coverage. Require
+successful Tests (HA 2026.11.0), Tests (HA 2026.11.1), Test dependency advisories,
+Analyze Python, Quality, Hassfest, HACS and SonarQube analysis on the exact PR
+head, then independently verify actual merge checks. Known upstream warnings
+remain visible. Only CodeQL receives security-result upload permission;
+repository contents remain read-only. The existing protected Quality check
+requires both test environments, CodeQL and the advisory job; a failure,
+skip, cancellation or unknown advisory result blocks it. No ruleset weakening
+or repository-write permission is introduced. See the
+[engineering/security baseline](CI_SECURITY_BASELINE.md) for the comparison and
+remaining limits; this is not official Gold certification.
 
 Before publication, the annotated tag's read-only Release Gate must build the
 deterministic ZIP and checksum. Compare every integration member byte for byte

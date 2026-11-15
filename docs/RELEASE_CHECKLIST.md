@@ -20,17 +20,21 @@ For each new release:
 
 Source preparation only; see [0.8.0 notes](RELEASE_NOTES_0.8.0.md) and
 [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
-for publication status. The candidate includes the already reviewed changes
-from PRs #56–#60. It requires **Core 2026.11.0 or newer**; 0.7.2 remains the
+for publication status. The candidate includes the reviewed runtime from PRs #56–#60 and the proposed CI/security controls
+described in the [baseline comparison](CI_SECURITY_BASELINE.md). It requires **Core 2026.11.0 or newer**; 0.7.2 remains the
 historical compatible version for Core 2026.9/2026.10.
 
 - [x] Align manifest, project, root lock and existing release assertions at 0.8.0.
 - [x] Document the response-only HK60 catalogue, unchanged control permissions
       and Core upgrade requirement in the user and technical guides.
 - [x] Record successful hosted Dependabot PR creation and reviewed tool updates.
-- [x] Pass local candidate validation: 451 tests and 26 subtests, 100% integration
-      statement/branch coverage, Ruff, strict MyPy and dependency consistency;
-      verify two identical builds and every ZIP member against source.
+- [x] Pass complete local suites on both HA fixtures, 100% coverage of every
+      integration module, Ruff, strict MyPy and dependency consistency; verify
+      two identical builds and every ZIP member against source.
+- [x] Audit all universal-lock registry selections with no active advisories or
+      unknown results at the local check time.
+- [ ] Verify the new hosted CodeQL, both HA suites and required advisory job;
+      obtain a current owner-authenticated GitHub alert/settings inventory.
 - [ ] Pass all exact-head PR checks and obtain normal merge approval.
 - [ ] Verify the actual merged source and its checks before selecting a tag.
 - [ ] Pass the annotated tag's Release Gate and compare every package member.

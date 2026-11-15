@@ -1,0 +1,50 @@
+name: Dependency audit
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dependency-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  advisories:
+    name: Daily test-lock advisories
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      UV_OFFLINE: "true"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: ">=3.14.10 <3.15"
+          check-latest: true
+      - name: Check bootstrap security baseline
+        run: python scripts/check_ci_security.py bootstrap
+      - name: Set up locked uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version-file: ci/uv.lock
+          enable-cache: false
+      - name: Export hash-pinned audit parser dependencies
+        run: >-
+          uv export --quiet --directory ci --locked --offline --only-group build
+          --no-emit-project --format requirements.txt
+          --output-file "$RUNNER_TEMP/smartguard-audit.txt"
+      - name: Install hash-pinned audit parser dependencies
+        run: >-
+          python -m pip install --disable-pip-version-check
+          --require-hashes --only-binary=:all: --no-deps
+          -r "$RUNNER_TEMP/smartguard-audit.txt"
+      - name: Audit every locked package and platform
+        run: python -m scripts.check_dependency_advisories --json > "$RUNNER_TEMP/smartguard-dependency-audit.json"

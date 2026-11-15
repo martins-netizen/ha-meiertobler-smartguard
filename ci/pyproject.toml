@@ -13,11 +13,21 @@ ci = [
   "pytest-homeassistant==2026.11.0",
   "ruff",
 ]
+ci-current = [
+  "mypy",
+  "pip>=26.2.2",
+  "pytest-cov",
+  "pytest-homeassistant==2026.11.1",
+  "ruff",
+]
 build = ["pip>=26.2.2", "setuptools", "wheel"]
 
 [tool.uv]
 package = false
 required-version = ">=0.13.4"
+# Each complete HA fixture has its own mutually exclusive environment.
+# uv still locks both groups and every supported platform in one canonical file.
+conflicts = [[{ group = "ci" }, { group = "ci-current" }]]
 # Security floors also apply to the dependencies supplied by the HA fixture.
 constraint-dependencies = [
   "certifi>=2026.10.19",

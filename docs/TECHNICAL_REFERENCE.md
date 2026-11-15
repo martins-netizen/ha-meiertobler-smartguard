@@ -93,10 +93,11 @@ export are in `docs/images`; absolute public image URLs work in the HACS view.
 Use Python 3.14.10 or a later 3.14 patch and the pinned, hash-checked CI dependencies
 described in [CONTRIBUTING.md](../CONTRIBUTING.md#ci-dependency-updates).
 
-The current and minimum HA versions are both **2026.11.0**. Validate and the
-Release Gate export the `ci` group from `ci/uv.lock` with the matching
-`pytest-homeassistant` package. Native lockfile updates respect the reviewed HA
-fixture pin. See the contribution guide for the update policy and hash-checked
+The minimum HA is **2026.11.0** (`ci` group); the current target is **2026.11.1**
+(`ci-current`). Validate and Release Gate export each separately from the one
+universal `ci/uv.lock`, with its matching `pytest-homeassistant` package.
+The two fixture groups are explicitly mutually exclusive. Native lockfile
+updates respect both reviewed pins. See the contribution guide for the update policy and hash-checked
 installation; the root `uv.lock` remains integration release metadata.
 
 The CI manifest and universal lock live together outside `.github/`; workflows
@@ -107,8 +108,9 @@ repository checks.
 
 Use a virtual environment with the pinned build tools and hash-checked install
 flags from the contribution guide. The protected Quality check requires
-dependency consistency, repository validation, Ruff, strict MyPy and the
-complete test suite. From the repository root:
+dependency consistency, repository validation, Ruff, strict MyPy, both complete
+test suites, CodeQL and a clean full-lock dependency audit. In each isolated
+fixture environment, from the repository root:
 
 ```bash
 python3 -m pip check
@@ -120,12 +122,15 @@ python3 -m ruff check .
 python3 -m mypy \
   custom_components/meiertobler_smartguard \
   scripts/release.py \
+  scripts/check_ci_security.py \
+  scripts/check_quality_coverage.py \
   tests/test_release.py
-python3 -m pytest -q \
+UV_OFFLINE=true python3 -m pytest -q \
   --disable-socket --allow-hosts=127.0.0.1,::1 \
   --cov=custom_components/meiertobler_smartguard \
-  --cov-report=term-missing \
-  --cov-fail-under=95
+  --cov-report=term-missing --cov-report=json:coverage.json \
+  --cov-fail-under=100
+python3 scripts/check_quality_coverage.py
 ```
 
 Run the complete suite for release-status changes, including release-note tests.
@@ -135,7 +140,10 @@ exact commit and `main` ancestry. Building the development tree with unchanged
 version metadata does not reproduce or publish an existing release. Use each
 published release's own integrity record and assets for its download.
 Synthetic candidate cases use fixed text independently of the current release
-notes. CI requires at least 95 percent statement and branch coverage. The suite
+notes. CI requires **100% statement and branch coverage for every integration
+module**, including newly added Python modules. No module/error-branch exclusion
+is added. See the [security baseline](CI_SECURITY_BASELINE.md) for the daily
+advisory audit and separate hosted/settings evidence. The suite
 covers setup, unload/reload, config flow, coordinator, API/write verification,
 entity formatting, optional readings and redacted diagnostics. Blueprint tests
 also exercise the HA GitHub importer with mocked HTTP, time/state triggers,

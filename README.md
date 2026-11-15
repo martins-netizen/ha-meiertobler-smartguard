@@ -135,8 +135,10 @@ See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
   supported Core releases shipped dependency versions with known vulnerabilities.
   SmartGuard 0.7.2 supports HA 2026.9 and 2026.10. Update Core before installing
   a SmartGuard release that requires 2026.11.0.
-- The protected Quality check requires the complete suite on the supported
-  minimum. See [development checks](docs/TECHNICAL_REFERENCE.md#development-checks).
+- The protected Quality check requires complete suites on **HA 2026.11.0 and
+  2026.11.1**, full statement/branch coverage of every integration module,
+  CodeQL and a fail-closed audit of every locked package version. The same
+  dependency audit runs daily. See the [security and quality baseline](docs/CI_SECURITY_BASELINE.md).
 - **SmartGuard 2.0, device type `1001`.** HK60 must be enabled for its entities.
 - Storage and additional operating readings are optional. Unsupported or
   unavailable optional readings do not block the original entities.

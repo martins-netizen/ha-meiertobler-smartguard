@@ -34,6 +34,13 @@ for current availability.
 
 ### Security
 
+- Require CodeQL, full-lock advisory results and both HA 2026.11.0/2026.11.1
+  suites through the protected Quality check. Audit all fixture/platform
+  package versions daily; active or unknown results fail closed.
+- Require 100% statement/branch coverage for every integration module, retain
+  strict MyPy and enforce Python/pip/certifi/uv/multidict security floors before
+  the relevant installation/test stages. Keep repository contents read-only;
+  only CodeQL may upload security results.
 - Use a Core baseline with updated Pillow, aiohttp, PyJWT, cryptography and uv
   versions to address known vulnerabilities in the previously supported Core
   releases.

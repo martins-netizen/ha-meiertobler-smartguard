@@ -5,6 +5,13 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-15
+
+Source-preparation record; publication is a separate gated step. See the
+[0.8.0 preparation notes](docs/RELEASE_NOTES_0.8.0.md) and
+[GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
+for current availability.
+
 ### Added
 
 - Add a read-only action that discovers the HK60 operating-mode select for a
@@ -21,8 +28,9 @@ uses stable semantic versions for release candidates and published releases.
   constraint, retaining hash-checked installs and the pyric-only build exception.
 - Move the unchanged validation manifest and universal lock to `ci/` to address
   the hosted Dependabot PR-creation rejection for the previous `.github/`
-  location. Update workflow, validator and maintenance-guide paths; verify
-  hosted update publication separately after merge.
+  location. A hosted uv run subsequently created PR #60, whose reviewed mypy,
+  pip, Ruff and ast-serialize updates are included. The internal GitHub
+  rejection rule remains unknown.
 
 ### Security
 

@@ -37,7 +37,15 @@ changing this entity set or polling. From 0.7.2, the two heater operating-hour
 counters default to disabled for new registry entries. Existing registry choices
 are retained, and disabling an entity does not stop its coordinated read.
 Use [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
-for publication status, separately from the [0.7.2 preparation record](RELEASE_NOTES_0.7.2.md).
+for publication status, separately from the [0.8.0 preparation record](RELEASE_NOTES_0.8.0.md).
+
+From **0.8.0**, the response-only
+`meiertobler_smartguard.get_write_capabilities` action describes the enabled
+HK60 mode select for one loaded config entry. It reads HA's entity registry
+and state without gateway I/O, respects entity renaming and checks read access
+for user calls. It neither enumerates raw datapoints nor expands write access.
+The separate select action still checks control permission and write readback.
+See the [response contract](AUTOMATION_EXAMPLES.md#discover-write-capabilities).
 
 ## HK60 writes
 
@@ -106,7 +114,7 @@ complete test suite. From the repository root:
 python3 -m pip check
 python3 scripts/validate.py
 python3 scripts/release.py check
-python3 scripts/release.py verify-tag --tag v0.7.2
+python3 scripts/release.py verify-tag --tag v0.8.0
 python3 scripts/release.py build --output-directory dist
 python3 -m ruff check .
 python3 -m mypy \

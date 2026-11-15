@@ -2,10 +2,20 @@
 
 [Back to the overview](../README.md)
 
-This source tree requires **Home Assistant Core 2026.11.0 or newer**. On HA
-2026.9 and 2026.10, use [SmartGuard 0.7.2](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.2).
-Update Home Assistant before installing a SmartGuard release that requires
-the newer Core baseline.
+SmartGuard **0.8.0 and newer** require **Home Assistant Core 2026.11.0 or newer**.
+Update Home Assistant before installing 0.8.0. Earlier supported Core releases
+shipped dependency versions with known vulnerabilities; remaining on the older
+integration does not correct those Core dependencies.
+
+| SmartGuard version | Compatible HA Core | Capability catalogue |
+| --- | --- | --- |
+| 0.8.0 | 2026.11.0 or newer | Read-only HK60 mode discovery |
+| 0.7.2 | 2026.9.0 or newer | Not included |
+
+[0.7.2](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.7.2)
+remains the compatible historical release for HA 2026.9/2026.10. Compatibility
+with those versions is not a recommendation to postpone Core security updates.
+See [0.8.0 preparation and publication status](RELEASE_NOTES_0.8.0.md).
 
 <a id="install-with-hacs"></a>
 
@@ -81,6 +91,12 @@ not change the coordinated gateway poll.
 An integration update does not re-import blueprints or replace saved automations.
 Before separately re-importing the night-heating blueprint, review its
 [two-helper setup and ownership rules](AUTOMATION_EXAMPLES.md).
+
+Updating from 0.7.2 to 0.8.0 needs no config-entry migration or recreation of
+entities. Existing mode and holiday automations keep their action paths. To
+use the new catalogue, explicitly add its
+[response action](AUTOMATION_EXAMPLES.md#discover-write-capabilities) to the
+automation. The catalogue itself does not send a gateway request or mode change.
 
 ## Documentation in the Marketplace
 

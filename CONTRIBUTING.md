@@ -53,11 +53,17 @@ PR-creation rejection reported for dependency projects under `.github/` in
 [Dependabot issue #15721](https://github.com/dependabot/dependabot-core/issues/15721).
 A [comparable uv project](https://github.com/davisbuilds/skilleval/pull/2) produced
 a [real Dependabot PR after relocation](https://github.com/davisbuilds/skilleval/pull/3).
-This is a compatibility workaround, not confirmation of GitHub's internal
-validation rule. For this repository, verify a fresh hosted uv job creates an
-update PR after merge; passing repository CI alone does not prove that outcome.
-Until publication works, use the focused lock-update procedure below and a
-normal reviewed PR with all checks. Keep alerts and existing permissions intact.
+The repository-specific workaround was verified after
+[PR #59](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/59):
+[hosted uv run 43717927120](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/43717927120)
+received HTTP 204 when creating
+[PR #60](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/60).
+That reviewed update was merged with all checks passing. This result does not
+identify GitHub's internal rejection rule or establish a general upstream fix.
+After future updater-layout changes, require another actual update PR;
+repository CI alone cannot prove hosted PR creation. If an update job fails,
+use the focused lock-update procedure below through a normal reviewed PR.
+Keep alerts and existing permissions intact.
 
 Validate and Release Gate install uv through the full-SHA-pinned official
 `setup-uv` action, reading its exact version from the CI lock. They export the

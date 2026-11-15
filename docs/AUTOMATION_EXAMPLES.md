@@ -11,8 +11,9 @@ This action is available from SmartGuard **0.8.0** and requires HA Core
 **2026.11.0 or newer**. It is absent from 0.7.2. Check the installed version and
 [release notes](RELEASE_NOTES_0.8.0.md) before using it in an automation.
 
-Choose **Meier Tobler SmartGuard: Get write capabilities** in **Developer Tools
-> Actions** and select a configured gateway. In an automation, use the same
+Choose **Meier Tobler SmartGuard: Get write capabilities** in **Settings > Tools
+> Actions** and select a configured gateway. You can also search by action ID:
+`meiertobler_smartguard.get_write_capabilities`. In an automation, use the same
 action with a response variable.
 
 ```yaml

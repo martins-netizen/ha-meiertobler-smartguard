@@ -32,8 +32,8 @@ test suite. Keep the HA and fixture versions aligned with `hacs.json`. If the
 development target later moves ahead of the advertised minimum, test both
 supported baselines in separate environments.
 
-The canonical validation project is [`.github/pyproject.toml`](.github/pyproject.toml)
-and its universal [`.github/uv.lock`](.github/uv.lock). The `ci` group contains
+The canonical validation project is [`ci/pyproject.toml`](ci/pyproject.toml)
+and its universal [`ci/uv.lock`](ci/uv.lock). The `ci` group contains
 the fixture and the tools used directly by this repository; the `build` group
 contains the preinstalled build tools. HA supplies the compatible versions of
 pytest, pytest-asyncio, aiohttp, yarl and uv through its dependency graph.
@@ -45,6 +45,19 @@ the exact HA fixture pin therefore changes only with a coordinated baseline
 review. Alerts remain enabled and no dependency is ignored. A security fix that
 requires relaxing an HA pin needs a reviewed HA/fixture baseline change; this
 policy cannot make an incompatible version safe to install.
+
+Keep the validation manifest and lockfile together in `ci/`. Workflow YAML and
+`dependabot.yml` retain their standard locations under `.github/`. The separate
+CI project uses this layout as a compatibility workaround for the hosted
+PR-creation rejection reported for dependency projects under `.github/` in
+[Dependabot issue #15721](https://github.com/dependabot/dependabot-core/issues/15721).
+A [comparable uv project](https://github.com/davisbuilds/skilleval/pull/2) produced
+a [real Dependabot PR after relocation](https://github.com/davisbuilds/skilleval/pull/3).
+This is a compatibility workaround, not confirmation of GitHub's internal
+validation rule. For this repository, verify a fresh hosted uv job creates an
+update PR after merge; passing repository CI alone does not prove that outcome.
+Until publication works, use the focused lock-update procedure below and a
+normal reviewed PR with all checks. Keep alerts and existing permissions intact.
 
 Validate and Release Gate install uv through the full-SHA-pinned official
 `setup-uv` action, reading its exact version from the CI lock. They export the
@@ -64,9 +77,9 @@ pip does not automatically fetch additional build tools or dependencies.
 The build group is installed first, and `pip check` verifies the final set.
 Review the source-build exception whenever the pyric pin changes.
 
-For a focused tool update, use `uv lock --directory .github --upgrade-package
+For a focused tool update, use `uv lock --directory ci --upgrade-package
 ruff` (or the relevant package). Review the lock diff and run the usual checks;
-unrelated versions should stay pinned. Use `uv lock --directory .github --check`
+unrelated versions should stay pinned. Use `uv lock --directory ci --check`
 to verify manifest/lock consistency. Do not run `uv sync` from the repository
 root: the root project and root `uv.lock` retain integration release metadata.
 

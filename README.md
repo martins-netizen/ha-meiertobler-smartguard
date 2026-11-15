@@ -209,7 +209,8 @@ neuen Mindestanforderung installierst.
 Die ungeschützte lokale HTTP-API gehört ausschliesslich in ein vertrauenswürdiges
 lokales Netzwerk. Unabhängiges Community-Projekt ohne Herstellerunterstützung.
 
-Development dependency updates and the coordinated HA test baseline are described
-in [CONTRIBUTING.md](CONTRIBUTING.md#ci-dependency-updates). The
+Development dependencies use the separate [`ci/` project](ci/pyproject.toml).
+Dependency updates and the coordinated HA test baseline are described in
+[CONTRIBUTING.md](CONTRIBUTING.md#ci-dependency-updates). The
 [quality review](docs/QUALITY_REVIEW.md#quality-scale-scope) is a self-assessment
 against HA criteria; this custom integration has no official Gold certification.

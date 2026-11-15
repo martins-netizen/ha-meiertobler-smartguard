@@ -33,7 +33,7 @@ def exported_requirements(tmp_path_factory: pytest.TempPathFactory) -> dict[str,
                 uv,
                 "export",
                 "--directory",
-                str(ROOT / ".github"),
+                str(ROOT / "ci"),
                 "--locked",
                 "--offline",
                 "--python",
@@ -166,7 +166,7 @@ def test_ci_installation_enforces_hashes_and_source_allowlist(workflow: str) -> 
     assert "--only-group ci" in exports[0]
     assert "--no-hashes" not in exports[0]
     setup = next(step for step in steps if "setup-uv@" in step.get("uses", ""))
-    assert setup["with"]["version-file"] == ".github/uv.lock"
+    assert setup["with"]["version-file"] == "ci/uv.lock"
 
 
 def test_home_assistant_lock_matches_minimum_and_fixture(
@@ -195,7 +195,7 @@ def test_home_assistant_lock_matches_minimum_and_fixture(
 
 def test_updater_keeps_the_coordinated_home_assistant_baseline() -> None:
     """Routine updates must honor HA's constraints without hiding alerts."""
-    project = tomllib.loads((ROOT / ".github/pyproject.toml").read_text())
+    project = tomllib.loads((ROOT / "ci/pyproject.toml").read_text())
     minimum = json.loads((ROOT / "hacs.json").read_text())["homeassistant"]
     ci = [Requirement(raw) for raw in project["dependency-groups"]["ci"]]
     fixture = next(req for req in ci if req.name == "pytest-homeassistant")
@@ -205,7 +205,7 @@ def test_updater_keeps_the_coordinated_home_assistant_baseline() -> None:
     }
     updates = yaml.safe_load((ROOT / ".github/dependabot.yml").read_text())["updates"]
     python = next(item for item in updates if item["package-ecosystem"] == "uv")
-    assert python["directory"] == "/.github"
+    assert python["directory"] == "/ci"
     assert python["versioning-strategy"] == "lockfile-only"
     assert not python.get("ignore")
     assert python["open-pull-requests-limit"] > 0

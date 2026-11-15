@@ -19,6 +19,10 @@ uses stable semantic versions for release candidates and published releases.
 - Maintain CI and Release Gate dependencies in one native uv project and
   universal lockfile. Resolve routine updates within the reviewed HA fixture
   constraint, retaining hash-checked installs and the pyric-only build exception.
+- Move the unchanged validation manifest and universal lock to `ci/` to address
+  the hosted Dependabot PR-creation rejection for the previous `.github/`
+  location. Update workflow, validator and maintenance-guide paths; verify
+  hosted update publication separately after merge.
 
 ### Security
 

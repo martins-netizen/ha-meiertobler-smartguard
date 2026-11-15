@@ -18,7 +18,7 @@ updates:
 
   # Resolve native uv.lock updates within the reviewed HA fixture constraint.
   - package-ecosystem: uv
-    directory: "/.github"
+    directory: "/ci"
     schedule:
       interval: weekly
       day: monday

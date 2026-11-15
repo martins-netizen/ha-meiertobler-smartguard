@@ -47,16 +47,17 @@ configured names and interpretation.
 
 <a id="release-status"></a>
 
-## Capability discovery in development
+## Discover supported controls (from 0.8.0)
 
-The source branch adds the read-only
+From SmartGuard **0.8.0**, use the read-only
 `meiertobler_smartguard.get_write_capabilities` action for automations to find
 the existing HK60 mode select, its options and its availability. It uses local
 Home Assistant state and read permissions; changing a mode still requires the
 standard select action and its control permission. See the
 [response and YAML example](docs/AUTOMATION_EXAMPLES.md#discover-write-capabilities).
-This action is not included in the published 0.7.2 release. The source baseline
-is Home Assistant Core 2026.11.0 or newer.
+The catalogue currently describes the HK60 operating-mode select. It does not
+expose arbitrary gateway parameters or add a new device write path. It requires
+Home Assistant Core **2026.11.0 or newer** and is absent from 0.7.2.
 
 ## Downloads and entity defaults
 
@@ -130,12 +131,14 @@ See [the holiday contract and plan](docs/HOLIDAY_MODE_PLAN.md).
 
 ## Compatibility and security
 
-- **Home Assistant Core 2026.11.0 or newer** for this source tree. Earlier
+- **Home Assistant Core 2026.11.0 or newer** from SmartGuard **0.8.0**. Earlier
   supported Core releases shipped dependency versions with known vulnerabilities.
   SmartGuard 0.7.2 supports HA 2026.9 and 2026.10. Update Core before installing
   a SmartGuard release that requires 2026.11.0.
-- The protected Quality check requires the complete suite on the supported
-  minimum. See [development checks](docs/TECHNICAL_REFERENCE.md#development-checks).
+- The protected Quality check requires complete suites on **HA 2026.11.0 and
+  2026.11.1**, full statement/branch coverage of every integration module,
+  CodeQL and a fail-closed audit of every locked package version. The same
+  dependency audit runs daily. See the [security and quality baseline](docs/CI_SECURITY_BASELINE.md).
 - **SmartGuard 2.0, device type `1001`.** HK60 must be enabled for its entities.
 - Storage and additional operating readings are optional. Unsupported or
   unavailable optional readings do not block the original entities.
@@ -169,7 +172,8 @@ for available downloads and the [changelog](CHANGELOG.md) for changes.
 Preparation and publication evidence live in the
 [release checklist](docs/RELEASE_CHECKLIST.md), away from the installation steps.
 
-- Release records: [0.7.2](docs/RELEASE_NOTES_0.7.2.md),
+- Release records: [0.8.0](docs/RELEASE_NOTES_0.8.0.md),
+  [0.7.2](docs/RELEASE_NOTES_0.7.2.md),
   [0.7.1](docs/RELEASE_NOTES_0.7.1.md),
   [0.7.0](docs/RELEASE_NOTES_0.7.0.md),
   [0.6.0](docs/RELEASE_NOTES_0.6.0.md),
@@ -194,6 +198,12 @@ Heizeinsatz-Anzeigen sind keine elektrische Leistungs- oder Energiemessung.
 Ferienbeginn und -ende lassen sich über den geführten HK60-Ferieneditor mit
 ausdrücklicher Bestätigung ändern. Kalender, Dashboards, Anwesenheitssimulation
 und adaptives Vorheizen gehören zur separaten Home-Assistant-Konfiguration.
+
+Ab **0.8.0** liefert die lesende Aktion
+`meiertobler_smartguard.get_write_capabilities` die vorhandene HK60-Moduswahl,
+ihre Optionen und Verfügbarkeit für Automationen. Sie fragt den lokalen
+HA-Zustand ab; die separate Modusänderung behält ihre Berechtigungsprüfung und
+das unmittelbare Zurücklesen. Weitere Geräteparameter werden nicht freigegeben.
 
 **Verfügbare Versionen:** [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest).
 Ab 0.7.2 sind neu registrierte Diagnose-Betriebsstundenzähler standardmässig aus;

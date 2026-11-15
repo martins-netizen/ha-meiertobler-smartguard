@@ -26,7 +26,7 @@ def exported_requirements(tmp_path_factory: pytest.TempPathFactory) -> dict[str,
     uv = shutil.which("uv")
     assert uv is not None, "The validation environment must supply uv"
     outputs = {}
-    for group in ("ci", "build"):
+    for group in ("ci", "ci-current", "build"):
         output = tmp_path_factory.mktemp("ci-exports") / f"{group}.txt"
         subprocess.run(
             [
@@ -59,12 +59,17 @@ def exported_requirements(tmp_path_factory: pytest.TempPathFactory) -> dict[str,
     return outputs
 
 
+@pytest.fixture(scope="module", params=["ci", "ci-current"])
+def ci_group(request: pytest.FixtureRequest) -> str:
+    return str(request.param)
+
+
 @pytest.fixture(scope="module")
-def ci_requirements(exported_requirements: dict[str, str]) -> list[Requirement]:
+def ci_requirements(exported_requirements: dict[str, str], ci_group: str) -> list[Requirement]:
     """Read the resolved CI group rather than a second committed lockfile."""
     return [
         Requirement(line.removesuffix(" \\"))
-        for line in exported_requirements["ci"].splitlines()
+        for line in exported_requirements[ci_group].splitlines()
         if line and not line.startswith(("#", " "))
     ]
 
@@ -115,7 +120,7 @@ def test_ci_requirements_preserve_platform_dependencies(
     assert not excluded & selected
 
 
-@pytest.mark.parametrize("name", ["ci", "build"])
+@pytest.mark.parametrize("name", ["ci", "ci-current", "build"])
 def test_requirements_pin_and_hash_every_package(
     name: str, exported_requirements: dict[str, str]
 ) -> None:
@@ -146,7 +151,7 @@ def test_ci_installation_enforces_hashes_and_source_allowlist(workflow: str) -> 
     data = yaml.safe_load(
         (ROOT / ".github/workflows" / f"{workflow}.yml").read_text(encoding="utf-8")
     )
-    steps = [step for job in data["jobs"].values() for step in job["steps"]]
+    steps = data["jobs"]["compatibility"]["steps"]
     installs = [step["run"] for step in steps if "pip install" in step.get("run", "")]
     assert len(installs) == 2
     for command in installs:
@@ -163,14 +168,14 @@ def test_ci_installation_enforces_hashes_and_source_allowlist(workflow: str) -> 
     assert len(exports) == 1
     assert exports[0].count("--locked --offline") == 2
     assert "--only-group build" in exports[0]
-    assert "--only-group ci" in exports[0]
+    assert '--only-group "$CI_GROUP"' in exports[0]
     assert "--no-hashes" not in exports[0]
     setup = next(step for step in steps if "setup-uv@" in step.get("uses", ""))
     assert setup["with"]["version-file"] == "ci/uv.lock"
 
 
 def test_home_assistant_lock_matches_minimum_and_fixture(
-    ci_requirements: list[Requirement],
+    ci_requirements: list[Requirement], ci_group: str,
 ) -> None:
     """Cover the advertised minimum and use matching fixtures for installed HA."""
     minimum = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))[
@@ -180,7 +185,8 @@ def test_home_assistant_lock_matches_minimum_and_fixture(
         requirement.name: str(requirement.specifier)
         for requirement in ci_requirements
     }
-    assert pins["homeassistant"] == pins["pytest-homeassistant"] == f"=={minimum}"
+    expected = minimum if ci_group == "ci" else "2026.11.1"
+    assert pins["homeassistant"] == pins["pytest-homeassistant"] == f"=={expected}"
     blueprint_path = (
         ROOT
         / "blueprints"
@@ -214,21 +220,69 @@ def test_updater_keeps_the_coordinated_home_assistant_baseline() -> None:
 
 
 def test_protected_quality_check_requires_compatibility() -> None:
-    """A failed or cancelled compatibility run must fail the protected check."""
-    data = yaml.safe_load(
-        (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
-    )
+    """A failed, absent or cancelled security/compatibility result blocks Quality."""
+    data = yaml.safe_load((ROOT / ".github/workflows/validate.yml").read_text())
     jobs = data["jobs"]
     assert jobs["quality"]["name"] == "Quality"
-    assert jobs["quality"]["needs"] == "compatibility"
+    assert set(jobs["quality"]["needs"]) == {"compatibility", "advisories", "codeql"}
     assert jobs["quality"]["if"] == "${{ always() }}"
     gate = jobs["quality"]["steps"][0]
-    assert gate["env"]["COMPATIBILITY_RESULT"] == "${{ needs.compatibility.result }}"
-    assert gate["run"] == 'test "$COMPATIBILITY_RESULT" = success'
-    test_job = jobs["compatibility"]
+    keys = ["COMPATIBILITY_RESULT", "ADVISORIES_RESULT", "CODEQL_RESULT"]
+    for key in keys:
+        for result in ("success", "failure", "skipped", "cancelled", ""):
+            env = dict.fromkeys(keys, "success")
+            env[key] = result
+            process = subprocess.run(["bash", "-c", gate["run"]], env=env, check=False)
+            assert (process.returncode == 0) is (result == "success")
     assert any(
         "python -m pytest" in step.get("run", "")
-        and "--cov-fail-under=95" in step["run"]
-        and not step.get("if")
-        for step in test_job["steps"]
+        and "--cov-fail-under=100" in step["run"] and not step.get("if")
+        for step in jobs["compatibility"]["steps"]
     )
+    assert jobs["codeql"]["name"] == "Analyze Python"
+    assert jobs["codeql"]["permissions"] == {"contents": "read", "security-events": "write"}
+    for name, job in jobs.items():
+        if name != "codeql":
+            assert not job.get("permissions")
+        for step in job["steps"]:
+            if "uses" in step:
+                assert len(step["uses"].split("@",1)[1]) == 40
+            assert not step.get("continue-on-error")
+
+
+def test_release_cannot_build_without_both_hAs_and_clean_advisories() -> None:
+    data=yaml.safe_load((ROOT / ".github/workflows/release.yml").read_text())
+    jobs=data["jobs"]
+    assert jobs["compatibility"]["strategy"]["matrix"]["include"] == [
+        {"ha":"2026.11.0","group":"ci"}, {"ha":"2026.11.1","group":"ci-current"}]
+    gate=jobs["release-gate"]
+    assert set(gate["needs"]) == {"compatibility", "advisories"}
+    assert gate["if"] == "${{ always() }}"
+    command=gate["steps"][0]["run"]
+    for key in ["COMPATIBILITY_RESULT", "ADVISORIES_RESULT"]:
+        for result in ("success","failure","cancelled","skipped", ""):
+            env=dict.fromkeys(["COMPATIBILITY_RESULT", "ADVISORIES_RESULT"],"success")
+            env[key]=result
+            p=subprocess.run(["bash","-c",command],env=env,check=False)
+            assert (p.returncode==0) is (result=="success")
+    steps=gate["steps"]
+    guard=next(x for x in steps if "main ancestry" in x["name"])
+    assert 'git merge-base --is-ancestor "$RELEASE_SHA" origin/main' in guard["run"]
+    assert 'git cat-file -t' in guard["run"] and 'verify-tag' in guard["run"]
+    assert steps.index(guard) < next(i for i,s in enumerate(steps) if "Build deterministic" in s["name"])
+    assert data["permissions"]=={"contents":"read"}
+
+
+
+def test_conflicting_fixture_groups_cannot_be_exported_together(tmp_path: Path) -> None:
+    """The actual resolver must prevent a mixed minimum/current environment."""
+    uv=shutil.which("uv")
+    assert uv is not None
+    process=subprocess.run([
+        uv,"export","--directory",str(ROOT/"ci"),"--locked","--offline",
+        "--no-default-groups","--group","ci","--group","ci-current","--no-emit-project",
+        "--format","requirements.txt","--output-file",str(tmp_path/"invalid.txt"),
+    ],capture_output=True,text=True,check=False)
+    assert process.returncode != 0
+    assert "conflict" in process.stderr.lower() or "incompatible" in process.stderr.lower()
+    assert not (tmp_path/"invalid.txt").exists()

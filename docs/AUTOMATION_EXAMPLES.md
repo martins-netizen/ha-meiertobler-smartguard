@@ -7,9 +7,9 @@ Meier Tobler SmartGuard > Entities**.
 
 ## Discover write capabilities
 
-This action belongs to the development source and requires HA Core 2026.11.0
-or newer. It is not part of the published SmartGuard 0.7.2 release. Check the
-release notes before using it with an installed version.
+This action is available from SmartGuard **0.8.0** and requires HA Core
+**2026.11.0 or newer**. It is absent from 0.7.2. Check the installed version and
+[release notes](RELEASE_NOTES_0.8.0.md) before using it in an automation.
 
 Choose **Meier Tobler SmartGuard: Get write capabilities** in **Developer Tools
 > Actions** and select a configured gateway. In an automation, use the same

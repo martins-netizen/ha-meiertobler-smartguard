@@ -100,6 +100,26 @@ def _validate_local_markdown_links() -> None:
                 )
 
 
+def validate_workflow_permissions(name: str, workflow: str) -> None:
+    """Allow security-result uploads only in the dedicated CodeQL analysis job."""
+    if "pull_request_target:" in workflow:
+        raise RuntimeError(f"Privileged pull_request_target trigger in {name}")
+    if "permissions:\n  contents: read" not in workflow:
+        raise RuntimeError(f"Workflow must declare read-only contents access: {name}")
+    writes = re.findall(r"(?m)^\s+([a-z][a-z-]*):\s*write\s*$", workflow)
+    codeql_scope = (
+        "    permissions:\n"
+        "      contents: read\n"
+        "      security-events: write\n"
+    )
+    if writes and (
+        name != "validate.yml"
+        or writes != ["security-events"]
+        or codeql_scope not in workflow
+    ):
+        raise RuntimeError(f"Unexpected workflow write permission: {name}")
+
+
 def validate_release_notes(version: str, release_notes: str) -> None:
     """Accept an honest candidate or a published release with its own evidence."""
     for fragment in (f"# Release notes: {version}", f"annotated `v{version}` tag"):
@@ -286,18 +306,7 @@ def main() -> int:
 
     for workflow_path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
         workflow = workflow_path.read_text(encoding="utf-8")
-        if "pull_request_target:" in workflow:
-            raise RuntimeError(
-                f"Privileged pull_request_target trigger in {workflow_path.name}"
-            )
-        if "permissions:\n  contents: read" not in workflow:
-            raise RuntimeError(
-                f"Workflow must declare read-only contents access: {workflow_path.name}"
-            )
-        if re.search(r"(?m)^\s+contents:\s+write\s*$", workflow):
-            raise RuntimeError(
-                f"Workflow must not grant contents write access: {workflow_path.name}"
-            )
+        validate_workflow_permissions(workflow_path.name, workflow)
         action_references = ACTION_REFERENCE.findall(workflow)
         if not action_references or any(
             FULL_GIT_SHA.fullmatch(reference) is None for reference in action_references

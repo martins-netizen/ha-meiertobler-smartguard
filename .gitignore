@@ -9,6 +9,7 @@
 *.log
 .coverage
 coverage.xml
+coverage.json
 htmlcov/
 dist/
 .pytest_cache/

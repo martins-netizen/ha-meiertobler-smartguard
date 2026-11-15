@@ -1,6 +1,6 @@
 [project]
 name = "ha-meiertobler-smartguard"
-version = "0.7.2"
+version = "0.8.0"
 description = "Home Assistant custom integration for Meier Tobler SmartGuard"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -34,5 +34,5 @@ branch = true
 source = ["custom_components/meiertobler_smartguard"]
 
 [tool.coverage.report]
-fail_under = 95
+fail_under = 100
 show_missing = true

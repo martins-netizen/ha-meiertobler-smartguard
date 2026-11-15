@@ -18,7 +18,16 @@ and [review process](https://contributors.home-assistant.io/core/quality-scale/r
 
 Use [GitHub Releases](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/latest)
 for stable downloads. The protected Quality check requires the complete suite
-on the current minimum **HA 2026.11.0**.
+on the minimum **HA 2026.11.0** and current target **HA 2026.11.1**. The
+protected gate also requires CodeQL and a clean audit of every locked package
+version. Every integration module must retain 100% statement/branch coverage.
+The [baseline comparison](CI_SECURITY_BASELINE.md) records these automated
+engineering controls separately from open field, Gold and settings evidence.
+The [0.8.0 preparation](RELEASE_NOTES_0.8.0.md) versions the response-only HK60
+capability catalogue and that Core baseline. Its local lookup does not perform
+gateway I/O; existing mode-control permissions and readback remain unchanged.
+This addition does not close the open `discovery` or blueprint UI evidence
+items below, or establish a new physical heating test.
 The diagnostic counter defaults were merged separately
 ([PR #53](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/53))
 and are included in the 0.7.2 source. See its

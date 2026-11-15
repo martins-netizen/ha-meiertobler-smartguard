@@ -27,9 +27,22 @@ internet.
 
 ## Release safeguards
 
-Every external GitHub Action is pinned to a full commit SHA. Validation and
-release workflows use a read-only `GITHUB_TOKEN`, do not use the privileged
-`pull_request_target` event, and never publish automatically. The release gate
+Every external GitHub Action is pinned to a full commit SHA. Workflows keep
+repository contents read-only, do not use the privileged `pull_request_target`
+event, and never publish automatically. Only the CodeQL analysis job receives
+`security-events: write` to upload findings; it cannot write repository contents.
+The protected Quality check requires both complete HA suites, 100% statement
+and branch coverage for every integration module, CodeQL and the complete
+dependency advisory audit. Active advisories or unknown/malformed results fail
+the audit; there are no ignore or alternate-registry switches. The audit also
+runs daily against the universal lock, including foreign-platform selections.
+The release gate
 accepts only an annotated stable-version tag on a commit contained in `main`,
-checks version consistency, repeats the complete test suite, and emits a
+checks version consistency, requires both full HA suites and a clean dependency
+audit before building, and emits a
 SHA-256 checksum for the deterministic release bundle.
+
+See the [baseline and evidence limits](docs/CI_SECURITY_BASELINE.md). A clean
+advisory lookup is specific to its source and time; it is not a guarantee that
+all vulnerabilities are known. GitHub alert/settings inventories and deployment
+network controls require their own current evidence.

@@ -26,22 +26,25 @@ merged automatically.
 
 The CI and Release Gate environment uses the official
 [`pytest-homeassistant`](https://github.com/home-assistant/core/tree/2026.11.0/packages/pytest-homeassistant)
-package, pinned with Home Assistant to the advertised minimum of **2026.11.0**.
-The protected **Quality** check requires the complete integration and blueprint
-test suite. Keep the HA and fixture versions aligned with `hacs.json`. If the
-development target later moves ahead of the advertised minimum, test both
-supported baselines in separate environments.
+package, pinned to **2026.11.0** for the advertised minimum and **2026.11.1**
+for the current target. The protected **Quality** check requires both complete
+integration/blueprint suites, CodeQL and the complete dependency advisory audit.
+Keep minimum HA and fixture versions aligned with `hacs.json`; change each
+explicit fixture pin only in a coordinated baseline review.
 
 The canonical validation project is [`ci/pyproject.toml`](ci/pyproject.toml)
-and its universal [`ci/uv.lock`](ci/uv.lock). The `ci` group contains
-the fixture and the tools used directly by this repository; the `build` group
-contains the preinstalled build tools. HA supplies the compatible versions of
+and its universal [`ci/uv.lock`](ci/uv.lock). The `ci` group contains the minimum
+fixture and tools; `ci-current` contains the matching current fixture and the
+same tools. The groups are explicitly mutually exclusive using uv's
+[documented conflicts](https://docs.astral.sh/uv/concepts/resolution/#conflicting-dependencies).
+Export and install each in a separate environment; do not use `--all-groups`.
+The shared `build` group contains preinstalled build tools. HA supplies compatible versions of
 pytest, pytest-asyncio, aiohttp, yarl and uv through its dependency graph.
 Security constraints retain the certifi, multidict and uv minimums.
 
 Dependabot uses native uv lockfile updates with `versioning-strategy:
 lockfile-only`. Weekly update PRs stay inside the reviewed manifest constraints;
-the exact HA fixture pin therefore changes only with a coordinated baseline
+the exact HA fixture pins therefore change only with a coordinated baseline
 review. Alerts remain enabled and no dependency is ignored. A security fix that
 requires relaxing an HA pin needs a reviewed HA/fixture baseline change; this
 policy cannot make an incompatible version safe to install.
@@ -53,15 +56,21 @@ PR-creation rejection reported for dependency projects under `.github/` in
 [Dependabot issue #15721](https://github.com/dependabot/dependabot-core/issues/15721).
 A [comparable uv project](https://github.com/davisbuilds/skilleval/pull/2) produced
 a [real Dependabot PR after relocation](https://github.com/davisbuilds/skilleval/pull/3).
-This is a compatibility workaround, not confirmation of GitHub's internal
-validation rule. For this repository, verify a fresh hosted uv job creates an
-update PR after merge; passing repository CI alone does not prove that outcome.
-Until publication works, use the focused lock-update procedure below and a
-normal reviewed PR with all checks. Keep alerts and existing permissions intact.
+The repository-specific workaround was verified after
+[PR #59](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/59):
+[hosted uv run 43717927120](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/43717927120)
+received HTTP 204 when creating
+[PR #60](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/60).
+That reviewed update was merged with all checks passing. This result does not
+identify GitHub's internal rejection rule or establish a general upstream fix.
+After future updater-layout changes, require another actual update PR;
+repository CI alone cannot prove hosted PR creation. If an update job fails,
+use the focused lock-update procedure below through a normal reviewed PR.
+Keep alerts and existing permissions intact.
 
 Validate and Release Gate install uv through the full-SHA-pinned official
 `setup-uv` action, reading its exact version from the CI lock. They export the
-`build` and `ci` groups with `uv export --locked --offline` into runner-temporary
+`build` and the selected `ci`/`ci-current` group with `uv export --locked --offline` into runner-temporary
 requirements files. Exported requirements include hashes and platform markers.
 No second requirements lockfile is committed or independently maintained.
 
@@ -96,13 +105,18 @@ or newer following the
 The HA 2026.11.0 environment requires uv 0.13.6 and the CI project constrains
 multidict to 6.9.1 or newer. Use the pinned, hash-checked pip install commands from
 [Validate](.github/workflows/validate.yml) in a virtual environment.
-Run `python -m pip check` before the tests. The suite allows socket connections
-only to the local test server.
+Run `python -m pip check` and the installed security-baseline check before
+tests. Compatibility jobs enforce `UV_OFFLINE=true` throughout; sockets are
+allowed only to the local test server. The separate advisory job queries fixed
+PyPI HTTPS metadata for all 149 registry package/version pairs, including both
+fixtures and all platforms. Any active advisory or unknown result fails Quality.
+See [the full baseline](docs/CI_SECURITY_BASELINE.md) for scope and review steps.
 
 ```shell
-python -m pytest -q --disable-socket --allow-hosts=127.0.0.1,::1 \
+UV_OFFLINE=true python -m pytest -q --disable-socket --allow-hosts=127.0.0.1,::1 \
   --cov=custom_components/meiertobler_smartguard \
-  --cov-report=term-missing --cov-fail-under=95
+  --cov-report=term-missing --cov-report=json:coverage.json --cov-fail-under=100
+python scripts/check_quality_coverage.py
 ```
 
 Configuration forms use Home Assistant's probatio schema types. Keep the saved

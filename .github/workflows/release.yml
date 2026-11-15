@@ -13,55 +13,144 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release-gate:
-    name: Validate release candidate
+  compatibility:
+    name: Release tests (HA ${{ matrix.ha }})
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      UV_OFFLINE: "true"
+      CI_GROUP: ${{ matrix.group }}
+      HA_VERSION: ${{ matrix.ha }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ha: "2026.11.0"
+            group: ci
+          - ha: "2026.11.1"
+            group: ci-current
     steps:
-      - name: Check out tagged source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
           persist-credentials: false
-
       - name: Set up Python
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: ">=3.14.10 <3.15"
           check-latest: true
           cache: pip
           cache-dependency-path: ci/uv.lock
-
+      - name: Check bootstrap security baseline
+        run: python scripts/check_ci_security.py bootstrap
       - name: Set up locked uv
-        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
         with:
           version-file: ci/uv.lock
           enable-cache: false
-
       - name: Export hash-pinned validation dependencies
         run: |
           uv export --quiet --directory ci --locked --offline --only-group build \
             --no-emit-project --format requirements.txt \
             --output-file "$RUNNER_TEMP/smartguard-build.txt"
-          uv export --quiet --directory ci --locked --offline --only-group ci \
+          uv export --quiet --directory ci --locked --offline --only-group "$CI_GROUP" \
             --no-emit-project --format requirements.txt \
             --output-file "$RUNNER_TEMP/smartguard-ci.txt"
-
       - name: Install pinned build tools
         run: >-
           python -m pip install --disable-pip-version-check
           --require-hashes --only-binary=:all:
           -r "$RUNNER_TEMP/smartguard-build.txt"
-
       - name: Install validation dependencies
-        # pyric publishes only a source archive. Its build uses pinned tools.
+        # pyric is the only source-build exception; build tools are already pinned.
         run: >-
           python -m pip install --disable-pip-version-check
           --require-hashes --only-binary=:all: --no-binary=pyric
           --no-build-isolation --no-deps -r "$RUNNER_TEMP/smartguard-ci.txt"
-
       - name: Check installed dependency consistency
         run: python -m pip check
+      - name: Check installed security baseline and HA identity
+        run: python scripts/check_ci_security.py installed --ha-version "$HA_VERSION"
+      - name: Validate repository invariants
+        run: python scripts/validate.py
+      - name: Run Ruff
+        run: python -m ruff check .
+      - name: Run strict MyPy checks
+        run: >-
+          python -m mypy
+          custom_components/meiertobler_smartguard
+          scripts/release.py
+          scripts/check_ci_security.py
+          scripts/check_quality_coverage.py
+          tests/test_release.py
+      - name: Run complete test suite
+        run: >-
+          python -m pytest -q
+          --disable-socket --allow-hosts=127.0.0.1,::1
+          --cov=custom_components/meiertobler_smartguard
+          --cov-report=term-missing --cov-report=json:coverage.json
+          --cov-fail-under=100
+      - name: Require full coverage of every integration module
+        run: python scripts/check_quality_coverage.py
 
+  advisories:
+    name: Release dependency advisories
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      UV_OFFLINE: "true"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: ">=3.14.10 <3.15"
+          check-latest: true
+      - name: Check bootstrap security baseline
+        run: python scripts/check_ci_security.py bootstrap
+      - name: Set up locked uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        with:
+          version-file: ci/uv.lock
+          enable-cache: false
+      - name: Export hash-pinned audit parser dependencies
+        run: >-
+          uv export --quiet --directory ci --locked --offline --only-group build
+          --no-emit-project --format requirements.txt
+          --output-file "$RUNNER_TEMP/smartguard-audit.txt"
+      - name: Install hash-pinned audit parser dependencies
+        run: >-
+          python -m pip install --disable-pip-version-check
+          --require-hashes --only-binary=:all: --no-deps
+          -r "$RUNNER_TEMP/smartguard-audit.txt"
+      - name: Audit every locked package and platform
+        run: python -m scripts.check_dependency_advisories --json > "$RUNNER_TEMP/smartguard-dependency-audit.json"
+
+  release-gate:
+    name: Validate release candidate
+    needs: [compatibility, advisories]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require complete validation before producing an artifact
+        env:
+          COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
+          ADVISORIES_RESULT: ${{ needs.advisories.result }}
+        run: test "$COMPATIBILITY_RESULT" = success && test "$ADVISORIES_RESULT" = success
+      - name: Check out tagged source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: ">=3.14.10 <3.15"
+          check-latest: true
       - name: Verify annotated tag, version, and main ancestry
         env:
           RELEASE_SHA: ${{ github.sha }}
@@ -71,33 +160,10 @@ jobs:
           test "$(git rev-list -n 1 "refs/tags/$RELEASE_TAG")" = "$RELEASE_SHA"
           git merge-base --is-ancestor "$RELEASE_SHA" origin/main
           python scripts/release.py verify-tag --tag "$RELEASE_TAG"
-
-      - name: Validate repository invariants
-        run: python scripts/validate.py
-
-      - name: Run Ruff
-        run: python -m ruff check .
-
-      - name: Run strict MyPy checks
-        run: >-
-          python -m mypy
-          custom_components/meiertobler_smartguard
-          scripts/release.py
-          tests/test_release.py
-
-      - name: Run tests
-        run: >-
-          python -m pytest -q
-          --disable-socket --allow-hosts=127.0.0.1,::1
-          --cov=custom_components/meiertobler_smartguard
-          --cov-report=term-missing
-          --cov-fail-under=95
-
       - name: Build deterministic release bundle
         run: python scripts/release.py build --output-directory dist
-
       - name: Upload gated release bundle
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: meiertobler_smartguard-${{ github.ref_name }}
           path: dist/*

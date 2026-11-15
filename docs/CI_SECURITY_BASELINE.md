@@ -1,23 +1,23 @@
 # Automated quality and security baseline
 
-This document describes the proposed 0.8.0 source configuration. Successful
-local checks, hosted checks on the exact PR head, actual merge checks and
-owner-authenticated GitHub settings/alert inventories are separate evidence.
-Do not infer publication, field acceptance or a complete security clearance
-from this configuration alone.
+This document records the automated controls shipped in published **0.8.0**
+and the dated verification evidence below. Local checks, hosted PR checks,
+actual merge checks, publication and owner-authenticated GitHub inventories
+remain separate evidence. None establishes physical heating acceptance or a
+complete security clearance.
 
 ## Reference and scope
 
 The comparison uses `martins-netizen/ha-meteoswiss` development
-`b6c4502e5cdeb48121be628fdb7eda579df4f7c3` on 2026-11-15. Its
-[CI](https://github.com/martins-netizen/ha-meteoswiss/blob/b6c4502e5cdeb48121be628fdb7eda579df4f7c3/.github/workflows/ci.yml),
-[CodeQL](https://github.com/martins-netizen/ha-meteoswiss/blob/b6c4502e5cdeb48121be628fdb7eda579df4f7c3/.github/workflows/codeql.yml),
-[daily audit](https://github.com/martins-netizen/ha-meteoswiss/blob/b6c4502e5cdeb48121be628fdb7eda579df4f7c3/.github/workflows/dependency-audit.yml)
-and [coverage gate](https://github.com/martins-netizen/ha-meteoswiss/blob/b6c4502e5cdeb48121be628fdb7eda579df4f7c3/scripts/check_quality_coverage.py)
+`29d9bc73b2ad0dedc91c73cf167f46223330d22a` on 2026-11-15. Its
+[CI](https://github.com/martins-netizen/ha-meteoswiss/blob/29d9bc73b2ad0dedc91c73cf167f46223330d22a/.github/workflows/ci.yml),
+[CodeQL](https://github.com/martins-netizen/ha-meteoswiss/blob/29d9bc73b2ad0dedc91c73cf167f46223330d22a/.github/workflows/codeql.yml),
+[daily audit](https://github.com/martins-netizen/ha-meteoswiss/blob/29d9bc73b2ad0dedc91c73cf167f46223330d22a/.github/workflows/dependency-audit.yml)
+and [coverage gate](https://github.com/martins-netizen/ha-meteoswiss/blob/29d9bc73b2ad0dedc91c73cf167f46223330d22a/scripts/check_quality_coverage.py)
 are the engineering reference. SmartGuard retains its own runtime and native uv
 project; no weather runtime or unrelated feature is imported.
 
-| Control | MeteoSwiss reference | SmartGuard candidate |
+| Control | MeteoSwiss reference | SmartGuard 0.8.0 |
 | --- | --- | --- |
 | HA compatibility | Complete 2026.11.0 and 2026.11.1 suites | Both complete suites with matching official fixtures |
 | Required security analysis | CodeQL plus separately checked SonarCloud | CodeQL required through Quality; SonarCloud retained and verified separately |
@@ -86,16 +86,51 @@ PyPI's advisory inventory is one source at one time. A zero result does not
 prove that all vulnerabilities are known. Dependabot, CodeQL, SonarCloud and
 owner-authenticated GitHub alert/settings checks remain complementary.
 
-## Remaining operational evidence and risk
+The recheck against the original MeteoSwiss reference
+`b6c4502e5cdeb48121be628fdb7eda579df4f7c3` found unchanged CI, CodeQL, daily-audit
+and dependency-lock configuration. Its coverage checker adds four HGT modules
+to the existing critical-module list. SmartGuard already requires complete
+statement and branch coverage for every integration module, including future
+modules; no reduced threshold or unrelated weather feature is needed.
 
-After publishing the candidate branch, verify all eight trusted checks on
-its exact head. Keep the production installation, existing tags and releases
-unchanged until the normal merge/release decisions. Re-read the actual merge
-results before selecting a publication source.
+## Recorded verification and remaining operational limits
 
-Verify the owner's current Dependabot alerts/security updates, secret scanning,
-push protection and open alert inventories separately. A GitHub App that
-cannot read a setting does not establish that it is enabled or clean.
+The following records apply to the named 0.8.0 source and check times:
+
+- [PR #61](https://github.com/martins-netizen/ha-meiertobler-smartguard/pull/61)
+  passed all nine hosted checks from the expected apps on
+  `7df519f4c3a1ef229f8bd687747847b2f3569eca` before owner-approved merge.
+- The actual merge `02bf2a6b1dceca01d4d4c99ae1080cadb9b93a77` retains the exact
+  reviewed tree `7faec545a471180de997ff0ae258302e19456258` and a valid GitHub
+  signature. [Main validation](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/43742930107)
+  passed both full HA suites, CodeQL, the advisory audit, Quality, Hassfest and
+  HACS. SonarCloud and both native dependency-graph submissions also passed.
+- The annotated `v0.8.0` tag points to that merge. All four jobs in
+  [Release Gate 43745963444](https://github.com/martins-netizen/ha-meiertobler-smartguard/actions/runs/43745963444)
+  passed. Each HA suite passed **590 tests and 26 subtests**, covering all
+  **811 statements and 178 branches** across 15 integration modules. Strict
+  MyPy passed for 19 files. Five known upstream warnings remain visible.
+  The tagged advisory audit checked 149 pairs with zero active advisories and
+  zero unknown results.
+- [0.8.0](https://github.com/martins-netizen/ha-meiertobler-smartguard/releases/tag/v0.8.0)
+  was published as stable Latest on **2026-11-15 at 18:28:49 UTC**. Both public
+  assets were downloaded independently after publication; all 23 ZIP members
+  match the selected source. The 51,103-byte ZIP SHA-256 is
+  `f7678cf2135c7fb4a25297c0125b65b4789bb27958896c472e12e22f30d69eb3`.
+
+The owner's authenticated inventory at **2026-11-15 17:36 UTC** confirmed
+Dependabot alerts and automatic security updates, secret scanning, push
+protection and private vulnerability reporting. These five settings matched
+the MeteoSwiss reference. Both repositories then had zero open Dependabot and
+secret alerts; the checked SmartGuard PR analysis and MeteoSwiss default-branch
+analysis also had zero open code-scanning alerts. This is a dated owner check,
+not a claim that public GitHub App access can inspect every setting or that
+later alerts cannot appear. The configured daily schedule is distinct from an
+independently observed scheduled run.
+
+Installation, Marketplace/blueprint UI evidence and physical heating acceptance
+remain separate. Open discovery and blueprint evidence in the quality review
+is retained; these automated checks do not close it or constitute a Gold award.
 
 The SmartGuard gateway API used by this integration remains unauthenticated
 local HTTP and can affect heating. MeteoSwiss reads weather providers through

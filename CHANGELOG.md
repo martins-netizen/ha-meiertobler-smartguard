@@ -5,6 +5,12 @@ uses stable semantic versions for release candidates and published releases.
 
 ## [Unreleased]
 
+### Fixed
+
+- Keep the guided blueprint's step numbers visible when Home Assistant renders
+  section titles as Markdown. Clarify that its two dedicated helpers must be
+  created separately; saved inputs and automation behavior are unchanged.
+
 ## [0.8.0] - 2026-11-15
 
 Source-preparation record; publication is a separate gated step. See the

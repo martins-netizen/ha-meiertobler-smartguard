@@ -53,6 +53,17 @@ See [setup, re-import and limitations](AUTOMATION_EXAMPLES.md) before using it.
 In particular, selecting Heating again while already Heating cannot identify
 a new manual intention, and no startup/reconnection catch-up is provided.
 
+### Section-heading rendering
+
+Home Assistant renders blueprint section titles as Markdown. Titles beginning
+with `1.`, `2.` and so on are parsed as separate ordered lists; sanitizing the
+list start attribute can make each displayed section start at one. The form
+uses `Schritt N –` headings to keep the step numbers as text and clarifies that
+the two dedicated helpers must be created separately. This presentation change
+preserves every input key, selector, default, condition, trigger and action.
+It does not establish a new production migration or close the UI/save evidence
+items below.
+
 ## Evidence and remaining work
 
 | Item | Evidence | Remaining work |

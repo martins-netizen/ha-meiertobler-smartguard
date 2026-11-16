@@ -65,6 +65,9 @@ create **two separate Toggle helpers**:
 
 Start **both off**. Use a new, dedicated marker for each automation. The
 blueprint selects existing helpers; it does not create them for you.
+The names above are suggestions, not automatically created entities. Create
+two new, distinct helpers for this blueprint and keep the helpers of an
+existing controller assigned to that controller.
 
 Keep the marker's normal state restoration. If you create helpers in YAML,
 omit an `initial` value that would reset the marker at every restart. Use
@@ -87,14 +90,16 @@ automation while reviewing this separate example.
 ### 3. Fill in the numbered form sections
 
 The form uses German labels and includes its helper-creation instructions.
+Section titles start with `Schritt N –` so Home Assistant's Markdown renderer
+does not interpret each title as a separate numbered list starting at one.
 Follow the sections in order:
 
-1. **Zwei Helfer vorbereiten**: select the two helpers created above.
-2. **SmartGuard auswählen**: select the operating-mode control and current
+1. **Schritt 1 – Zwei Helfer vorbereiten**: select the two helpers created above.
+2. **Schritt 2 – SmartGuard auswählen**: select the operating-mode control and current
    operating-status sensor from the same SmartGuard device.
-3. **Raumtemperatur prüfen**: select a room-temperature sensor and review the
+3. **Schritt 3 – Raumtemperatur prüfen**: select a room-temperature sensor and review the
    temperature limit.
-4. **Schaltzeiten (optional)**: expand this section only to change the default
+4. **Schritt 4 – Schaltzeiten (optional)**: expand this section only to change the default
    times, **23:00 / 06:00**, in Home Assistant's configured time zone.
 
 | Form field | Select or enter |

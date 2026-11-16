@@ -14,7 +14,7 @@ blueprint:
     min_version: 2026.11.0
   input:
     safeguards:
-      name: 1. Zwei Helfer vorbereiten
+      name: Schritt 1 – Zwei Helfer vorbereiten
       icon: mdi:shield-check
       description: |-
         Erstelle unter **Einstellungen → Geräte & Dienste → Helfer →
@@ -25,6 +25,10 @@ blueprint:
 
         Lass beide **aus** und wähle sie unten aus. Jede Automation braucht
         ihren eigenen Nachtmerker.
+
+        Die Helfer werden nicht automatisch angelegt. Die Namen oben sind
+        Vorschläge. Verwende zwei neue, getrennte Umschalter nur für diese
+        Automation; bestehende Helfer bleiben bei ihrer bisherigen Steuerung.
       input:
         enable_helper:
           name: Freigabeschalter
@@ -49,7 +53,7 @@ blueprint:
               filter:
                 - domain: input_boolean
     smartguard_entities:
-      name: 2. SmartGuard auswählen
+      name: Schritt 2 – SmartGuard auswählen
       icon: mdi:heat-pump
       description: Wähle beide Entitäten vom selben SmartGuard-Gerät.
       input:
@@ -72,7 +76,7 @@ blueprint:
                 - integration: meiertobler_smartguard
                   domain: sensor
     temperature_settings:
-      name: 3. Raumtemperatur prüfen
+      name: Schritt 3 – Raumtemperatur prüfen
       icon: mdi:home-thermometer
       input:
         indoor_temperature:
@@ -100,7 +104,7 @@ blueprint:
               unit_of_measurement: °C
               mode: box
     schedule:
-      name: 4. Schaltzeiten (optional)
+      name: Schritt 4 – Schaltzeiten (optional)
       icon: mdi:clock-outline
       description: >-
         Vorgaben sind 23:00 Uhr für den Nachtwechsel und 06:00 Uhr für die

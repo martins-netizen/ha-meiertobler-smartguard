@@ -48,7 +48,7 @@ jobs:
       - name: Check bootstrap security baseline
         run: python scripts/check_ci_security.py bootstrap
       - name: Set up locked uv
-        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d
         with:
           version-file: ci/uv.lock
           enable-cache: false
@@ -116,7 +116,7 @@ jobs:
       - name: Check bootstrap security baseline
         run: python scripts/check_ci_security.py bootstrap
       - name: Set up locked uv
-        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d
         with:
           version-file: ci/uv.lock
           enable-cache: false
@@ -183,7 +183,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Run hassfest validation
-        uses: home-assistant/actions/hassfest@86d4564712fa02543c808e3a693dd04f9d3f8361
+        uses: home-assistant/actions/hassfest@07f46fd2e19967768b5fd3000f91f857452b767c
 
   hacs:
     name: HACS
